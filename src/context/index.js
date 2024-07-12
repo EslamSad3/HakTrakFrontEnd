@@ -98,7 +98,7 @@ export function ContextProvider(props) {
       );
 
       setIps(response.data.data);
-      
+
       setIsLsLoading(false);
     } catch (error) {
       setIsLsLoading(false);
@@ -113,42 +113,43 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         { headers: { ...adminheaders } }
       );
-      setOneIp(response.data.data);
+      setIsLsLoading(false);
+      return response.data.data;
+    } catch (error) {
+      setIsLsLoading(false);
+      throw error;
+    }
+  }
+
+  // update  Customer
+  async function updateIp(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
+        values,
+        { headers: { ...adminheaders } }
+      );
+
+      if (response.status === 200) {
+        toast.success("Ip updated successfully");
+      } else {
+        toast.error("Failed to update IP");
+      }
 
       setIsLsLoading(false);
     } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("Ip Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
       setIsLsLoading(false);
     }
   }
-  // // update  Customer
-  // async function updateIp(id, verified, active) {
-  //   try {
-  //     setIsLsLoading(true);
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
-  //       { id, verified, active },
-  //       { headers: {  ...adminheaders } }
-  //     );
-
-  //     if (response.status === 200) {
-  //       toast.success(response.data.message);
-  //     } else {
-  //       toast.error("Failed to update IP");
-  //     }
-
-  //     setIsLsLoading(false);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-
-  //     if (error.response && error.response.status === 404) {
-  //       toast.error("Customer Not Found");
-  //     } else {
-  //       toast.error("Server Error");
-  //     }
-
-  //     setIsLsLoading(false);
-  //   }
-  // }
 
   // delete IP
   async function deleteIp(id) {
@@ -391,6 +392,7 @@ export function ContextProvider(props) {
         fetchAllIps,
         fetchOneIp,
         deleteIp,
+        updateIp,
         addNewDomain,
         fetchAllDomains,
         fetchOneDomain,

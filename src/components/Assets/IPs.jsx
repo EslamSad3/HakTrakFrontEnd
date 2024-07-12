@@ -1,15 +1,61 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
-import { Link } from "react-router-dom";
+import DeleteDialog from "../../Actions/DeleteDialog";
+import UpdateIpForm from "../../Actions/assets/UpdateIp"; // Adjust the path as needed
 
 const IPs = () => {
-  const { ips, isLoading, deleteIp, adminToken, refreshData } =
-    useContext(Context);
+  const {
+    ips,
+    isLoading,
+    deleteIp,
+    adminToken,
+    refreshData,
+    fetchOneIp,
+    updateIp,
+  } = useContext(Context);
   const theme = useTheme();
-  console.log(ips);
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [selectedIp, setSelectedIp] = useState(null);
+    console.log(selectedIp);
+
+  const handleClickOpenDelete = (id) => {
+    setDeleteId(id);
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setDeleteId(null);
+  };
+
+  const handleConfirmDelete = async (id) => {
+    await deleteIp(id);
+    refreshData();
+    handleCloseDelete();
+  };
+
+  const handleClickOpenUpdate = async (id) => {
+    const ip = await fetchOneIp(id);
+    setSelectedIp(ip);
+    setOpenUpdate(true);
+  };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setSelectedIp(null);
+  };
+
+  const handleUpdateIp = async (values) => {
+    await updateIp(selectedIp._id, values);
+    refreshData();
+    handleCloseUpdate();
+  };
 
   useEffect(() => {
     refreshData();
@@ -36,10 +82,7 @@ const IPs = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={async () => {
-                await deleteIp(params.id);
-                refreshData();
-              }}
+              onClick={() => handleClickOpenDelete(params.id)}
             >
               Delete
             </Button>
@@ -52,11 +95,13 @@ const IPs = () => {
           headerName: "Update",
           width: 150,
           renderCell: (params) => (
-            <Link to={`/assets/ips/${params.id}/edit`}>
-              <Button variant="contained" color="primary">
-                Update
-              </Button>
-            </Link>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleClickOpenUpdate(params?.id)}
+            >
+              Update
+            </Button>
           ),
         }
       : null,
@@ -102,6 +147,20 @@ const IPs = () => {
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
+
+      <DeleteDialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
+        item={deleteId}
+      />
+
+      <UpdateIpForm
+        open={openUpdate}
+        onClose={handleCloseUpdate}
+        ip={selectedIp}
+        onSubmit={handleUpdateIp}
+      />
     </Box>
   );
 };
