@@ -6,54 +6,66 @@ import { Context } from "../../context";
 import { Link } from "react-router-dom";
 
 const IPs = () => {
-  const { ips, isLoading, deleteIp, fetchAllIps, refreshData } =
+  const { ips, isLoading, deleteIp, adminToken, refreshData } =
     useContext(Context);
   const theme = useTheme();
+  console.log(ips);
 
   useEffect(() => {
     refreshData();
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 90,
+      valueGetter: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
+      },
+    },
     { field: "value", headerName: "Value", width: 150 },
     { field: "location", headerName: "Location", width: 150 },
     { field: "description", headerName: "Description", width: 150 },
-    {
-      field: "delete",
-      headerName: "Delete",
-      width: 150,
-      renderCell: (params) => (
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={async () => {
-            await deleteIp(params.id);
-            refreshData();
-          }}
-        >
-          Delete
-        </Button>
-      ),
-    },
-    {
-      field: "update",
-      headerName: "Update",
-      width: 150,
-      renderCell: (params) => (
-        <Link to={`/assets/ips/${params.id}/edit`}>
-          <Button variant="contained" color="primary">
-            Update
-          </Button>
-        </Link>
-      ),
-    },
-  ];
+    adminToken
+      ? {
+          field: "delete",
+          headerName: "Delete",
+          width: 150,
+          renderCell: (params) => (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={async () => {
+                await deleteIp(params.id);
+                refreshData();
+              }}
+            >
+              Delete
+            </Button>
+          ),
+        }
+      : null,
+    adminToken
+      ? {
+          field: "update",
+          headerName: "Update",
+          width: 150,
+          renderCell: (params) => (
+            <Link to={`/assets/ips/${params.id}/edit`}>
+              <Button variant="contained" color="primary">
+                Update
+              </Button>
+            </Link>
+          ),
+        }
+      : null,
+  ].filter(Boolean); // Filter out null values
 
   return (
     <Box m="1.5rem 2.5rem">
       <Header title={"IPS"} subtitle={"List of IPS"} />
-      <Typography variant="h4">Number of IPS: {ips.length}</Typography>
+      <Typography variant="h4">Number of IPS: {ips?.length}</Typography>
       <Box
         mt="40px"
         sx={{
@@ -85,7 +97,7 @@ const IPs = () => {
         <DataGrid
           rows={ips || []}
           loading={isLoading || !ips}
-          getRowId={(row) => row._id}
+          getRowId={(row) => row?._id}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

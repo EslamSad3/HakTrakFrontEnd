@@ -98,7 +98,7 @@ export function ContextProvider(props) {
       );
 
       setIps(response.data.data);
-      console.log(ips)
+      
       setIsLsLoading(false);
     } catch (error) {
       setIsLsLoading(false);
