@@ -12,12 +12,12 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-const UpdateIpForm = ({ open, onClose, ip, onSubmit }) => {
+const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
   const formik = useFormik({
     initialValues: {
-      value: ip?.value || "",
-      location: ip?.location || "",
-      description: ip?.description || "",
+      value: item?.value || "",
+      location: item?.location || "",
+      description: item?.description || "",
     },
     validationSchema: Yup.object({
       value: Yup.string().required("Required"),
@@ -25,14 +25,14 @@ const UpdateIpForm = ({ open, onClose, ip, onSubmit }) => {
       description: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      onSubmit(values);
+      onConfirm(values);
     },
     enableReinitialize: true,
   });
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Update IP</DialogTitle>
+      <DialogTitle>Update {item?.value || "item"}</DialogTitle>
       <DialogContent>
         <Box component="form" onSubmit={formik.handleSubmit} p={3}>
           <TextField
@@ -90,4 +90,4 @@ const UpdateIpForm = ({ open, onClose, ip, onSubmit }) => {
   );
 };
 
-export default UpdateIpForm;
+export default UpdateDialog;

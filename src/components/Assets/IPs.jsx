@@ -4,7 +4,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
-import UpdateIpForm from "../../Actions/assets/UpdateIp"; // Adjust the path as needed
+import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
 
 const IPs = () => {
   const {
@@ -22,7 +22,7 @@ const IPs = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [selectedIp, setSelectedIp] = useState(null);
-    console.log(selectedIp);
+  console.log(selectedIp);
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -155,11 +155,11 @@ const IPs = () => {
         item={deleteId}
       />
 
-      <UpdateIpForm
+      <UpdateDialog
         open={openUpdate}
         onClose={handleCloseUpdate}
-        ip={selectedIp}
-        onSubmit={handleUpdateIp}
+        item={selectedIp}
+        onConfirm={handleUpdateIp}
       />
     </Box>
   );

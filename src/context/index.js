@@ -114,7 +114,8 @@ export function ContextProvider(props) {
         { headers: { ...adminheaders } }
       );
       setIsLsLoading(false);
-      return response.data.data;
+      setOneIp(response.data.data);
+      return oneIp;
     } catch (error) {
       setIsLsLoading(false);
       throw error;
@@ -131,11 +132,9 @@ export function ContextProvider(props) {
         { headers: { ...adminheaders } }
       );
 
-      if (response.status === 200) {
-        toast.success("Ip updated successfully");
-      } else {
-        toast.error("Failed to update IP");
-      }
+      response.status === 200
+        ? toast.success("ip updated successfully")
+        : toast.error("ip not found");
 
       setIsLsLoading(false);
     } catch (error) {
@@ -226,26 +225,30 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
         { headers: { ...adminheaders } }
       );
-      setOneDomain(response.data.data);
       setIsLsLoading(false);
+      setOneDomain(response.data.data);
+      return oneDomain;
     } catch (error) {
       setIsLsLoading(false);
     }
   }
 
-  // // update  One Domain
-  // async function updateDomain(id, verified, active) {
-  //   try {
-  //     setIsLsLoading(true);
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-  //       { id, verified, active },
-  //       { headers: {  ...adminheaders } }
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  // update  One Domain
+  async function updateDomain(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
+        values,
+        { headers: { ...adminheaders } }
+      );
+      response.status === 200
+        ? toast.success("Domain updated successfully")
+        : toast.error("Domain not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // delete One Domain
   async function deleteDomain(id) {
@@ -306,6 +309,7 @@ export function ContextProvider(props) {
       );
       setPortals(response.data.data);
       setIsLsLoading(false);
+      return portals;
     } catch (error) {
       setIsLsLoading(false);
     }
@@ -314,32 +318,35 @@ export function ContextProvider(props) {
   //  Fetch One portal
   async function fetchOnePortal(id) {
     try {
-      isLoading(true);
+      setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
         { headers: { ...adminheaders } }
       );
       setOnePortal(response.data.data);
-      isLoading(false);
+      setIsLsLoading(false);
+      return onePortal;
     } catch (error) {
-      isLoading(false);
+      setIsLsLoading(false);
     }
   }
 
-  // // update  One Domain
-
-  // async function updateDomain(id, verified, active) {
-  //   try {
-  //     setIsLsLoading(true);
-  //     const response = await axios.patch(
-  //       `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-  //       { id, verified, active },
-  //       { headers: {  ...adminheaders } }
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  // update  One Portal
+  async function updatePortal(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
+        values,
+        { headers: { ...adminheaders } }
+      );
+      response.status === 200
+        ? toast.success("portal updated successfully")
+        : toast.error("portal not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   // Delete One Portal
   async function deletePortal(id) {
@@ -397,9 +404,11 @@ export function ContextProvider(props) {
         fetchAllDomains,
         fetchOneDomain,
         deleteDomain,
+        updateDomain,
         addNewPortal,
         fetchAllPortals,
         fetchOnePortal,
+        updatePortal,
         deletePortal,
         ips,
         oneIp,

@@ -15,11 +15,11 @@ const DeleteDialog = ({ open, onClose, onConfirm, item }) => {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"Are you sure you want to delete this IP?"}
+        {"Are you sure you want to delete this?"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Deleting this IP is not reversible!
+          Deleting this is not reversible!
         </DialogContentText>
       </DialogContent>
       <DialogActions>

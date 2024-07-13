@@ -13,6 +13,8 @@ import CreateIps from "./Actions/assets/CreateIps";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./components/Home";
 import IPs from "./components/Assets/IPs";
+import Domains from "./components/Assets/Domains";
+import Portals from "./components/Assets/Portals";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -37,6 +39,8 @@ function App() {
                 }
               />
               <Route path="/assets/ips" element={<IPs />} />
+              <Route path="/assets/domains" element={<Domains />} />
+              <Route path="/assets/portals" element={<Portals />} />
             </Route>
 
             {/* <Route

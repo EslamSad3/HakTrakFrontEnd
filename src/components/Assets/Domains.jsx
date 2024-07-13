@@ -1,96 +1,118 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import Header from "../Header";
-import { DataGrid } from "@mui/x-data-grid";
-import React, { useContext } from "react";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
-import { Link } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-const Customers = () => {
-  const { customers, fetchCustomersLoading, refreshData } = useContext(Context);
+import DeleteDialog from "../../Actions/DeleteDialog";
+import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+
+const Domains = () => {
+  const {
+    domains,
+    isLoading,
+    deleteDomain,
+    adminToken,
+    refreshData,
+    fetchOneDomain,
+    updateDomain,
+  } = useContext(Context);
   const theme = useTheme();
-  const {t} = useTranslation();
+
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [deletedDomain, setDeletedDomain] = useState(null);
+  const [selectedDomain, setSelectedDomain] = useState(null);
+  console.log(selectedDomain);
+
+  const handleClickOpenDelete = (id) => {
+    setDeletedDomain(id);
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+    setDeletedDomain(null);
+  };
+
+  const handleConfirmDelete = async (id) => {
+    await deleteDomain(id);
+    refreshData();
+    handleCloseDelete();
+  };
+
+  const handleClickOpenUpdate = async (id) => {
+    const domain = await fetchOneDomain(id);
+    setSelectedDomain(domain);
+    setOpenUpdate(true);
+  };
+
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    setSelectedDomain(null);
+  };
+
+  const handleUpdateDomain = async (values) => {
+    await updateDomain(selectedDomain?._id, values);
+    refreshData();
+    handleCloseUpdate();
+  };
+
+  useEffect(() => {
+    refreshData();
+  }, []);
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      flex: 0.1,
-    },
-    {
-      field: "name",
-      headerName: t("Name"),
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "phone",
-      headerName: t("Phone"),
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "active",
-      headerName: t("Active"),
-      flex: 1,
-      minWidth: 50,
-      renderCell: (params) => {
-        return (
-          <>
-            {params.value === true ? (
-              <Typography variant="body1">{t("Yes")}</Typography>
-            ) : (
-              <Typography variant="body1">{t("No")}</Typography>
-            )}
-          </>
-        );
+      width: 90,
+      valueGetter: (params) => {
+        return params.api.getRowIndex(params.id) + 1;
       },
     },
-    {
-      field: "verified",
-      headerName: t("Verified"),
-      flex: 1,
-      minWidth: 50,
-      renderCell: (params) => {
-        return (
-          <>
-            {params.value === true ? (
-              <Typography variant="body1">{t("Yes")}</Typography>
-            ) : (
-              <Typography variant="body1">{t("No")}</Typography>
-            )}
-          </>
-        );
-      },
-    },
-    {
-      field: "viewDetails",
-      headerName: t("View Details"),
-      flex: 1,
-      minWidth: 100,
+    { field: "value", headerName: "Value", width: 150 },
+    { field: "location", headerName: "Location", width: 150 },
+    { field: "description", headerName: "Description", width: 300 },
+    adminToken
+      ? {
+          field: "delete",
+          headerName: "Delete",
+          width: 150,
+          renderCell: (params) => (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => handleClickOpenDelete(params?.id)}
+            >
+              Delete
+            </Button>
+          ),
+        }
+      : null,
+    adminToken
+      ? {
+          field: "update",
+          headerName: "Update",
+          width: 150,
+          renderCell: (params) => (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleClickOpenUpdate(params?.id)}
+            >
+              Update
+            </Button>
+          ),
+        }
+      : null,
+  ].filter(Boolean); // Filter out null values
 
-      renderCell: (params) => (
-        <Link to={`/customers/${params.row.id}`}>
-          <Button variant="contained" color="primary">
-            {t("View Details")}
-          </Button>
-        </Link>
-      ),
-    },
-  ];
-
-  useEffect(() => {
-      refreshData();
-  }, [])
-  
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={t("Customers")} subtitle={t("List of Customers")} />
-      <h4 sx={{ backgroundColor: theme.palette.secondary.main }}>
-        {t("Number of customers")} : {customers.length}
-      </h4>
+      <Header title={"domains"} subtitle={"List of domains"} />
+      <Typography variant="h4">Number of domains: {domains?.length}</Typography>
       <Box
         mt="40px"
-        height="75vh"
         sx={{
           "& .MuiDataGrid-root": {
             border: "none",
@@ -114,17 +136,33 @@ const Customers = () => {
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
             color: `${theme.palette.secondary[200]} !important`,
           },
+          height: "75vh",
         }}
       >
         <DataGrid
-          rows={customers || []}
-          loading={fetchCustomersLoading || !customers}
-          getRowId={(row) => row.id}
+          rows={domains || []}
+          loading={isLoading || !domains}
+          getRowId={(row) => row?._id}
           columns={columns}
+          components={{ Toolbar: GridToolbar }}
         />
       </Box>
+
+      <DeleteDialog
+        open={openDelete}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
+        item={deletedDomain}
+      />
+
+      <UpdateDialog
+        open={openUpdate}
+        onClose={handleCloseUpdate}
+        item={selectedDomain}
+        onConfirm={handleUpdateDomain}
+      />
     </Box>
   );
 };
 
-export default Customers;
+export default Domains;
