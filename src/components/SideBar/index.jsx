@@ -774,11 +774,11 @@ const SideBar = ({
                     onClick={() => handleNavigate("/admin/actions/assets/ips")}
                     sx={{
                       backgroundColor:
-                        active === "configuration"
+                        active === "Actions"
                           ? theme.palette.secondary[300]
                           : "transparent",
                       color:
-                        active === "configuration"
+                        active === "Actions"
                           ? theme.palette.primary[600]
                           : theme.palette.secondary[100],
                     }}
@@ -787,7 +787,7 @@ const SideBar = ({
                       sx={{
                         ml: "2rem",
                         color:
-                          active === "configuration"
+                          active === "Actions"
                             ? theme.palette.primary[600]
                             : theme.palette.secondary[200],
                       }}
@@ -795,10 +795,10 @@ const SideBar = ({
                       <ToggleOnOutlinedIcon />
                     </ListItemIcon>
                     <ListItemText
-                      primary="Configuration"
+                      primary="Actions"
                       sx={{ textAlign: "start" }}
                     />
-                    {active === "configuration" && (
+                    {active === "Actions" && (
                       <ChevronRightOutlined sx={{ ml: "auto" }} />
                     )}
                   </ListItemButton>
