@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/HakTrakFrontEnd/static/css/main.f29374bf.css",
+    "main.js": "/HakTrakFrontEnd/static/js/main.4e80b200.js",
+    "static/media/logo.png": "/HakTrakFrontEnd/static/media/logo.c168b6d048e339a3def7.png",
+    "index.html": "/HakTrakFrontEnd/index.html",
+    "main.f29374bf.css.map": "/HakTrakFrontEnd/static/css/main.f29374bf.css.map",
+    "main.4e80b200.js.map": "/HakTrakFrontEnd/static/js/main.4e80b200.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f29374bf.css",
+    "static/js/main.4e80b200.js"
+  ]
+}
