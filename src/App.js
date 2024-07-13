@@ -27,7 +27,6 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
-
               <Route path="/dashboard" element={<Home />} />
               <Route
                 path="/admin/actions/assets/ips"
