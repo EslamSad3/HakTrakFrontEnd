@@ -19,6 +19,9 @@ import AuthRoute from "./components/ProtectedRoute/AuthRoute";
 import PublicRoute from "./components/ProtectedRoute/PublicRoute";
 import AdminAcions from "./Actions";
 import CreateDomains from "./Actions/assets/CreateDomains";
+import CreatePortals from "./Actions/assets/CreatePortals";
+import Iocs from "./components/Threatintelligence/Iocs";
+import CreateIocs from "./Actions/ThreatIntelligence/CreateIocs";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -36,6 +39,8 @@ function App() {
                   element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" element={<Home />} />
+
+                {/* Assets Actions Routes */}
                 <Route
                   path="/admin/actions/assets/ips"
                   forceRefresh={true}
@@ -55,6 +60,26 @@ function App() {
                   }
                 />
                 <Route
+                  path="/admin/actions/assets/portals"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreatePortals />
+                    </ProtectedRoute>
+                  }
+                />
+
+                {/* Threat intelligence Actions Routes */}
+
+                <Route
+                  path="admin/actions/threat-intelligence/iocs"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateIocs /> }</ProtectedRoute>
+                  }
+                />
+
+                <Route
                   path="/admin/actions"
                   forceRefresh={true}
                   element={
@@ -63,9 +88,14 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+
+                {/* Assets Routes */}
                 <Route path="/assets/ips" element={<IPs />} />
                 <Route path="/assets/domains" element={<Domains />} />
                 <Route path="/assets/portals" element={<Portals />} />
+
+                {/* Threat intelligence Routes */}
+                <Route path="/threat-intelligence/iocs" element={<Iocs />} />
               </Route>
             </Routes>
           </AuthRoute>

@@ -34,8 +34,6 @@ import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import BallotIcon from "@mui/icons-material/Ballot";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import PinchIcon from "@mui/icons-material/Pinch";

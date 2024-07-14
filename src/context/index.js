@@ -26,6 +26,25 @@ export function ContextProvider(props) {
   const [portals, setPortals] = useState([]);
   const [onePortal, setOnePortal] = useState({});
 
+  /** ************************** threat intelligence *******************/
+  // IOCs
+  const [iocs, setIocs] = useState([]);
+  const [oneIoc, setOneIoc] = useState({});
+
+  // Suspicious ips
+  const [suspiciousIps, setSuspiciousIps] = useState([]);
+  const [oneSuspiciousIp, setOneSuspiciousIp] = useState({});
+
+  // APT Feeds
+  const [aptFeeds, setAptFeeds] = useState([]);
+  const [oneAptFeed, setOneAptFeed] = useState({});
+
+  // Threat Intelligence Feeds
+  const [threatIntelligenceFeeds, setThreatIntelligenceFeeds] = useState([]);
+  const [oneThreatIntelligenceFeed, setOneThreatIntelligenceFeed] = useState(
+    {}
+  );
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -72,8 +91,6 @@ export function ContextProvider(props) {
     }
   }
 
-  /*********************** Assets ******************************/
-
   // Helper function to get the appropriate headers
   const getAuthHeaders = () => {
     const token = adminToken || userToken;
@@ -81,6 +98,8 @@ export function ContextProvider(props) {
       Authorization: `Bearer ${token}`,
     };
   };
+
+  /*********************** Assets ******************************/
 
   // add  new Ips
   async function addNewIp(values) {
@@ -205,7 +224,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response)
+      console.log(response);
       if (response.status === 201) {
         toast.success("Domain Added successfully");
         navigate("/assets/domains");
@@ -303,8 +322,8 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      if (response.status === 200) {
-        toast.success(response.data.message);
+      if (response.status === 201) {
+        toast.success("Portal Created Successfully");
         navigate("/assets/portals");
         setIsLsLoading(false);
       }
@@ -391,10 +410,469 @@ export function ContextProvider(props) {
     }
   }
 
+  /*********************** threat intelligence ******************************/
+
+  /***************** IOCS *******************/
+  // add  new Iocs
+  async function addNewIoc(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Ioc Added Successfully");
+        navigate("/threat-intelligence/iocs");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All IOCs
+  async function fetchAllIocs() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      setIocs(response.data.data);
+      setIsLsLoading(false);
+      return iocs;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch One IOC
+  async function fetchOneIoc(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      setOneIoc(response.data.data);
+      return oneIoc;
+    } catch (error) {
+      setIsLsLoading(false);
+      throw error;
+    }
+  }
+
+  // update IOC
+  async function updateIoc(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+
+      response.status === 200
+        ? toast.success("IOC updated successfully")
+        : toast.error("IOC not found");
+
+      setIsLsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("IOC Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
+      setIsLsLoading(false);
+    }
+  }
+
+  // delete IOCS
+  async function deleteIoc(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("IOC Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("IOC Not Found");
+      } else {
+        toast.error("Server Error");
+        setIsLsLoading(false);
+      }
+    }
+  }
+
+  /************* Suspicious IPs ************* */
+
+  // add  new Suspicious IPs
+  async function addNewSuspiciousIps(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Suspicious ip Added Successfully");
+        navigate("/threat-intelligence/suspicious-ips");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All suspicious-ips
+  async function fetchAllSuspiciousIps() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
+        { headers: getAuthHeaders() }
+      );
+      setSuspiciousIps(response.data.data);
+      setIsLsLoading(false);
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch One IOC
+  async function fetchOneSuspiciousIp(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      setOneSuspiciousIp(response.data.data);
+      return oneSuspiciousIp;
+    } catch (error) {
+      setIsLsLoading(false);
+      throw error;
+    }
+  }
+
+  // update IOC
+  async function updateSuspiciousIp(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+
+      response.status === 200
+        ? toast.success("suspicious Ip updated successfully")
+        : toast.error("suspicious Ip not found");
+
+      setIsLsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("suspicious Ip Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
+      setIsLsLoading(false);
+    }
+  }
+
+  // delete suspicious-ips
+  async function deleteSuspiciousIp(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("suspicious Ip Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("suspicious Ip Not Found");
+      } else {
+        toast.error("Server Error");
+        setIsLsLoading(false);
+      }
+    }
+  }
+  /************* APTs Feeds ************* */
+
+  // add  new APTs Feeds
+  async function addNewAptFeeds(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Apt Feed Added Successfully");
+        navigate("/threat-intelligence/apt-feeds");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All APTs Feeds
+  async function fetchAllAptFeeds() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
+        { headers: getAuthHeaders() }
+      );
+      setAptFeeds(response.data.data);
+      setIsLsLoading(false);
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch One IOC
+  async function fetchOneAptFeed(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      setOneAptFeed(response.data.data);
+      return oneAptFeed;
+    } catch (error) {
+      setIsLsLoading(false);
+      throw error;
+    }
+  }
+
+  // update IOC
+  async function updateAptFeed(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+
+      response.status === 200
+        ? toast.success("APT Feed updated successfully")
+        : toast.error("APT Feed not found");
+
+      setIsLsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("APT Feed Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
+      setIsLsLoading(false);
+    }
+  }
+
+  // delete apt-feeds
+  async function deleteAptFeed(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Apt Feed Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Apt Feed Not Found");
+      } else {
+        toast.error("Server Error");
+        setIsLsLoading(false);
+      }
+    }
+  }
+
+  /************* Threat Intelligence Feeds ************* */
+
+  // add  new Threat Intelligence Feeds
+  async function addNewThreatIntelligenceFeeds(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      if (response.status === 201) {
+        toast.success("Threat intelligence Feed Added Successfully");
+        navigate("/threat-intelligence/threat-intelligence-feeds");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All threatintelligences Feeds
+  async function fetchAllthreatintelligenceFeeds() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
+        { headers: getAuthHeaders() }
+      );
+      setThreatIntelligenceFeeds(response.data.data);
+      setIsLsLoading(false);
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch One threat intelligences Feed
+  async function fetchOnethreatintelligenceFeed(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      setOneThreatIntelligenceFeed(response.data.data);
+      return oneThreatIntelligenceFeed;
+    } catch (error) {
+      setIsLsLoading(false);
+      throw error;
+    }
+  }
+
+  // update threat intelligences Feed
+  async function updatethreatintelligenceFeed(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+
+      response.status === 200
+        ? toast.success("threatintelligence Feed updated successfully")
+        : toast.error("threatintelligence Feed not found");
+
+      setIsLsLoading(false);
+    } catch (error) {
+      console.error("Error:", error);
+
+      if (error.response && error.response.status === 404) {
+        toast.error("threatintelligence Feed Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+
+      setIsLsLoading(false);
+    }
+  }
+
+  // delete threat intelligence feed
+  async function deletethreatintelligenceFeed(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("threatintelligence Feed Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("threatintelligence Feed Not Found");
+      } else {
+        toast.error("Server Error");
+        setIsLsLoading(false);
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
     fetchAllPortals();
+    fetchAllIocs();
     // Add other data fetching functions as needed
   };
 
@@ -402,6 +880,8 @@ export function ContextProvider(props) {
     fetchAllDomains();
     fetchAllIps();
     fetchAllPortals();
+    fetchAllIocs();
+
   }, [adminToken, userToken]);
 
   return (
@@ -424,6 +904,26 @@ export function ContextProvider(props) {
         fetchOnePortal,
         updatePortal,
         deletePortal,
+        addNewIoc,
+        fetchAllIocs,
+        fetchOneIoc,
+        updateIoc,
+        deleteIoc,
+        addNewSuspiciousIps,
+        fetchAllSuspiciousIps,
+        fetchOneSuspiciousIp,
+        updateSuspiciousIp,
+        deleteSuspiciousIp,
+        addNewAptFeeds,
+        fetchAllAptFeeds,
+        fetchOneAptFeed,
+        updateAptFeed,
+        deleteAptFeed,
+        addNewThreatIntelligenceFeeds,
+        fetchAllthreatintelligenceFeeds,
+        fetchOnethreatintelligenceFeed,
+        updatethreatintelligenceFeed,
+        deletethreatintelligenceFeed,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -432,6 +932,14 @@ export function ContextProvider(props) {
         oneDomain,
         portals,
         onePortal,
+        iocs,
+        oneIoc,
+        suspiciousIps,
+        oneSuspiciousIp,
+        aptFeeds,
+        oneAptFeed,
+        threatIntelligenceFeeds,
+        oneThreatIntelligenceFeed,
         isLoading,
         adminToken,
         userToken,
