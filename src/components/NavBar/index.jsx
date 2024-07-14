@@ -32,7 +32,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const isOpen = Boolean(anchorEl);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => {
-    localStorage.removeItem("AdminToken");
+    localStorage.clear();
     navigate("/login");
     setAnchorEl(null);
   };
@@ -78,7 +78,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               src={profileImage}
               height="32px"
               width="100%"
-              sx={{ objectFit: "cover",mr:"2rem" }}
+              sx={{ objectFit: "cover", mr: "2rem" }}
             />
             <Button
               onClick={handleClick}
@@ -94,7 +94,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
                 <Typography
                   fontWeight="bold"
                   fontSize="0.85rem"
-                  sx={{ color: theme.palette.secondary[100]}}
+                  sx={{ color: theme.palette.secondary[100] }}
                 >
                   Log Out
                 </Typography>

@@ -15,6 +15,8 @@ import Home from "./components/Home";
 import IPs from "./components/Assets/IPs";
 import Domains from "./components/Assets/Domains";
 import Portals from "./components/Assets/Portals";
+import AuthRoute from "./components/ProtectedRoute/AuthRoute";
+import PublicRoute from "./components/ProtectedRoute/PublicRoute";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -24,123 +26,38 @@ function App() {
       <ThemeProvider theme={theme}>
         <ContextProvider>
           <CssBaseline />
+          <AuthRoute>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route
+                  path="/"
+                  element={<Navigate to="/dashboard" replace />}
+                />
+                <Route path="/dashboard" element={<Home />} />
+                <Route
+                  path="/admin/actions/assets/ips"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreateIps />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/assets/ips" element={<IPs />} />
+                <Route path="/assets/domains" element={<Domains />} />
+                <Route path="/assets/portals" element={<Portals />} />
+              </Route>
+            </Routes>
+          </AuthRoute>
           <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Home />} />
-              <Route
-                path="/admin/actions/assets/ips"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    <CreateIps />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/assets/ips" element={<IPs />} />
-              <Route path="/assets/domains" element={<Domains />} />
-              <Route path="/assets/portals" element={<Portals />} />
-            </Route>
-
-            {/* <Route
-                path="/customers/:id"
-                element={
-                  <ProtectedRoute>
-                    <CustomerDetailsPage />
-                  </ProtectedRoute>
-                }
-              />
-              
-              <Route
-                path="/technicians/:id"
-                element={
-                  <ProtectedRoute>
-                    <TechnicianDetailsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/availabletechnicians"
-                element={
-                  <ProtectedRoute>
-                    <Availtechnicians />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/availabletechnicians/:id"
-                element={
-                  <ProtectedRoute>
-                    <AvailableTechnicianDetails />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/coupons"
-                element={
-                  <ProtectedRoute>
-                    <Coupons />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/coupons/:id"
-                element={
-                  <ProtectedRoute>
-                    <CouponDetailsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/addCoupons"
-                element={
-                  <ProtectedRoute>
-                    <AddNewCoupon />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/orders"
-                element={
-                  <ProtectedRoute>
-                    <Orders />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/orders/:id"
-                element={
-                  <ProtectedRoute>
-                    <OrderDetailsPage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/configuration"
-                element={
-                  <ProtectedRoute>
-                    <Configuration />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/notifications"
-                element={
-                  <ProtectedRoute>
-                    <NotificationsToAll />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/addtech"
-                element={
-                  <ProtectedRoute>
-                    <AddNewTech />
-                  </ProtectedRoute>
-                }
-              />
-            </Route> */}
-            <Route path="/login" element={<Login />} />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              }
+            />
           </Routes>
         </ContextProvider>
       </ThemeProvider>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+
 export const Context = createContext();
 
 export function ContextProvider(props) {
@@ -10,9 +11,7 @@ export function ContextProvider(props) {
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
-  let adminheaders = {
-    Authorization: `Bearer ${localStorage.getItem("AdminToken")}`,
-  };
+  const [userToken, setUserToken] = useState(localStorage.getItem("UserToken"));
 
   /** ************************** Assets States *******************/
   // Ips
@@ -23,12 +22,18 @@ export function ContextProvider(props) {
   const [domains, setDomains] = useState([]);
   const [oneDomain, setOneDomain] = useState({});
 
-  // poerals
+  // Portals
   const [portals, setPortals] = useState([]);
   const [onePortal, setOnePortal] = useState({});
 
-  function saveAdminToken() {
-    setAdminToken(localStorage.getItem("AdminToken"));
+  function saveAdminToken(token) {
+    localStorage.setItem("AdminToken", token);
+    setAdminToken(token);
+  }
+
+  function saveUserToken(token) {
+    localStorage.setItem("UserToken", token);
+    setUserToken(token);
   }
 
   //   login
@@ -41,18 +46,21 @@ export function ContextProvider(props) {
       );
       console.log(response);
       setIsLsLoading(false);
-      if (response.data.data.role === "admin") {
-        localStorage.setItem("AdminToken", response.data.token);
-      } else {
-        localStorage.setItem("UserToken", response.data.token);
-      }
+
       if (response.status === 200) {
+        const token = response.data.token;
+        const role = response.data.data.role;
+
+        if (role === "admin") {
+          saveAdminToken(token);
+        } else {
+          saveUserToken(token);
+        }
+
         toast.success("Logged in successfully", {
           position: "top-center",
         });
-        if (response.data.data.role === "admin") {
-          navigate("/admin/actions/assets/ips");
-        } else navigate("/dashboard");
+        navigate("/dashboard");
       } else {
         toast.error("Invalid Email Or Password", {
           position: toast.POSITION.TOP_CENTER,
@@ -66,7 +74,13 @@ export function ContextProvider(props) {
 
   /*********************** Assets ******************************/
 
-  // IPs
+  // Helper function to get the appropriate headers
+  const getAuthHeaders = () => {
+    const token = adminToken || userToken;
+    return {
+      Authorization: `Bearer ${token}`,
+    };
+  };
 
   // add  new Ips
   async function addNewIp(values) {
@@ -75,7 +89,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       console.log(response);
       if (response.status === 201) {
@@ -89,16 +103,16 @@ export function ContextProvider(props) {
       setIsLsLoading(false);
     }
   }
+
   // fetch All IPs
   async function fetchAllIps() {
     try {
       setIsLsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/assets/ips`
+        `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
+        { headers: getAuthHeaders() }
       );
-
       setIps(response.data.data);
-
       setIsLsLoading(false);
     } catch (error) {
       setIsLsLoading(false);
@@ -111,7 +125,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setIsLsLoading(false);
       setOneIp(response.data.data);
@@ -122,19 +136,19 @@ export function ContextProvider(props) {
     }
   }
 
-  // update  Customer
+  // update IP
   async function updateIp(id, values) {
     try {
       setIsLsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
 
       response.status === 200
-        ? toast.success("ip updated successfully")
-        : toast.error("ip not found");
+        ? toast.success("Ip updated successfully")
+        : toast.error("Ip not found");
 
       setIsLsLoading(false);
     } catch (error) {
@@ -157,7 +171,7 @@ export function ContextProvider(props) {
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         {
-          headers: { ...adminheaders },
+          headers: getAuthHeaders(),
         }
       );
       setIsLsLoading(false);
@@ -189,7 +203,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -208,7 +222,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setDomains(response.data.data);
       setIsLsLoading(false);
@@ -223,7 +237,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setIsLsLoading(false);
       setOneDomain(response.data.data);
@@ -240,7 +254,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       response.status === 200
         ? toast.success("Domain updated successfully")
@@ -256,7 +270,7 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setIsLsLoading(false);
       if (response.status === 204) {
@@ -277,16 +291,16 @@ export function ContextProvider(props) {
     }
   }
 
-  // Portsals
+  // Portals
 
-  // add  new Portals
+  // add new Portals
   async function addNewPortal(values) {
     try {
       setIsLsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       if (response.status === 200) {
         toast.success(response.data.message);
@@ -299,13 +313,14 @@ export function ContextProvider(props) {
       setIsLsLoading(false);
     }
   }
+
   // fetch All Portals
   async function fetchAllPortals() {
     try {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setPortals(response.data.data);
       setIsLsLoading(false);
@@ -315,13 +330,13 @@ export function ContextProvider(props) {
     }
   }
 
-  //  Fetch One portal
+  // Fetch One portal
   async function fetchOnePortal(id) {
     try {
       setIsLsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setOnePortal(response.data.data);
       setIsLsLoading(false);
@@ -331,18 +346,18 @@ export function ContextProvider(props) {
     }
   }
 
-  // update  One Portal
+  // update One Portal
   async function updatePortal(id, values) {
     try {
       setIsLsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
         values,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       response.status === 200
-        ? toast.success("portal updated successfully")
-        : toast.error("portal not found");
+        ? toast.success("Portal updated successfully")
+        : toast.error("Portal not found");
     } catch (error) {
       console.log(error);
     }
@@ -354,11 +369,11 @@ export function ContextProvider(props) {
       setIsLsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: { ...adminheaders } }
+        { headers: getAuthHeaders() }
       );
       setIsLsLoading(false);
       if (response.status === 204) {
-        toast.success("Domain Deleted successfully");
+        toast.success("Portal Deleted successfully");
       } else if (response.status === "fail") {
         toast.error(response.message);
       } else {
@@ -368,7 +383,7 @@ export function ContextProvider(props) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
         setIsLsLoading(false);
-        toast.error("Domain Not Found");
+        toast.error("Portal Not Found");
       } else {
         toast.error("Server Error");
       }
@@ -379,7 +394,6 @@ export function ContextProvider(props) {
     fetchAllDomains();
     fetchAllIps();
     fetchAllPortals();
-
     // Add other data fetching functions as needed
   };
 
@@ -387,8 +401,7 @@ export function ContextProvider(props) {
     fetchAllDomains();
     fetchAllIps();
     fetchAllPortals();
-    saveAdminToken();
-  }, []);
+  }, [adminToken, userToken]);
 
   return (
     <Context.Provider
@@ -410,6 +423,8 @@ export function ContextProvider(props) {
         fetchOnePortal,
         updatePortal,
         deletePortal,
+        saveAdminToken,
+        saveUserToken,
         ips,
         oneIp,
         domains,
@@ -418,6 +433,7 @@ export function ContextProvider(props) {
         onePortal,
         isLoading,
         adminToken,
+        userToken,
       }}
     >
       {props.children}
