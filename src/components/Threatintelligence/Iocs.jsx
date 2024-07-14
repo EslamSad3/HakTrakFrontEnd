@@ -113,7 +113,7 @@ const Iocs = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header title={"Iocs"} subtitle={"List of Iocs"} />
-      <Typography variant="h4">Number of Iocs: {Iocs?.length}</Typography>
+      <Typography variant="h4">Number of Iocs: {iocs?.length}</Typography>
       <Box
         mt="40px"
         sx={{
