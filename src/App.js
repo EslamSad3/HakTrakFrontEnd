@@ -22,6 +22,10 @@ import CreateDomains from "./Actions/assets/CreateDomains";
 import CreatePortals from "./Actions/assets/CreatePortals";
 import Iocs from "./components/Threatintelligence/Iocs";
 import CreateIocs from "./Actions/ThreatIntelligence/CreateIocs";
+import CreateSuspiciousIps from "./Actions/ThreatIntelligence/CreateSuspiciousIps";
+import SuspiciousIps from "./components/Threatintelligence/SuspiciousIps";
+import CreateAptFeeds from "./Actions/ThreatIntelligence/CreateAptFeeds";
+import AptFeeds from "./components/Threatintelligence/AptFeeds";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -74,8 +78,20 @@ function App() {
                 <Route
                   path="admin/actions/threat-intelligence/iocs"
                   forceRefresh={true}
+                  element={<ProtectedRoute>{<CreateIocs />}</ProtectedRoute>}
+                />
+                <Route
+                  path="admin/actions/threat-intelligence/suspicious-ips"
+                  forceRefresh={true}
                   element={
-                    <ProtectedRoute>{<CreateIocs /> }</ProtectedRoute>
+                    <ProtectedRoute>{<CreateSuspiciousIps />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="admin/actions/threat-intelligence/apt-feeds"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateAptFeeds />}</ProtectedRoute>
                   }
                 />
 
@@ -96,6 +112,14 @@ function App() {
 
                 {/* Threat intelligence Routes */}
                 <Route path="/threat-intelligence/iocs" element={<Iocs />} />
+                <Route
+                  path="/threat-intelligence/suspicious-ips"
+                  element={<SuspiciousIps />}
+                />
+                <Route
+                  path="/threat-intelligence/apt-feeds"
+                  element={<AptFeeds />}
+                />
               </Route>
             </Routes>
           </AuthRoute>

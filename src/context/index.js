@@ -561,6 +561,7 @@ export function ContextProvider(props) {
       );
       setSuspiciousIps(response.data.data);
       setIsLsLoading(false);
+      return suspiciousIps;
     } catch (error) {
       setIsLsLoading(false);
     }
@@ -689,7 +690,6 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       setOneAptFeed(response.data.data);
-      return oneAptFeed;
     } catch (error) {
       setIsLsLoading(false);
       throw error;
@@ -873,6 +873,9 @@ export function ContextProvider(props) {
     fetchAllIps();
     fetchAllPortals();
     fetchAllIocs();
+    fetchAllSuspiciousIps();
+    fetchAllAptFeeds();
+    fetchAllthreatintelligenceFeeds();
     // Add other data fetching functions as needed
   };
 
@@ -881,7 +884,9 @@ export function ContextProvider(props) {
     fetchAllIps();
     fetchAllPortals();
     fetchAllIocs();
-
+    fetchAllSuspiciousIps();
+    fetchAllAptFeeds();
+    fetchAllthreatintelligenceFeeds();
   }, [adminToken, userToken]);
 
   return (

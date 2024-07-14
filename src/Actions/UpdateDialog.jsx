@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   Box,
   Button,
   TextField,
-  Typography,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   MenuItem,
@@ -18,31 +15,53 @@ import {
 } from "@mui/material";
 
 const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
+  console.log(item,"item")
   const formik = useFormik({
     initialValues: {
       value: item?.value || "",
-      location: item?.location || "",
+      source: item?.source || "",
       description: item?.description || "",
+      aptGroupName: item?.aptGroupName || "",
+      threatType: item?.threatType || "",
+      location: item?.location || "",
       iOCType: item?.iOCType || "",
       indicatorValue: item?.indicatorValue || "",
-      threatType: item?.threatType || "",
+      ttps: item?.ttps || "",
+      targetSectors: item?.targetSectors || "",
+      geographicFocus: item?.geographicFocus || "",
+      iocs: item?.iocs || "",
     },
-    // validationSchema: Yup.object({
-    //   value: Yup.string().required("Required"),
-    //   location: Yup.string().required("Required"),
-    //   description: Yup.string().required("Required"),
-    // }),
     onSubmit: (values) => {
       onConfirm(values);
     },
     enableReinitialize: true,
   });
 
+  useEffect(() => {
+    if (item) {
+      formik.setValues({
+        value: item.value || "",
+        source: item.source || "",
+        description: item.description || "",
+        aptGroupName: item.aptGroupName || "",
+        threatType: item.threatType || "",
+        location: item.location || "",
+        iOCType: item.iOCType || "",
+        indicatorValue: item.indicatorValue || "",
+        ttps: item.ttps || "",
+        targetSectors: item.targetSectors || "",
+        geographicFocus: item.geographicFocus || "",
+        iocs: item.iocs || "",
+      });
+    }
+  }, [item]);
+
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Update {item?.value || "item"}</DialogTitle>
       <DialogContent>
         <Box component="form" onSubmit={formik.handleSubmit} p={3}>
+          {/* Common */}
           {item && item?.value && (
             <TextField
               fullWidth
@@ -56,17 +75,16 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
-          {item && item?.location && (
+          {item && item?.source && (
             <TextField
               fullWidth
-              id="location"
-              name="location"
-              label="Location"
-              value={formik.values.location}
+              id="source"
+              name="source"
+              label="Source"
+              value={formik.values.source}
               onChange={formik.handleChange}
-              error={formik.touched.location && Boolean(formik.errors.location)}
-              helperText={formik.touched.location && formik.errors.location}
+              error={formik.touched.source && Boolean(formik.errors.source)}
+              helperText={formik.touched.source && formik.errors.source}
               margin="normal"
             />
           )}
@@ -87,11 +105,25 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
+
+          {/* Unique */}
+          {item && item?.location && (
+            <TextField
+              fullWidth
+              id="location"
+              name="location"
+              label="Location"
+              value={formik.values.location}
+              onChange={formik.handleChange}
+              error={formik.touched.location && Boolean(formik.errors.location)}
+              helperText={formik.touched.location && formik.errors.location}
+              margin="normal"
+            />
+          )}
+
           {item && item?.iOCType && (
             <Box>
               <InputLabel id="iOCType-label">IOC Type</InputLabel>
-              {/* iOCType */}
-
               <Select
                 labelId="iOCType-label"
                 id="iOCType"
@@ -110,7 +142,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               </Select>
               {formik.errors.iOCType && formik.touched.iOCType ? (
                 <Alert severity="error">
-                  <AlertTitle> error </AlertTitle>
+                  <AlertTitle>Error</AlertTitle>
                   {formik.errors.iOCType}
                 </Alert>
               ) : null}
@@ -121,7 +153,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               fullWidth
               id="indicatorValue"
               name="indicatorValue"
-              label="indicatorValue"
+              label="Indicator Value"
               value={formik.values.indicatorValue}
               onChange={formik.handleChange}
               error={
@@ -139,13 +171,93 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               fullWidth
               id="threatType"
               name="threatType"
-              label="threatType"
+              label="Threat Type"
               value={formik.values.threatType}
               onChange={formik.handleChange}
               error={
                 formik.touched.threatType && Boolean(formik.errors.threatType)
               }
               helperText={formik.touched.threatType && formik.errors.threatType}
+              margin="normal"
+            />
+          )}
+          {item && item?.aptGroupName && (
+            <TextField
+              fullWidth
+              id="aptGroupName"
+              name="aptGroupName"
+              label="APT Group Name"
+              value={formik.values.aptGroupName}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.aptGroupName &&
+                Boolean(formik.errors.aptGroupName)
+              }
+              helperText={
+                formik.touched.aptGroupName && formik.errors.aptGroupName
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.ttps && (
+            <TextField
+              fullWidth
+              id="ttps"
+              name="ttps"
+              label="TTPs"
+              value={formik.values.ttps}
+              onChange={formik.handleChange}
+              error={formik.touched.ttps && Boolean(formik.errors.ttps)}
+              helperText={formik.touched.ttps && formik.errors.ttps}
+              margin="normal"
+            />
+          )}
+          {item && item?.targetSectors && (
+            <TextField
+              fullWidth
+              id="targetSectors"
+              name="targetSectors"
+              label="Target Sectors"
+              value={formik.values.targetSectors}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.targetSectors &&
+                Boolean(formik.errors.targetSectors)
+              }
+              helperText={
+                formik.touched.targetSectors && formik.errors.targetSectors
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.geographicFocus && (
+            <TextField
+              fullWidth
+              id="geographicFocus"
+              name="geographicFocus"
+              label="Geographic Focus"
+              value={formik.values.geographicFocus}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.geographicFocus &&
+                Boolean(formik.errors.geographicFocus)
+              }
+              helperText={
+                formik.touched.geographicFocus && formik.errors.geographicFocus
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.iocs && (
+            <TextField
+              fullWidth
+              id="iocs"
+              name="iocs"
+              label="IOCs"
+              value={formik.values.iocs}
+              onChange={formik.handleChange}
+              error={formik.touched.iocs && Boolean(formik.errors.iocs)}
+              helperText={formik.touched.iocs && formik.errors.iocs}
               margin="normal"
             />
           )}
