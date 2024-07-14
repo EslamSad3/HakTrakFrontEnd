@@ -205,8 +205,9 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      if (response.status === 200) {
-        toast.success(response.data.message);
+      console.log(response)
+      if (response.status === 201) {
+        toast.success("Domain Added successfully");
         navigate("/assets/domains");
         setIsLsLoading(false);
       }

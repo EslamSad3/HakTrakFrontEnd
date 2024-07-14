@@ -30,7 +30,6 @@ import {
 } from "@mui/icons-material";
 import profileImage from "../../assets/images/logo.png";
 
-
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
@@ -97,7 +96,6 @@ const SideBar = ({
                     alt="profile"
                     src={profileImage}
                     height="50px"
-
                     sx={{ objectFit: "cover" }}
                   />
                 </Box>
@@ -771,7 +769,7 @@ const SideBar = ({
               {adminToken && (
                 <ListItem disablePadding>
                   <ListItemButton
-                    onClick={() => handleNavigate("/admin/actions/assets/ips")}
+                    onClick={() => handleNavigate("/admin/actions")}
                     sx={{
                       backgroundColor:
                         active === "Actions"

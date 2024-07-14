@@ -17,6 +17,8 @@ import Domains from "./components/Assets/Domains";
 import Portals from "./components/Assets/Portals";
 import AuthRoute from "./components/ProtectedRoute/AuthRoute";
 import PublicRoute from "./components/ProtectedRoute/PublicRoute";
+import AdminAcions from "./Actions";
+import CreateDomains from "./Actions/assets/CreateDomains";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -40,6 +42,24 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <CreateIps />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/assets/domains"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreateDomains />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <AdminAcions />
                     </ProtectedRoute>
                   }
                 />
