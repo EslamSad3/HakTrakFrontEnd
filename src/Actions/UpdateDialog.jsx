@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
-  console.log(item,"item")
+  console.log(item, "item");
   const formik = useFormik({
     initialValues: {
       value: item?.value || "",
@@ -30,6 +30,12 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       targetSectors: item?.targetSectors || "",
       geographicFocus: item?.geographicFocus || "",
       iocs: item?.iocs || "",
+      severity: item?.severity || "",
+      mitigationSteps: item?.mitigationSteps || "",
+      user: item?.user || "",
+      password: item?.password || "",
+      bu: item?.bu || "",
+      leakDate: item?.leakDate || "",
     },
     onSubmit: (values) => {
       onConfirm(values);
@@ -52,6 +58,12 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         targetSectors: item.targetSectors || "",
         geographicFocus: item.geographicFocus || "",
         iocs: item.iocs || "",
+        severity: item.severity || "",
+        mitigationSteps: item.mitigationSteps || "",
+        user: item.user || "",
+        password: item.password || "",
+        bu: item.bu || "",
+        leakDate: item.leakDate || "",
       });
     }
   }, [item]);
@@ -148,6 +160,35 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               ) : null}
             </Box>
           )}
+
+          {item && item?.severity && (
+            <Box>
+              <InputLabel id="severity-label">Severity</InputLabel>
+              <Select
+                labelId="severity-label"
+                id="severity"
+                name="severity"
+                value={formik.values.severity}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                required
+                fullWidth
+                margin="normal"
+              >
+                <MenuItem value="low">Low</MenuItem>
+                <MenuItem value="medium">Medium</MenuItem>
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="critical">Critical</MenuItem>
+              </Select>
+              {formik.errors.severity && formik.touched.severity ? (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {formik.errors.severity}
+                </Alert>
+              ) : null}
+            </Box>
+          )}
+
           {item && item?.indicatorValue && (
             <TextField
               fullWidth
@@ -166,6 +207,26 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
+
+          {item && item?.mitigationSteps && (
+            <TextField
+              fullWidth
+              id="mitigationSteps"
+              name="mitigationSteps"
+              label="Mitigation Steps"
+              value={formik.values.mitigationSteps}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.mitigationSteps &&
+                Boolean(formik.errors.mitigationSteps)
+              }
+              helperText={
+                formik.touched.mitigationSteps && formik.errors.mitigationSteps
+              }
+              margin="normal"
+            />
+          )}
+
           {item && item?.threatType && (
             <TextField
               fullWidth

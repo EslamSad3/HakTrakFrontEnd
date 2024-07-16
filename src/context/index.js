@@ -45,6 +45,13 @@ export function ContextProvider(props) {
     {}
   );
 
+  /********************************** Dark Web Monitring ******************** */
+
+  // Dark Web Mentions
+
+  const [darkWebMentions, setDarkWebMentions] = useState([]);
+  const [oneDarkWebMention, setOneDarkWebMention] = useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -63,7 +70,7 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
         values
       );
-      console.log(response);
+
       setIsLsLoading(false);
 
       if (response.status === 200) {
@@ -110,7 +117,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Ip Added Successfully");
         navigate("/assets/ips");
@@ -224,7 +231,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Domain Added successfully");
         navigate("/assets/domains");
@@ -422,7 +429,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Ioc Added Successfully");
         navigate("/threat-intelligence/iocs");
@@ -443,7 +450,7 @@ export function ContextProvider(props) {
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       setIocs(response.data.data);
       setIsLsLoading(false);
       return iocs;
@@ -538,7 +545,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Suspicious ip Added Successfully");
         navigate("/threat-intelligence/suspicious-ips");
@@ -652,7 +659,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Apt Feed Added Successfully");
         navigate("/threat-intelligence/apt-feeds");
@@ -680,7 +687,7 @@ export function ContextProvider(props) {
     }
   }
 
-  // fetch One IOC
+  // fetch One APT Feed
   async function fetchOneAptFeed(id) {
     try {
       setIsLsLoading(true);
@@ -690,6 +697,7 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       setOneAptFeed(response.data.data);
+      return oneAptFeed;
     } catch (error) {
       setIsLsLoading(false);
       throw error;
@@ -765,7 +773,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
-      console.log(response);
+
       if (response.status === 201) {
         toast.success("Threat intelligence Feed Added Successfully");
         navigate("/threat-intelligence/threat-intelligence-feeds");
@@ -868,6 +876,107 @@ export function ContextProvider(props) {
     }
   }
 
+  /**************************************** Dark Web Monitoring ***************************************** */
+
+  //  Dark Web Mentions
+
+  // add new Dark Web Mentions
+  async function addNewDarkWebMentions(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Dark Web Mention Created Successfully");
+        navigate("/dark-web-monitoring/dark-web-mentions");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All DarkWebMentions
+  async function fetchAllDarkWebMentions() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
+        { headers: getAuthHeaders() }
+      );
+      setDarkWebMentions(response.data.data);
+      setIsLsLoading(false);
+      return darkWebMentions;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // Fetch One DarkWebMention
+  async function fetchOneDarkWebMention(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneDarkWebMention(response.data.data);
+      setIsLsLoading(false);
+      return oneDarkWebMention;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // update One DarkWebMention
+  async function updateDarkWebMention(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      response.status === 200
+        ? toast.success("Dark Web Mention updated successfully")
+        : toast.error("Dark Web Mention not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Delete One DarkWebMention
+  async function deleteDarkWebMention(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Dark Web Mention Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Dark Web Mention Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -876,6 +985,7 @@ export function ContextProvider(props) {
     fetchAllSuspiciousIps();
     fetchAllAptFeeds();
     fetchAllthreatintelligenceFeeds();
+    fetchAllDarkWebMentions();
     // Add other data fetching functions as needed
   };
 
@@ -887,6 +997,7 @@ export function ContextProvider(props) {
     fetchAllSuspiciousIps();
     fetchAllAptFeeds();
     fetchAllthreatintelligenceFeeds();
+    fetchAllDarkWebMentions();
   }, [adminToken, userToken]);
 
   return (
@@ -929,6 +1040,11 @@ export function ContextProvider(props) {
         fetchOnethreatintelligenceFeed,
         updatethreatintelligenceFeed,
         deletethreatintelligenceFeed,
+        addNewDarkWebMentions,
+        fetchAllDarkWebMentions,
+        fetchOneDarkWebMention,
+        updateDarkWebMention,
+        deleteDarkWebMention,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -945,6 +1061,8 @@ export function ContextProvider(props) {
         oneAptFeed,
         threatIntelligenceFeeds,
         oneThreatIntelligenceFeed,
+        darkWebMentions,
+        oneDarkWebMention,
         isLoading,
         adminToken,
         userToken,

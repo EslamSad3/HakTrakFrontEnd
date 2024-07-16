@@ -6,23 +6,22 @@ import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
 
-const SuspiciousIps = () => {
+const ThreatIntelligenceFeeds = () => {
   const {
-    suspiciousIps,
+    threatIntelligenceFeeds,
     isLoading,
-    deleteSuspiciousIp,
+    deletethreatintelligenceFeed,
     adminToken,
     refreshData,
-    fetchOneSuspiciousIp,
-    updateSuspiciousIp,
+    fetchOnethreatintelligenceFeed,
+    updatethreatintelligenceFeed,
   } = useContext(Context);
   const theme = useTheme();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedIp, setSelectedIp] = useState(null);
-  console.log(suspiciousIps, "suspiciousIps");
+  const [selectedthreatIntelligenceFeeds, setSelectedthreatIntelligenceFeeds] = useState({});
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -35,24 +34,24 @@ const SuspiciousIps = () => {
   };
 
   const handleConfirmDelete = async (id) => {
-    await deleteSuspiciousIp(id);
+    await deletethreatintelligenceFeed(id);
     refreshData();
     handleCloseDelete();
   };
 
   const handleClickOpenUpdate = async (id) => {
-    const ip = await fetchOneSuspiciousIp(id);
-    setSelectedIp(ip);
+    const threatIntelligenceFeeds = await fetchOnethreatintelligenceFeed(id);
+    setSelectedthreatIntelligenceFeeds(threatIntelligenceFeeds);
     setOpenUpdate(true);
   };
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
-    setSelectedIp(null);
+    setSelectedthreatIntelligenceFeeds(null);
   };
 
-  const handleupdateSuspiciousIp = async (values) => {
-    await updateSuspiciousIp(selectedIp._id, values);
+  const handleupdatethreatintelligenceFeed = async (values) => {
+    await updatethreatintelligenceFeed(selectedthreatIntelligenceFeeds._id, values);
     refreshData();
     handleCloseUpdate();
   };
@@ -70,9 +69,10 @@ const SuspiciousIps = () => {
         return params.api.getRowIndex(params.id) + 1;
       },
     },
-    { field: "value", headerName: "Value", width: 150 },
+    { field: "threatType", headerName: "Threat Type", width: 150 },
+    { field: "severity", headerName: "Severity", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
-    { field: "description", headerName: "Description", width: 300 },
+    { field: "description", headerName: "description", width: 300 },
     adminToken
       ? {
           field: "delete",
@@ -98,7 +98,7 @@ const SuspiciousIps = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.id)}
             >
               Update
             </Button>
@@ -109,9 +109,9 @@ const SuspiciousIps = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"IPS"} subtitle={"List of IPS"} />
+      <Header title={"threatIntelligenceFeeds"} subtitle={"List of threatIntelligenceFeeds"} />
       <Typography variant="h4">
-        Number of Suspicious Ips: {suspiciousIps?.length}
+        Number of threatIntelligenceFeeds: {threatIntelligenceFeeds?.length}
       </Typography>
       <Box
         mt="40px"
@@ -142,8 +142,8 @@ const SuspiciousIps = () => {
         }}
       >
         <DataGrid
-          rows={suspiciousIps || []}
-          loading={isLoading || !suspiciousIps}
+          rows={threatIntelligenceFeeds || []}
+          loading={isLoading || !threatIntelligenceFeeds}
           getRowId={(row) => row?._id}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
@@ -160,11 +160,11 @@ const SuspiciousIps = () => {
       <UpdateDialog
         open={openUpdate}
         onClose={handleCloseUpdate}
-        item={selectedIp}
-        onConfirm={handleupdateSuspiciousIp}
+        item={selectedthreatIntelligenceFeeds}
+        onConfirm={handleupdatethreatintelligenceFeed}
       />
     </Box>
   );
 };
 
-export default SuspiciousIps;
+export default ThreatIntelligenceFeeds;

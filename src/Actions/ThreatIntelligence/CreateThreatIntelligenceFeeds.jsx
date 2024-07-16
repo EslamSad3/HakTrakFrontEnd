@@ -16,31 +16,35 @@ import {
 import Header from "../../components/Header";
 import * as Yup from "yup";
 
-function CreateIocs() {
-  const { addNewIoc, isLoading } = useContext(Context);
+function CreateThreatIntelligenceFeeds() {
+  const { addNewThreatIntelligenceFeeds, isLoading } = useContext(Context);
 
   const validationSchema = Yup.object().shape({
-    iOCType: Yup.string().required("iOC Type Required"),
-    indicatorValue: Yup.string().required("indicator Value Required"),
-    threatType: Yup.string().required("threat Type Required"),
-    source: Yup.string().required("source Type Required"),
-    description: Yup.string().required("description Type Required"),
+    threatType: Yup.string().required(
+      "Threat Intelligence Feed threat Type Required"
+    ),
+    severity: Yup.string().required(
+      "Threat Intelligence Feed severity Required"
+    ),
+    source: Yup.string().required("Threat Intelligence Feed source Required"),
+    description: Yup.string().required(
+      "Threat Intelligence Feed  description Required"
+    ),
   });
 
-  async function hanldeAddNewIoc(values) {
-    await addNewIoc(values);
+  async function hanldeaddNewThreatIntelligenceFeeds(values) {
+    await addNewThreatIntelligenceFeeds(values);
   }
 
   let formik = useFormik({
     initialValues: {
-      iOCType: "",
-      indicatorValue: "",
+      severity: "",
       threatType: "",
       source: "",
       description: "",
     },
     validationSchema,
-    onSubmit: hanldeAddNewIoc,
+    onSubmit: hanldeaddNewThreatIntelligenceFeeds,
   });
 
   return (
@@ -52,32 +56,32 @@ function CreateIocs() {
         alignItems: "center",
       }}
     >
-      <Header title={"Add New Ioc"}></Header>
+      <Header title={"Add New Threat Intelligence Feed"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
-          <InputLabel id="iOCType-label">IOC Type</InputLabel>
-          {/* iOCType */}
+          <InputLabel id="severity-label">severity</InputLabel>
+          {/* Threat Intelligence Feed severity */}
 
           <Select
-            labelId="iOCType-label"
-            id="iOCType"
-            name="iOCType"
-            value={formik.values.iOCType}
+            labelId="severity-label"
+            id="severity"
+            name="severity"
+            value={formik.values.severity}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             required
             fullWidth
             // margin="normal"
           >
-            <MenuItem value="hash">hash</MenuItem>
-            <MenuItem value="ip">ip</MenuItem>
-            <MenuItem value="domain">domain</MenuItem>
-            <MenuItem value="url">url</MenuItem>
+            <MenuItem value="low">Low</MenuItem>
+            <MenuItem value="medium">Medium</MenuItem>
+            <MenuItem value="high">High</MenuItem>
+            <MenuItem value="critical">Critical</MenuItem>
           </Select>
-          {formik.errors.iOCType && formik.touched.iOCType ? (
+          {formik.errors.severity && formik.touched.severity ? (
             <Alert severity="error">
               <AlertTitle> error </AlertTitle>
-              {formik.errors.iOCType}
+              {formik.errors.severity}
             </Alert>
           ) : null}
 
@@ -202,4 +206,4 @@ function CreateIocs() {
   );
 }
 
-export default CreateIocs;
+export default CreateThreatIntelligenceFeeds;

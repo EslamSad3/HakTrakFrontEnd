@@ -26,6 +26,10 @@ import CreateSuspiciousIps from "./Actions/ThreatIntelligence/CreateSuspiciousIp
 import SuspiciousIps from "./components/Threatintelligence/SuspiciousIps";
 import CreateAptFeeds from "./Actions/ThreatIntelligence/CreateAptFeeds";
 import AptFeeds from "./components/Threatintelligence/AptFeeds";
+import ThreatIntelligenceFeeds from "./components/Threatintelligence/ThreatIntelligenceFeeds";
+import CreateThreatIntelligenceFeeds from "./Actions/ThreatIntelligence/CreateThreatIntelligenceFeeds";
+import CreateDarkWebMentions from "./Actions/Dark Web Monitoring/CreateDarkWebMentions";
+import DarkWebMentions from "./components/Dark Web Monitoring/DarkWebMentions";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -76,22 +80,38 @@ function App() {
                 {/* Threat intelligence Actions Routes */}
 
                 <Route
-                  path="admin/actions/threat-intelligence/iocs"
+                  path="/admin/actions/threat-intelligence/iocs"
                   forceRefresh={true}
                   element={<ProtectedRoute>{<CreateIocs />}</ProtectedRoute>}
                 />
                 <Route
-                  path="admin/actions/threat-intelligence/suspicious-ips"
+                  path="/admin/actions/threat-intelligence/suspicious-ips"
                   forceRefresh={true}
                   element={
                     <ProtectedRoute>{<CreateSuspiciousIps />}</ProtectedRoute>
                   }
                 />
                 <Route
-                  path="admin/actions/threat-intelligence/apt-feeds"
+                  path="/admin/actions/threat-intelligence/apt-feeds"
                   forceRefresh={true}
                   element={
                     <ProtectedRoute>{<CreateAptFeeds />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/threat-intelligence/threat-intelligence-feeds"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateThreatIntelligenceFeeds />}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/dark-web-monitoring/dark-web-mentions"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateDarkWebMentions />}</ProtectedRoute>
                   }
                 />
 
@@ -119,6 +139,16 @@ function App() {
                 <Route
                   path="/threat-intelligence/apt-feeds"
                   element={<AptFeeds />}
+                />
+                <Route
+                  path="/threat-intelligence/threat-intelligence-feeds"
+                  element={<ThreatIntelligenceFeeds />}
+                />
+
+                {/* Dark Web Montring routes */}
+                <Route
+                  path="/dark-web-monitoring/dark-web-mentions"
+                  element={<DarkWebMentions />}
                 />
               </Route>
             </Routes>

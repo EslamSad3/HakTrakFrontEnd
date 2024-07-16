@@ -24,9 +24,18 @@ import {
   ReportProblem,
   Info,
   Warning,
+  ChevronRightOutlined,
 } from "@mui/icons-material";
 
+
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import PinchIcon from "@mui/icons-material/Pinch";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 
 import { useNavigate } from "react-router-dom";
 import { Context } from "../context";
@@ -35,7 +44,6 @@ function AdminActions() {
   const [active, setActive] = useState("");
   const { isLoading } = useContext(Context);
 
-  const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -342,6 +350,357 @@ function AdminActions() {
                 </List>
               </AccordionDetails>
             </Accordion>
+            <br />
+
+            {/* Dark Web Monitoring */}
+            <Accordion
+              sx={{
+                backgroundColor: theme.palette.background.alt,
+                color: theme.palette.secondary[100],
+                "&.Mui-expanded": {
+                  backgroundColor: theme.palette.background.alt,
+                },
+                "& .MuiAccordionSummary-root": {
+                  padding: "0 2rem",
+                },
+                "& .MuiAccordionDetails-root": {
+                  padding: 0,
+                },
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <ListItemIcon
+                  sx={{
+                    color: theme.palette.secondary[200],
+                    ml: "1rem",
+                  }}
+                >
+                  <TravelExploreIcon />
+                </ListItemIcon>
+                <Typography>Dark Web Monitoring</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate(
+                          "/admin/actions/dark-web-monitoring/dark-web-mentions"
+                        )
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "dark-web-monitoring/dark-web-mentions"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "dark-web-monitoring/dark-web-mentions"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "dark-web-monitoring/dark-web-mentions"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <Policy />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Dark Web Mentions"
+                        sx={{ pl: 2 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate(
+                          "/admin/actions/dark-web-monitoring/leaked-credentials"
+                        )
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "dark-web-monitoring/leaked-credentials"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "dark-web-monitoring/leaked-credentials"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "dark-web-monitoring/leaked-credentials"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <ReportProblem />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="leaked Credentials"
+                        sx={{ pl: 2 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
+
+            <br />
+
+            {/* Detections */}
+            <Accordion
+              sx={{
+                backgroundColor: theme.palette.background.alt,
+                color: theme.palette.secondary[100],
+                "&.Mui-expanded": {
+                  backgroundColor: theme.palette.background.alt,
+                },
+                "& .MuiAccordionSummary-root": {
+                  padding: "0 2rem",
+                },
+                "& .MuiAccordionDetails-root": {
+                  padding: 0,
+                },
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMore />}>
+                <ListItemIcon
+                  sx={{
+                    color: theme.palette.secondary[200],
+                    ml: "1rem",
+                  }}
+                >
+                  <PinchIcon />
+                </ListItemIcon>
+                <Typography>Detections</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate("/detections/drxdr-detections")
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "detections/drxdr-detections"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "detections/drxdr-detections"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "detections/drxdr-detections"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <Policy />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="EDRXDR Detections"
+                        sx={{ pl: 2 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate("/detections/ndr-detections")
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "detections/ndr-detections"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "detections/ndr-detections"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "detections/ndr-detections"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <ReportProblem />
+                      </ListItemIcon>
+                      <ListItemText primary="NDR Detections" sx={{ pl: 2 }} />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
+            <br />
+
+            {/* Account Take Over */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigate("/account-take-over")}
+                sx={{
+                  backgroundColor:
+                    active === "account-take-over"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "account-take-over"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "account-take-over"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <BorderColorOutlinedIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Account take over"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "account-take-over" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
+
+            {/* Attack Surface */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigate("/attack-surface")}
+                sx={{
+                  backgroundColor:
+                    active === "Attack Surface"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "Attack Surface"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "Attack Surface"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <LocalOfferIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Attack Surface"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "Attack Surface" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
+
+            {/* Brand Reputation */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigate("/brand-reputation")}
+                sx={{
+                  backgroundColor:
+                    active === "Brand Reputation"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "Brand Reputation"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "Brand Reputation"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <BrandingWatermarkIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Brand Reputation"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "Brand Reputation" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
+
+            {/* Vulnerabilities Intelligences */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleNavigate("/vulnerabilities-intelligences")}
+                sx={{
+                  backgroundColor:
+                    active === "Vulnerabilities Intelligences"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "Vulnerabilities Intelligences"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "Vulnerabilities Intelligences"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <BugReportIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Vulnerabilities Intelligences"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "Vulnerabilities Intelligences" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
           </Box>
         ) : (
           <>Loading...</>
