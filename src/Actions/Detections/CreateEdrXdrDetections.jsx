@@ -70,6 +70,69 @@ function CreateEdrXdrDetections() {
       <Header title={"Add New EDR XDR"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
+          {/* severity */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <InputLabel id="severity-label">severity</InputLabel>
+            <Select
+              labelId="severity-label"
+              id="severity"
+              name="severity"
+              value={formik.values.severity}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              required
+              fullWidth
+              // margin="normal"
+            >
+              <MenuItem value="low">Low</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="high">High</MenuItem>
+              <MenuItem value="critical">Critical</MenuItem>
+            </Select>
+          </Box>
+          {formik.errors.severity && formik.touched.severity ? (
+            <Alert severity="error">
+              <AlertTitle> error </AlertTitle>
+              {formik.errors.severity}
+            </Alert>
+          ) : null}
+
+          
+
+          {/* Alert ID */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              value={formik.values.alertID}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              type="text"
+              name="alertID"
+              id="alertID"
+              label="alertID"
+              margin="normal"
+              required
+              fullWidth
+            />
+          </Box>
+          {formik.errors.alertID && formik.touched.alertID ? (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {formik.errors.alertID}
+            </Alert>
+          ) : null}
+          
           {/* detection Time */}
           <Box
             sx={{
@@ -101,60 +164,6 @@ function CreateEdrXdrDetections() {
             <Alert severity="error">
               <AlertTitle>Error</AlertTitle>
               {formik.errors.detectionTime}
-            </Alert>
-          ) : null}
-
-          
-          {/* Alert ID */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              value={formik.values.alertID}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              type="text"
-              name="alertID"
-              id="alertID"
-              label="alertID"
-              margin="normal"
-              required
-              fullWidth
-            />
-          </Box>
-          {formik.errors.alertID && formik.touched.alertID ? (
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              {formik.errors.alertID}
-            </Alert>
-          ) : null}
-
-          {/* Threat Intelligence Feed severity */}
-          <InputLabel id="severity-label">severity</InputLabel>
-          <Select
-            labelId="severity-label"
-            id="severity"
-            name="severity"
-            value={formik.values.severity}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            required
-            fullWidth
-            // margin="normal"
-          >
-            <MenuItem value="low">Low</MenuItem>
-            <MenuItem value="medium">Medium</MenuItem>
-            <MenuItem value="high">High</MenuItem>
-            <MenuItem value="critical">Critical</MenuItem>
-          </Select>
-          {formik.errors.severity && formik.touched.severity ? (
-            <Alert severity="error">
-              <AlertTitle> error </AlertTitle>
-              {formik.errors.severity}
             </Alert>
           ) : null}
           {/* Threat Type */}
