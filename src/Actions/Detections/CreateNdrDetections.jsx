@@ -21,7 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import Header from "../../components/Header";
 import * as Yup from "yup";
 
-function CreateEdrXdrDetections() {
+function CreateNdrDetections() {
   const { addNewEdrXdr, isLoading } = useContext(Context);
 
   const validationSchema = Yup.object().shape({
@@ -30,10 +30,12 @@ function CreateEdrXdrDetections() {
     threatType: Yup.string().required("Threat Type Required"),
     severity: Yup.string().required("Severity Required"),
     bu: Yup.string().required("Bu Required"),
-    device: Yup.string().required("Device Required"),
-    user: Yup.string().required("User Required"),
-    filePath: Yup.string().required("File Path Required"),
+    sourceIP: Yup.string().required("source IP Required"),
+    sourcePort: Yup.string().required("source Port Required"),
+    destinationIP: Yup.string().required("Destination IP Required"),
+    destinationPort: Yup.string().required("Destination Port Required"),
     actionTaken: Yup.string().required("Action Taken Required"),
+    description: Yup.string().required("description Required"),
     mitigationSteps: Yup.string().required("Mitigation Steps Required"),
   });
 
@@ -48,9 +50,11 @@ function CreateEdrXdrDetections() {
       threatType: "",
       severity: "",
       bu: "",
-      device: "",
-      user: "",
-      filePath: "",
+      sourceIP: "",
+      sourcePort: "",
+      destinationIP: "",
+      destinationPort: "",
+      description: "",
       actionTaken: "",
       mitigationSteps: "",
     },
@@ -67,7 +71,7 @@ function CreateEdrXdrDetections() {
         alignItems: "center",
       }}
     >
-      <Header title={"Add New EDR XDR"}></Header>
+      <Header title={"Add New NDR"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* severity */}
@@ -90,10 +94,10 @@ function CreateEdrXdrDetections() {
               fullWidth
               // margin="normal"
             >
-              <MenuItem value="low">Low</MenuItem>
-              <MenuItem value="medium">Medium</MenuItem>
-              <MenuItem value="high">High</MenuItem>
-              <MenuItem value="critical">Critical</MenuItem>
+              <MenuItem value="Low">Low</MenuItem>
+              <MenuItem value="Medium">Medium</MenuItem>
+              <MenuItem value="High">High</MenuItem>
+              <MenuItem value="Critical">Critical</MenuItem>
             </Select>
           </Box>
           {formik.errors.severity && formik.touched.severity ? (
@@ -218,7 +222,7 @@ function CreateEdrXdrDetections() {
               {formik.errors.bu}
             </Alert>
           ) : null}
-          {/* device */}
+          {/* sourceIP */}
           <Box
             sx={{
               display: "flex",
@@ -227,70 +231,92 @@ function CreateEdrXdrDetections() {
             }}
           >
             <TextField
-              value={formik.values.device}
+              value={formik.values.sourceIP}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               type="text"
-              name="device"
-              id="device"
-              label="device"
+              name="sourceIP"
+              id="sourceIP"
+              label="sourceIP"
               margin="normal"
               required
               fullWidth
             />
           </Box>
-          {formik.errors.device && formik.touched.device ? (
+          {formik.errors.sourceIP && formik.touched.sourceIP ? (
             <Alert severity="error">
               <AlertTitle>Error</AlertTitle>
-              {formik.errors.device}
+              {formik.errors.sourceIP}
             </Alert>
           ) : null}
-          {/* user */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              value={formik.values.user}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              type="text"
-              name="user"
-              id="user"
-              label="user"
-              margin="normal"
-              required
-              fullWidth
-            />
-          </Box>
-          {formik.errors.user && formik.touched.user ? (
-            <Alert severity="error">
-              <AlertTitle>Error</AlertTitle>
-              {formik.errors.user}
-            </Alert>
-          ) : null}
-          {/* filePath */}
+
+          {/* sourcePort */}
           <TextField
-            value={formik.values.filePath}
+            value={formik.values.sourcePort}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             type="text"
-            name="filePath"
-            id="filePath"
+            name="sourcePort"
+            id="sourcePort"
             margin="normal"
             required
             fullWidth
-            label={"filePath"}
+            label={"sourcePort"}
           />
-          {formik.errors.filePath && formik.touched.filePath ? (
+          {formik.errors.sourcePort && formik.touched.sourcePort ? (
             <Alert severity="error">
               <AlertTitle> Error </AlertTitle>
-              {formik.errors.filePath}
+              {formik.errors.sourcePort}
             </Alert>
           ) : null}
+          {/* Destination IP */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              value={formik.values.destinationIP}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              type="text"
+              name="destinationIP"
+              id="destinationIP"
+              label="destinationIP"
+              margin="normal"
+              required
+              fullWidth
+            />
+          </Box>
+          {formik.errors.destinationIP && formik.touched.destinationIP ? (
+            <Alert severity="error">
+              <AlertTitle>Error</AlertTitle>
+              {formik.errors.destinationIP}
+            </Alert>
+          ) : null}
+
+          {/* Destination Port */}
+          <TextField
+            value={formik.values.destinationPort}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+            name="destinationPort"
+            id="destinationPort"
+            margin="normal"
+            required
+            fullWidth
+            label={"destinationPort"}
+          />
+          {formik.errors.destinationPort && formik.touched.destinationPort ? (
+            <Alert severity="error">
+              <AlertTitle> Error </AlertTitle>
+              {formik.errors.destinationPort}
+            </Alert>
+          ) : null}
+
           {/* Action Taken */}
           <TextField
             value={formik.values.actionTaken}
@@ -310,6 +336,27 @@ function CreateEdrXdrDetections() {
               {formik.errors.actionTaken}
             </Alert>
           ) : null}
+
+          {/* Description */}
+          <TextField
+            value={formik.values.description}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+            name="description"
+            id="description"
+            margin="normal"
+            required
+            fullWidth
+            label={"description"}
+          />
+          {formik.errors.description && formik.touched.description ? (
+            <Alert severity="error">
+              <AlertTitle> Error </AlertTitle>
+              {formik.errors.description}
+            </Alert>
+          ) : null}
+
           {/* Mitigation Steps */}
           <TextField
             value={formik.values.mitigationSteps}
@@ -343,4 +390,4 @@ function CreateEdrXdrDetections() {
   );
 }
 
-export default CreateEdrXdrDetections;
+export default CreateNdrDetections;

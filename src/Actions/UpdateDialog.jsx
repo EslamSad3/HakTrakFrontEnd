@@ -44,6 +44,10 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       alertID: item?.alertID || "",
       device: item?.device || "",
       filePath: item?.filePath || "",
+      destinationIP: item?.destinationIP || "",
+      destinationPort: item?.destinationPort || "",
+      sourceIP: item?.sourceIP || "",
+      sourcePort: item?.sourcePort || "",
       actionTaken: item?.actionTaken || "",
       leakDate: item?.leakDate ? dayjs(item.leakDate) : null,
       detectionTime: item?.detectionTime ? dayjs(item.detectionTime) : null,
@@ -74,10 +78,14 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         user: item.user || "",
         password: item.password || "",
         bu: item.bu || "",
-        alertID: item?.alertID || "",
-        device: item?.device || "",
-        filePath: item?.filePath || "",
-        actionTaken: item?.actionTaken || "",
+        alertID: item.alertID || "",
+        device: item.device || "",
+        filePath: item.filePath || "",
+        destinationIP: item.destinationIP || "",
+        destinationPort: item.destinationPort || "",
+        sourceIP: item.sourceIP || "",
+        sourcePort: item.sourcePort || "",
+        actionTaken: item.actionTaken || "",
         leakDate: item.leakDate ? dayjs(item.leakDate) : null,
         detectionTime: item.detectionTime ? dayjs(item.detectionTime) : null,
       });
@@ -475,6 +483,73 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
                 )}
               />
             </LocalizationProvider>
+          )}
+
+          {item && item?.sourceIP && (
+            <TextField
+              fullWidth
+              id="sourceIP"
+              name="sourceIP"
+              label="sourceIP"
+              value={formik.values.sourceIP}
+              onChange={formik.handleChange}
+              error={formik.touched.sourceIP && Boolean(formik.errors.sourceIP)}
+              helperText={formik.touched.sourceIP && formik.errors.sourceIP}
+              margin="normal"
+            />
+          )}
+
+          {item && item?.sourcePort && (
+            <TextField
+              fullWidth
+              id="sourcePort"
+              name="sourcePort"
+              label="sourcePort"
+              value={formik.values.sourcePort}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.sourcePort && Boolean(formik.errors.sourcePort)
+              }
+              helperText={formik.touched.sourcePort && formik.errors.sourcePort}
+              margin="normal"
+            />
+          )}
+
+          {item && item?.destinationIP && (
+            <TextField
+              fullWidth
+              id="destinationIP"
+              name="destinationIP"
+              label="destinationIP"
+              value={formik.values.destinationIP}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.destinationIP &&
+                Boolean(formik.errors.destinationIP)
+              }
+              helperText={
+                formik.touched.destinationIP && formik.errors.destinationIP
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.destinationPort && (
+            <TextField
+              fullWidth
+              id="destinationPort"
+              name="destinationPort"
+              label="destinationPort"
+              value={formik.values.destinationPort}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.destinationPort &&
+                Boolean(formik.errors.destinationPort)
+              }
+              helperText={
+                formik.touched.destinationPort && formik.errors.destinationPort
+              }
+              margin="normal"
+            />
           )}
 
           <Box mt={2}>

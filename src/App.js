@@ -34,6 +34,8 @@ import LeakedCredentials from "./components/Dark Web Monitoring/LeakedCredential
 import CreateLeakedCredentials from "./Actions/Dark Web Monitoring/CreateLeakedCredentials";
 import EdrXdr from "./components/Detections/EdrXdr";
 import CreateEdrXdrDetections from "./Actions/Detections/CreateEdrXdrDetections";
+import CreateNdrDetections from "./Actions/Detections/CreateNdrDetections";
+import Ndr from "./components/Detections/NDR";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -136,6 +138,13 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/actions/detections/ndr-detections"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateNdrDetections />}</ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/admin/actions"
@@ -181,6 +190,7 @@ function App() {
                   path="/detections/drxdr-detections"
                   element={<EdrXdr />}
                 />
+                <Route path="/detections/ndr-detections" element={<Ndr />} />
               </Route>
             </Routes>
           </AuthRoute>

@@ -60,6 +60,10 @@ export function ContextProvider(props) {
   const [edrXdrs, setEdrXdr] = useState([]);
   const [oneEdrXDR, setOneEdrXDR] = useState({});
 
+  // NDR
+  const [ndrs, setNdr] = useState([]);
+  const [oneNdr, setOneNdr] = useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -1148,6 +1152,7 @@ export function ContextProvider(props) {
         values,
         { headers: getAuthHeaders() }
       );
+      console.log(response);
       response.status === 200
         ? toast.success("EDR XDR updated successfully")
         : toast.error("EDR XDR not found");
@@ -1183,6 +1188,106 @@ export function ContextProvider(props) {
     }
   }
 
+  //  NDR
+
+  // add new NDR
+  async function addNewNdr(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("NDR Created Successfully");
+        navigate("/detections/ndr-detections");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All Ndr
+  async function fetchAllNdr() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
+        { headers: getAuthHeaders() }
+      );
+      setNdr(response.data.data);
+      setIsLsLoading(false);
+      return ndrs;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // Fetch One Ndr
+  async function fetchOneNdr(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneNdr(response.data.data);
+      setIsLsLoading(false);
+      return oneNdr;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // update One Ndr
+  async function updateNdr(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      response.status === 200
+        ? toast.success("NDR updated successfully")
+        : toast.error("NDR not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Delete One Ndr
+  async function deleteNdr(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("NDR Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("NDR Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1194,6 +1299,7 @@ export function ContextProvider(props) {
     fetchAllDarkWebMentions();
     fetchAllLeakedCredentials();
     fetchAllEdrXdr();
+    fetchAllNdr();
   };
 
   useEffect(() => {
@@ -1207,6 +1313,7 @@ export function ContextProvider(props) {
     fetchAllDarkWebMentions();
     fetchAllLeakedCredentials();
     fetchAllEdrXdr();
+    fetchAllNdr();
   }, [adminToken, userToken]);
 
   return (
@@ -1264,6 +1371,11 @@ export function ContextProvider(props) {
         fetchOneEdrXdr,
         updateEdrXdr,
         deleteEdrXdr,
+        addNewNdr,
+        fetchAllNdr,
+        fetchOneNdr,
+        updateNdr,
+        deleteNdr,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1286,6 +1398,8 @@ export function ContextProvider(props) {
         oneLeakedCredential,
         edrXdrs,
         oneEdrXDR,
+        ndrs,
+        oneNdr,
         isLoading,
         adminToken,
         userToken,
