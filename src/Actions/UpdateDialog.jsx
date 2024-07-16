@@ -14,8 +14,14 @@ import {
   AlertTitle,
 } from "@mui/material";
 
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+
 const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
   console.log(item, "item");
+
   const formik = useFormik({
     initialValues: {
       value: item?.value || "",
@@ -35,7 +41,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       user: item?.user || "",
       password: item?.password || "",
       bu: item?.bu || "",
-      leakDate: item?.leakDate || "",
+      leakDate: item?.leakDate ? dayjs(item.leakDate) : null,
     },
     onSubmit: (values) => {
       onConfirm(values);
@@ -63,7 +69,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         user: item.user || "",
         password: item.password || "",
         bu: item.bu || "",
-        leakDate: item.leakDate || "",
+        leakDate: item.leakDate ? dayjs(item.leakDate) : null,
       });
     }
   }, [item]);
@@ -365,19 +371,23 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
 
           {/* Date */}
           {item && item?.leakDate && (
-            <TextField
-              fullWidth
-              id="leakDate"
-              name="leakDate"
-              label="leakDate"
-              value={formik.values.leakDate}
-              onChange={formik.handleChange}
-              error={formik.touched.leakDate && Boolean(formik.errors.leakDate)}
-              helperText={formik.touched.leakDate && formik.errors.leakDate}
-              margin="normal"
-            />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Leak Date"
+                value={formik.values.leakDate}
+                onChange={(value) => formik.setFieldValue("leakDate", value)}
+                onBlur={formik.handleBlur}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="leakDate"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
+            </LocalizationProvider>
           )}
-
           <Box mt={2}>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Update

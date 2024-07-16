@@ -993,7 +993,7 @@ export function ContextProvider(props) {
         { headers: getAuthHeaders() }
       );
       if (response.status === 201) {
-        toast.success("Dark Web Mention Created Successfully");
+        toast.success("Leaked Credentials Created Successfully");
         navigate("/dark-web-monitoring/leaked-credentials");
         setIsLsLoading(false);
       }
@@ -1046,8 +1046,8 @@ export function ContextProvider(props) {
         { headers: getAuthHeaders() }
       );
       response.status === 200
-        ? toast.success("Dark Web Mention updated successfully")
-        : toast.error("Dark Web Mention not found");
+        ? toast.success("Leaked Credentials updated successfully")
+        : toast.error("Leaked Credentials not found");
     } catch (error) {
       console.log(error);
     }
@@ -1063,7 +1063,7 @@ export function ContextProvider(props) {
       );
       setIsLsLoading(false);
       if (response.status === 204) {
-        toast.success("Dark Web Mention Deleted successfully");
+        toast.success("Leaked Credentials Deleted successfully");
       } else if (response.status === "fail") {
         toast.error(response.message);
       } else {
@@ -1073,7 +1073,7 @@ export function ContextProvider(props) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
         setIsLsLoading(false);
-        toast.error("Dark Web Mention Not Found");
+        toast.error("Leaked Credentials Not Found");
       } else {
         toast.error("Server Error");
       }
