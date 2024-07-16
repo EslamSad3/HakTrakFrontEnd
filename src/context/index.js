@@ -52,6 +52,10 @@ export function ContextProvider(props) {
   const [darkWebMentions, setDarkWebMentions] = useState([]);
   const [oneDarkWebMention, setOneDarkWebMention] = useState({});
 
+  // Leaked Credentials
+  const [leakedCredentials, setLeakedCredentials] = useState([]);
+  const [oneLeakedCredential, setOneLeakedCredential] = useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -977,6 +981,105 @@ export function ContextProvider(props) {
     }
   }
 
+  //  Leaked Credentials
+
+  // add new Leaked Credentials
+  async function addNewLeakedCredentials(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Dark Web Mention Created Successfully");
+        navigate("/dark-web-monitoring/leaked-credentials");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All LeakedCredentials
+  async function fetchAllLeakedCredentials() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
+        { headers: getAuthHeaders() }
+      );
+      setLeakedCredentials(response.data.data);
+      setIsLsLoading(false);
+      return leakedCredentials;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // Fetch One LeakedCredentials
+  async function fetchOneLeakedCredentials(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneLeakedCredential(response.data.data);
+      setIsLsLoading(false);
+      return oneLeakedCredential;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // update One LeakedCredentials
+  async function updateLeakedCredentials(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      response.status === 200
+        ? toast.success("Dark Web Mention updated successfully")
+        : toast.error("Dark Web Mention not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Delete One LeakedCredentials
+  async function deleteLeakedCredentials(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Dark Web Mention Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Dark Web Mention Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -986,7 +1089,7 @@ export function ContextProvider(props) {
     fetchAllAptFeeds();
     fetchAllthreatintelligenceFeeds();
     fetchAllDarkWebMentions();
-    // Add other data fetching functions as needed
+    fetchAllLeakedCredentials();
   };
 
   useEffect(() => {
@@ -998,6 +1101,7 @@ export function ContextProvider(props) {
     fetchAllAptFeeds();
     fetchAllthreatintelligenceFeeds();
     fetchAllDarkWebMentions();
+    fetchAllLeakedCredentials();
   }, [adminToken, userToken]);
 
   return (
@@ -1045,6 +1149,11 @@ export function ContextProvider(props) {
         fetchOneDarkWebMention,
         updateDarkWebMention,
         deleteDarkWebMention,
+        addNewLeakedCredentials,
+        fetchAllLeakedCredentials,
+        fetchOneLeakedCredentials,
+        updateLeakedCredentials,
+        deleteLeakedCredentials,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1063,6 +1172,8 @@ export function ContextProvider(props) {
         oneThreatIntelligenceFeed,
         darkWebMentions,
         oneDarkWebMention,
+        leakedCredentials,
+        oneLeakedCredential,
         isLoading,
         adminToken,
         userToken,

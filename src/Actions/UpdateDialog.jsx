@@ -323,6 +323,61 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
             />
           )}
 
+          {item && item?.user && (
+            <TextField
+              fullWidth
+              id="user"
+              name="user"
+              label="user"
+              value={formik.values.user}
+              onChange={formik.handleChange}
+              error={formik.touched.user && Boolean(formik.errors.user)}
+              helperText={formik.touched.user && formik.errors.user}
+              margin="normal"
+            />
+          )}
+          {item && item?.password && (
+            <TextField
+              fullWidth
+              id="password"
+              name="password"
+              label="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              margin="normal"
+            />
+          )}
+          {item && item?.bu && (
+            <TextField
+              fullWidth
+              id="bu"
+              name="bu"
+              label="bu"
+              value={formik.values.bu}
+              onChange={formik.handleChange}
+              error={formik.touched.bu && Boolean(formik.errors.bu)}
+              helperText={formik.touched.bu && formik.errors.bu}
+              margin="normal"
+            />
+          )}
+
+          {/* Date */}
+          {item && item?.leakDate && (
+            <TextField
+              fullWidth
+              id="leakDate"
+              name="leakDate"
+              label="leakDate"
+              value={formik.values.leakDate}
+              onChange={formik.handleChange}
+              error={formik.touched.leakDate && Boolean(formik.errors.leakDate)}
+              helperText={formik.touched.leakDate && formik.errors.leakDate}
+              margin="normal"
+            />
+          )}
+
           <Box mt={2}>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Update

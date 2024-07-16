@@ -1,8 +1,8 @@
 import "./App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 
 import Login from "./components/Login";
-import { ThemeProvider, CssBaseline, createTheme } from "@mui/material";
 import Layout from "./components/LayOut";
 import { themeSettings } from "./theme";
 import { ContextProvider } from "./context";
@@ -30,6 +30,8 @@ import ThreatIntelligenceFeeds from "./components/Threatintelligence/ThreatIntel
 import CreateThreatIntelligenceFeeds from "./Actions/ThreatIntelligence/CreateThreatIntelligenceFeeds";
 import CreateDarkWebMentions from "./Actions/Dark Web Monitoring/CreateDarkWebMentions";
 import DarkWebMentions from "./components/Dark Web Monitoring/DarkWebMentions";
+import LeakedCredentials from "./components/Dark Web Monitoring/LeakedCredentials";
+import CreateLeakedCredentials from "./Actions/Dark Web Monitoring/CreateLeakedCredentials";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -114,6 +116,15 @@ function App() {
                     <ProtectedRoute>{<CreateDarkWebMentions />}</ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/actions/dark-web-monitoring/leaked-credentials"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateLeakedCredentials />}
+                    </ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/admin/actions"
@@ -149,6 +160,10 @@ function App() {
                 <Route
                   path="/dark-web-monitoring/dark-web-mentions"
                   element={<DarkWebMentions />}
+                />
+                <Route
+                  path="/dark-web-monitoring/leaked-credentials"
+                  element={<LeakedCredentials />}
                 />
               </Route>
             </Routes>
