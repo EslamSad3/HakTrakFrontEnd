@@ -59,9 +59,8 @@ function CreateThreatIntelligenceFeeds() {
       <Header title={"Add New Threat Intelligence Feed"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
-          <InputLabel id="severity-label">severity</InputLabel>
           {/* Threat Intelligence Feed severity */}
-
+          <InputLabel id="severity-label">severity</InputLabel>
           <Select
             labelId="severity-label"
             id="severity"

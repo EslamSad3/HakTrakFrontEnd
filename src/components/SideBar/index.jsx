@@ -579,7 +579,7 @@ const SideBar = ({
                           <Policy />
                         </ListItemIcon>
                         <ListItemText
-                          primary="EDRXDR Detections"
+                          primary="EDR / XDR Detections"
                           sx={{ pl: 2 }}
                         />
                       </ListItemButton>

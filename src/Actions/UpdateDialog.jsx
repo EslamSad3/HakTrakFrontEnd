@@ -41,7 +41,12 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       user: item?.user || "",
       password: item?.password || "",
       bu: item?.bu || "",
+      alertID: item?.alertID || "",
+      device: item?.device || "",
+      filePath: item?.filePath || "",
+      actionTaken: item?.actionTaken || "",
       leakDate: item?.leakDate ? dayjs(item.leakDate) : null,
+      detectionTime: item?.detectionTime ? dayjs(item.detectionTime) : null,
     },
     onSubmit: (values) => {
       onConfirm(values);
@@ -69,7 +74,12 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         user: item.user || "",
         password: item.password || "",
         bu: item.bu || "",
+        alertID: item?.alertID || "",
+        device: item?.device || "",
+        filePath: item?.filePath || "",
+        actionTaken: item?.actionTaken || "",
         leakDate: item.leakDate ? dayjs(item.leakDate) : null,
+        detectionTime: item.detectionTime ? dayjs(item.detectionTime) : null,
       });
     }
   }, [item]);
@@ -369,6 +379,63 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
             />
           )}
 
+          {item && item?.alertID && (
+            <TextField
+              fullWidth
+              id="alertID"
+              name="alertID"
+              label="alertID"
+              value={formik.values.alertID}
+              onChange={formik.handleChange}
+              error={formik.touched.alertID && Boolean(formik.errors.alertID)}
+              helperText={formik.touched.alertID && formik.errors.alertID}
+              margin="normal"
+            />
+          )}
+          {item && item?.device && (
+            <TextField
+              fullWidth
+              id="device"
+              name="device"
+              label="device"
+              value={formik.values.device}
+              onChange={formik.handleChange}
+              error={formik.touched.device && Boolean(formik.errors.device)}
+              helperText={formik.touched.device && formik.errors.device}
+              margin="normal"
+            />
+          )}
+          {item && item?.filePath && (
+            <TextField
+              fullWidth
+              id="filePath"
+              name="filePath"
+              label="filePath"
+              value={formik.values.filePath}
+              onChange={formik.handleChange}
+              error={formik.touched.filePath && Boolean(formik.errors.filePath)}
+              helperText={formik.touched.filePath && formik.errors.filePath}
+              margin="normal"
+            />
+          )}
+          {item && item?.actionTaken && (
+            <TextField
+              fullWidth
+              id="actionTaken"
+              name="actionTaken"
+              label="actionTaken"
+              value={formik.values.actionTaken}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.actionTaken && Boolean(formik.errors.actionTaken)
+              }
+              helperText={
+                formik.touched.actionTaken && formik.errors.actionTaken
+              }
+              margin="normal"
+            />
+          )}
+
           {/* Date */}
           {item && item?.leakDate && (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -388,6 +455,28 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               />
             </LocalizationProvider>
           )}
+          {/* Detection Date */}
+          {item && item?.detectionTime && (
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Leak Date"
+                value={formik.values.detectionTime}
+                onChange={(value) =>
+                  formik.setFieldValue("detectionTime", value)
+                }
+                onBlur={formik.handleBlur}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="detectionTime"
+                    margin="normal"
+                    fullWidth
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          )}
+
           <Box mt={2}>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Update

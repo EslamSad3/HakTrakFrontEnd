@@ -56,6 +56,10 @@ export function ContextProvider(props) {
   const [leakedCredentials, setLeakedCredentials] = useState([]);
   const [oneLeakedCredential, setOneLeakedCredential] = useState({});
 
+  // Edr XDR
+  const [edrXdrs, setEdrXdr] = useState([]);
+  const [oneEdrXDR, setOneEdrXDR] = useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -1080,6 +1084,105 @@ export function ContextProvider(props) {
     }
   }
 
+  //  EDR XDR
+
+  // add new EDR XDR
+  async function addNewEdrXdr(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("EDR XDR Created Successfully");
+        navigate("/detections/drxdr-detections");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All EdrXdr
+  async function fetchAllEdrXdr() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
+        { headers: getAuthHeaders() }
+      );
+      setEdrXdr(response.data.data);
+      setIsLsLoading(false);
+      return edrXdrs;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // Fetch One EdrXdr
+  async function fetchOneEdrXdr(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneEdrXDR(response.data.data);
+      setIsLsLoading(false);
+      return oneEdrXDR;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // update One EdrXdr
+  async function updateEdrXdr(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      response.status === 200
+        ? toast.success("EDR XDR updated successfully")
+        : toast.error("EDR XDR not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Delete One EdrXdr
+  async function deleteEdrXdr(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("EDR XDR Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("EDR XDR Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1090,6 +1193,7 @@ export function ContextProvider(props) {
     fetchAllthreatintelligenceFeeds();
     fetchAllDarkWebMentions();
     fetchAllLeakedCredentials();
+    fetchAllEdrXdr();
   };
 
   useEffect(() => {
@@ -1102,6 +1206,7 @@ export function ContextProvider(props) {
     fetchAllthreatintelligenceFeeds();
     fetchAllDarkWebMentions();
     fetchAllLeakedCredentials();
+    fetchAllEdrXdr();
   }, [adminToken, userToken]);
 
   return (
@@ -1154,6 +1259,11 @@ export function ContextProvider(props) {
         fetchOneLeakedCredentials,
         updateLeakedCredentials,
         deleteLeakedCredentials,
+        addNewEdrXdr,
+        fetchAllEdrXdr,
+        fetchOneEdrXdr,
+        updateEdrXdr,
+        deleteEdrXdr,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1174,6 +1284,8 @@ export function ContextProvider(props) {
         oneDarkWebMention,
         leakedCredentials,
         oneLeakedCredential,
+        edrXdrs,
+        oneEdrXDR,
         isLoading,
         adminToken,
         userToken,

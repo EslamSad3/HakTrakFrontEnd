@@ -489,7 +489,9 @@ function AdminActions() {
                   <ListItem disablePadding>
                     <ListItemButton
                       onClick={() =>
-                        handleNavigate("/detections/drxdr-detections")
+                        handleNavigate(
+                          "/admin/actions/detections/drxdr-detections"
+                        )
                       }
                       sx={{
                         backgroundColor:
@@ -514,7 +516,7 @@ function AdminActions() {
                         <Policy />
                       </ListItemIcon>
                       <ListItemText
-                        primary="EDRXDR Detections"
+                        primary="EDR / XDR Detections"
                         sx={{ pl: 2 }}
                       />
                     </ListItemButton>
@@ -522,7 +524,9 @@ function AdminActions() {
                   <ListItem disablePadding>
                     <ListItemButton
                       onClick={() =>
-                        handleNavigate("/detections/ndr-detections")
+                        handleNavigate(
+                          "/admin/actions/detections/ndr-detections"
+                        )
                       }
                       sx={{
                         backgroundColor:
