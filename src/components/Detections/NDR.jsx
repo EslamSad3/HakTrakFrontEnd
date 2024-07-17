@@ -130,12 +130,9 @@ const Ndr = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header
-        title={"EDR XDR Detections"}
-        subtitle={"List of EDR XDR Detections"}
-      />
+      <Header title={"NDRs Detections"} subtitle={"List of NDRs Detections"} />
       <Typography variant="h4">
-        Number of EDR XDR Detections: {ndrs?.length}
+        Number of NDRs Detections: {ndrs?.length}
       </Typography>
       <Box
         mt="40px"
