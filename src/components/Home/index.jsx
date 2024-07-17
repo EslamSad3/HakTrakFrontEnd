@@ -8,20 +8,92 @@ import {
 } from "@mui/material";
 import React from "react";
 import Header from "../Header";
-import { useTranslation } from "react-i18next";
 import { useContext } from "react";
 import { Context } from "../../context";
 import { useNavigate } from "react-router-dom";
-import EmojiPeopleOutlinedIcon from "@mui/icons-material/EmojiPeopleOutlined";
-import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+
 function Home() {
-  const { ips, isLoading, language } = useContext(Context);
+  const {
+    ips,
+    domains,
+    portals,
+    iocs,
+    suspiciousIps,
+    aptFeeds,
+    threatIntelligenceFeeds,
+    darkWebMentions,
+    leakedCredentials,
+    edrXdrs,
+    ndrs,
+    atos,
+    attackSurfaces,
+    brandReputations,
+    vulnerabilitiesIntelligences,
+    isLoading,
+    language,
+  } = useContext(Context);
 
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const cardsData = [
+    { label: "Ips", count: ips?.length, path: "/assets/ips" },
+    { label: "Domains", count: domains?.length, path: "/assets/domains" },
+    { label: "Portals", count: portals?.length, path: "/assets/portals" },
+    { label: "IOCs", count: iocs?.length, path: "/threat-intelligence/iocs" },
+    {
+      label: "APT Feeds",
+      count: aptFeeds?.length,
+      path: "/threat-intelligence/apt-feeds",
+    },
+    {
+      label: "Threat Intelligence Feeds",
+      count: threatIntelligenceFeeds?.length,
+      path: "/threat-intelligence/threat-intelligence-feeds",
+    },
+    {
+      label: "Suspicious IPs",
+      count: suspiciousIps?.length,
+      path: "/threat-intelligence/suspicious-ips",
+    },
+    {
+      label: "Dark Web Mentions",
+      count: darkWebMentions?.length,
+      path: "/dark-web-monitoring/dark-web-mentions",
+    },
+    {
+      label: "Leaked Credentials",
+      count: leakedCredentials?.length,
+      path: "/dark-web-monitoring/leaked-credentials",
+    },
+    {
+      label: "EDR/XDR Detections",
+      count: edrXdrs?.length,
+      path: "/detections/drxdr-detections",
+    },
+    {
+      label: "NDR Detections",
+      count: ndrs?.length,
+      path: "/detections/ndr-detections",
+    },
+    { label: "ATOs", count: atos?.length, path: "/account-take-over" },
+    {
+      label: "Attack Surfaces",
+      count: attackSurfaces?.length,
+      path: "/attack-surface",
+    },
+    {
+      label: "Brand Reputations",
+      count: brandReputations?.length,
+      path: "/brand-reputation",
+    },
+    {
+      label: "Vulnerabilities Intelligences",
+      count: vulnerabilitiesIntelligences?.length,
+      path: "/vulnerabilities-intelligences",
+    },
+  ];
 
   return (
     <>
@@ -41,257 +113,66 @@ function Home() {
               height: "15rem",
             }}
           >
-            {/* assets/ips */}
-            <Card
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: theme.palette.background.alt,
-                borderRadius: "0.55rem",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "visible",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => navigate("/assets/ips")}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "-1.5rem",
-                  left: "1rem",
-                  minWidth: "80%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box
+            {cardsData.map(({ label, count, path }) => {
+              const isLongLabel = label.split(" ").length > 1;
+              return (
+                <Card
+                  key={label}
                   sx={{
-                    backgroundColor: theme.palette.neutral.main,
-                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
                     borderRadius: "0.55rem",
-                    width: "4rem",
-                    height: "4rem",
+                    cursor: "pointer",
+                    position: "relative",
+                    overflow: "visible",
                     display: "flex",
-                    marginRight: "10px",
                     justifyContent: "center",
                     alignItems: "center",
                   }}
+                  onClick={() => navigate(path)}
                 >
-                  <EmojiPeopleOutlinedIcon />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: 22,
-                    position: "absolute",
-                  }}
-                  top="2rem"
-                  right={language === "en" ? "1rem" : ""}
-                  left={language === "ar" ? "1rem" : ""}
-                  color={theme.palette.secondary[200]}
-                  gutterBottom
-                >
-                  Ips
-                </Typography>
-              </Box>
-              <CardContent sx={{ marginTop: "4rem" }}>
-                <Typography variant="h3" textalign={"center"}>
-                  {ips && ips?.length}
-                </Typography>
-              </CardContent>
-            </Card>
-
-            {/* techs */}
-
-            <Card
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: theme.palette.background.alt,
-                borderRadius: "0.55rem",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "visible",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => navigate("/technicians")}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "-1.5rem",
-                  left: "1rem",
-                  minWidth: "80%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    backgroundColor: theme.palette.success.main,
-                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
-                    borderRadius: "0.55rem",
-                    width: "4rem",
-                    height: "4rem",
-                    display: "flex",
-                    marginRight: "10px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <EngineeringOutlinedIcon />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: 22,
-                    position: "absolute",
-                  }}
-                  top="2rem"
-                  right={language === "en" ? "1rem" : ""}
-                  left={language === "ar" ? "1rem" : ""}
-                  color={theme.palette.secondary[200]}
-                  gutterBottom
-                >
-                  "Technicians"
-                </Typography>
-              </Box>
-              <CardContent sx={{ marginTop: "4rem" }}>
-                <Typography variant="h3" textalign={"center"}>
-                  test
-                </Typography>
-              </CardContent>
-            </Card>
-
-            {/* Orders */}
-
-            <Card
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: theme.palette.background.alt,
-                borderRadius: "0.55rem",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "visible",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onClick={() => navigate("/orders")}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "-1.5rem",
-                  left: "1rem",
-                  minWidth: "80%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    backgroundColor: theme.palette.warning.main,
-                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
-                    borderRadius: "0.55rem",
-                    width: "4rem",
-                    height: "4rem",
-                    display: "flex",
-                    marginRight: "10px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <BorderColorOutlinedIcon />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: 22,
-                    position: "absolute",
-                  }}
-                  top="2rem"
-                  right={language === "en" ? "1rem" : ""}
-                  left={language === "ar" ? "1rem" : ""}
-                  color={theme.palette.secondary[200]}
-                  gutterBottom
-                >
-                  Orders
-                </Typography>
-              </Box>
-              <CardContent textalign="start" sx={{ marginTop: "4rem" }}>
-                <Typography variant="h5">test</Typography>
-                <Typography variant="h5">test</Typography>
-                <Typography variant="h5">test</Typography>
-              </CardContent>
-            </Card>
-
-            {/* profit */}
-            <Card
-              sx={{
-                backgroundImage: "none",
-                backgroundColor: theme.palette.background.alt,
-                borderRadius: "0.55rem",
-                cursor: "pointer",
-                position: "relative",
-                overflow: "visible",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "-1.5rem",
-                  left: "1rem",
-                  minWidth: "80%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box
-                  sx={{
-                    backgroundColor: theme.palette.info.main,
-                    boxShadow: "1px 1px 5px rgba(0,0,0,1)",
-                    borderRadius: "0.55rem",
-                    width: "4rem",
-                    height: "4rem",
-                    display: "flex",
-                    marginRight: "10px",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <AttachMoneyIcon />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: 22,
-                    position: "absolute",
-                  }}
-                  top="2rem"
-                  right={language === "en" ? "1rem" : ""}
-                  left={language === "ar" ? "1rem" : ""}
-                  color={theme.palette.secondary[200]}
-                  gutterBottom
-                >
-                  profit
-                </Typography>
-              </Box>
-              <CardContent textalign="start" sx={{ marginTop: "4rem" }}>
-                <Typography variant="h5">test</Typography>
-                <Typography variant="h5">test</Typography>
-              </CardContent>
-            </Card>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "-1.5rem",
+                      left: "0.25rem",
+                      minWidth: isLongLabel ? "100%" : "90%",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: theme.palette.neutral.main,
+                        boxShadow: "1px 1px 5px rgba(0,0,0,1)",
+                        borderRadius: "0.55rem",
+                        width: isLongLabel ? "100%" : "5rem",
+                        height: "3rem",
+                        display: "flex",
+                        marginRight: "10px",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: 16,
+                        }}
+                        color={theme.palette.secondary[200]}
+                      >
+                        {label}
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <CardContent sx={{ marginTop: "4rem" }}>
+                    <Typography variant="h3" textAlign={"center"}>
+                      {count}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Box>
         ) : (
           <>Loading...</>

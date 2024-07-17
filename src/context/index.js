@@ -1608,13 +1608,13 @@ export function ContextProvider(props) {
     try {
       setIsLsLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence`,
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
         values,
         { headers: getAuthHeaders() }
       );
       if (response.status === 201) {
         toast.success("Vulnerabilities Intelligence Created Successfully");
-        navigate("/vulnerabilities-intelligence");
+        navigate("/vulnerabilities-intelligences");
         setIsLsLoading(false);
       }
       setIsLsLoading(false);
@@ -1629,7 +1629,7 @@ export function ContextProvider(props) {
     try {
       setIsLsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence`,
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
         { headers: getAuthHeaders() }
       );
       setVulnerabilitiesIntelligences(response.data.data);
@@ -1644,7 +1644,7 @@ export function ContextProvider(props) {
     try {
       setIsLsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
         { headers: getAuthHeaders() }
       );
       setOneVulnerabilitiesIntelligence(response.data.data);
@@ -1659,7 +1659,7 @@ export function ContextProvider(props) {
     try {
       setIsLsLoading(true);
       const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
         values,
         { headers: getAuthHeaders() }
       );
@@ -1678,7 +1678,7 @@ export function ContextProvider(props) {
     try {
       setIsLsLoading(true);
       const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
         { headers: getAuthHeaders() }
       );
       setIsLsLoading(false);

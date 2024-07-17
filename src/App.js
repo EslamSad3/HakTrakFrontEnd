@@ -40,6 +40,8 @@ import ATOs from "./components/Atos";
 import CreateATO from "./Actions/CreateATO";
 import BrandReputation from "./components/BrandReputation";
 import CreateBrandReputation from "./Actions/CreateBrandReputation";
+import VulnerabilitiesIntelligences from "./components/VulnerabilitiesIntelligences";
+import CreateVulnerabilitiesIntelligences from "./Actions/CreateVulnerabilitiesIntelligences";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -161,6 +163,15 @@ function App() {
                     <ProtectedRoute>{<CreateBrandReputation />}</ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/actions/vulnerabilities-intelligences"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateVulnerabilitiesIntelligences />}
+                    </ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/admin/actions"
@@ -209,6 +220,10 @@ function App() {
                 <Route path="/detections/ndr-detections" element={<Ndr />} />
                 <Route path="/account-take-over" element={<ATOs />} />
                 <Route path="/brand-reputation" element={<BrandReputation />} />
+                <Route
+                  path="/vulnerabilities-intelligences"
+                  element={<VulnerabilitiesIntelligences />}
+                />
               </Route>
             </Routes>
           </AuthRoute>

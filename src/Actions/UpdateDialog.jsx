@@ -54,6 +54,14 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       brandName: item?.brandName || "",
       incidentDescription: item?.incidentDescription || "",
       status: item?.status || "",
+      vulnerabilityID: item?.vulnerabilityID || "",
+      affectedSystems: item?.affectedSystems || "",
+      impact: item?.impact || "",
+      cvsScore: item?.cvsScore || "",
+      exploitAvailability: item?.exploitAvailability || "",
+      patchAvailability: item?.patchAvailability || "",
+      vendor: item?.vendor || "",
+      references: item?.references || "",
       leakDate: item?.leakDate ? dayjs(item.leakDate) : null,
       detectionTime: item?.detectionTime ? dayjs(item.detectionTime) : null,
     },
@@ -96,6 +104,14 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         brandName: item.brandName || "",
         incidentDescription: item.incidentDescription || "",
         status: item.status || "",
+        vulnerabilityID: item.vulnerabilityID || "",
+        affectedSystems: item.affectedSystems || "",
+        impact: item.impact || "",
+        cvsScore: item.cvsScore || "",
+        exploitAvailability: item.exploitAvailability || "",
+        patchAvailability: item.patchAvailability || "",
+        vendor: item.vendor || "",
+        references: item.references || "",
         leakDate: item.leakDate ? dayjs(item.leakDate) : null,
         detectionTime: item.detectionTime ? dayjs(item.detectionTime) : null,
       });
@@ -134,7 +150,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.url && (
             <TextField
               fullWidth
@@ -148,7 +163,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.description && (
             <TextField
               fullWidth
@@ -166,7 +180,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {/* Unique */}
           {item && item?.location && (
             <TextField
@@ -181,7 +194,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.iOCType && (
             <Box>
               <InputLabel id="iOCType-label">IOC Type</InputLabel>
@@ -209,7 +221,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               ) : null}
             </Box>
           )}
-
           {item && item?.severity && (
             <Box>
               <InputLabel id="severity-label">Severity</InputLabel>
@@ -237,8 +248,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               ) : null}
             </Box>
           )}
-
-          {item && item?.status && (
+          {item && !item?.vendor && (
             <Box>
               <InputLabel id="status-label">status</InputLabel>
               <Select
@@ -284,7 +294,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.mitigationSteps && (
             <TextField
               fullWidth
@@ -303,7 +312,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.threatType && (
             <TextField
               fullWidth
@@ -399,7 +407,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.user && (
             <TextField
               fullWidth
@@ -439,7 +446,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.alertID && (
             <TextField
               fullWidth
@@ -496,7 +502,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {/* Date */}
           {item && item?.leakDate && (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -537,7 +542,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               />
             </LocalizationProvider>
           )}
-
           {item && item?.sourceIP && (
             <TextField
               fullWidth
@@ -551,7 +555,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.sourcePort && (
             <TextField
               fullWidth
@@ -567,7 +570,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.destinationIP && (
             <TextField
               fullWidth
@@ -586,7 +588,6 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
           {item && item?.destinationPort && (
             <TextField
               fullWidth
@@ -654,7 +655,147 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
-
+          {item && item?.vulnerabilityID && (
+            <TextField
+              fullWidth
+              id="vulnerabilityID"
+              name="vulnerabilityID"
+              label="vulnerabilityID"
+              value={formik.values.vulnerabilityID}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.vulnerabilityID &&
+                Boolean(formik.errors.vulnerabilityID)
+              }
+              helperText={
+                formik.touched.vulnerabilityID && formik.errors.vulnerabilityID
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.affectedSystems && (
+            <TextField
+              fullWidth
+              id="affectedSystems"
+              name="affectedSystems"
+              label="affectedSystems"
+              value={formik.values.affectedSystems}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.affectedSystems &&
+                Boolean(formik.errors.affectedSystems)
+              }
+              helperText={
+                formik.touched.affectedSystems && formik.errors.affectedSystems
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.impact && (
+            <TextField
+              fullWidth
+              id="impact"
+              name="impact"
+              label="impact"
+              value={formik.values.impact}
+              onChange={formik.handleChange}
+              error={formik.touched.impact && Boolean(formik.errors.impact)}
+              helperText={formik.touched.impact && formik.errors.impact}
+              margin="normal"
+            />
+          )}
+          {item && item?.cvsScore && (
+            <TextField
+              fullWidth
+              id="cvsScore"
+              name="cvsScore"
+              label="cvsScore"
+              value={formik.values.cvsScore}
+              onChange={formik.handleChange}
+              error={formik.touched.cvsScore && Boolean(formik.errors.cvsScore)}
+              helperText={formik.touched.cvsScore && formik.errors.cvsScore}
+              margin="normal"
+            />
+          )}
+          {item && item?.exploitAvailability && (
+            <TextField
+              fullWidth
+              id="exploitAvailability"
+              name="exploitAvailability"
+              label="exploitAvailability"
+              value={formik.values.exploitAvailability}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.exploitAvailability &&
+                Boolean(formik.errors.exploitAvailability)
+              }
+              helperText={
+                formik.touched.exploitAvailability &&
+                formik.errors.exploitAvailability
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.patchAvailability && (
+            <TextField
+              fullWidth
+              id="patchAvailability"
+              name="patchAvailability"
+              label="patchAvailability"
+              value={formik.values.patchAvailability}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.patchAvailability &&
+                Boolean(formik.errors.patchAvailability)
+              }
+              helperText={
+                formik.touched.patchAvailability &&
+                formik.errors.patchAvailability
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.vendor && (
+            <TextField
+              fullWidth
+              id="vendor"
+              name="vendor"
+              label="vendor"
+              value={formik.values.vendor}
+              onChange={formik.handleChange}
+              error={formik.touched.vendor && Boolean(formik.errors.vendor)}
+              helperText={formik.touched.vendor && formik.errors.vendor}
+              margin="normal"
+            />
+          )}
+          {item && item?.references && (
+            <TextField
+              fullWidth
+              id="references"
+              name="references"
+              label="references"
+              value={formik.values.references}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.references && Boolean(formik.errors.references)
+              }
+              helperText={formik.touched.references && formik.errors.references}
+              margin="normal"
+            />
+          )}
+          {item && item?.status && item?.vendor && (
+            <TextField
+              fullWidth
+              id="status"
+              name="status"
+              label="status"
+              value={formik.values.status}
+              onChange={formik.handleChange}
+              error={formik.touched.status && Boolean(formik.errors.status)}
+              helperText={formik.touched.status && formik.errors.status}
+              margin="normal"
+            />
+          )}
           <Box mt={2}>
             <Button color="primary" variant="contained" fullWidth type="submit">
               Update

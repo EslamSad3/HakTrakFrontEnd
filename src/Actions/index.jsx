@@ -675,7 +675,9 @@ function AdminActions() {
             {/* Vulnerabilities Intelligences */}
             <ListItem disablePadding>
               <ListItemButton
-                onClick={() => handleNavigate("/vulnerabilities-intelligences")}
+                onClick={() =>
+                  handleNavigate("/admin/actions/vulnerabilities-intelligences")
+                }
                 sx={{
                   backgroundColor:
                     active === "Vulnerabilities Intelligences"
