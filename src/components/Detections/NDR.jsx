@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import ConfirmUpdateDialog from "../../Actions/ConfirmUpdateDialog"; // Import the confirmation dialog
 
 const Ndr = () => {
   const {
@@ -20,8 +21,11 @@ const Ndr = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [openConfirmUpdate, setOpenConfirmUpdate] = useState(false); // State for confirmation dialog
   const [deleteId, setDeleteId] = useState(null);
   const [selectedndrs, setSelectedndrs] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [selectedUpdateId, setSelectedUpdateId] = useState(null); // State to hold selected ID for update
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -39,15 +43,24 @@ const Ndr = () => {
     handleCloseDelete();
   };
 
-  const handleClickOpenUpdate = async (id) => {
-    const edrXdr = await fetchOneNdr(id);
-    setSelectedndrs(edrXdr);
-    setOpenUpdate(true);
+  const handleClickOpenUpdate = (id) => {
+    setSelectedUpdateId(id); // Store the ID to be updated
+    setOpenConfirmUpdate(true); // Open confirmation dialog
+  };
+
+  const handleConfirmUpdate = async (id) => {
+    setIsFetching(true);
+    const ndr = await fetchOneNdr(id);
+    setSelectedndrs(ndr);
+    setIsFetching(false);
+    setOpenConfirmUpdate(false); // Close confirmation dialog
+    setOpenUpdate(true); // Open update dialog
   };
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
     setSelectedndrs(null);
+    setSelectedUpdateId(null); // Clear selected ID after update dialog closes
   };
 
   const handleupdateNdr = async (values) => {
@@ -166,6 +179,13 @@ const Ndr = () => {
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         item={deleteId}
+      />
+
+      <ConfirmUpdateDialog
+        open={openConfirmUpdate}
+        onClose={() => setOpenConfirmUpdate(false)}
+        onConfirm={handleConfirmUpdate}
+        itemId={selectedUpdateId} // Pass the selected ID to the confirmation dialog
       />
 
       <UpdateDialog

@@ -128,6 +128,7 @@ function Home() {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    
                   }}
                   onClick={() => navigate(path)}
                 >
@@ -140,6 +141,7 @@ function Home() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      padding:"15px"
                     }}
                   >
                     <Box

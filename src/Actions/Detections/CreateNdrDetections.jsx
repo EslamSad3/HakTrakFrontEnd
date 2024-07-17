@@ -22,7 +22,7 @@ import Header from "../../components/Header";
 import * as Yup from "yup";
 
 function CreateNdrDetections() {
-  const { addNewEdrXdr, isLoading } = useContext(Context);
+  const { addNewNdr, isLoading } = useContext(Context);
 
   const validationSchema = Yup.object().shape({
     detectionTime: Yup.string().required("Detection Time Required"),
@@ -39,8 +39,8 @@ function CreateNdrDetections() {
     mitigationSteps: Yup.string().required("Mitigation Steps Required"),
   });
 
-  async function hanldeaddNewEdrXdr(values) {
-    await addNewEdrXdr(values);
+  async function hanldeaddNewNdr(values) {
+    await addNewNdr(values);
   }
 
   let formik = useFormik({
@@ -59,7 +59,7 @@ function CreateNdrDetections() {
       mitigationSteps: "",
     },
     validationSchema,
-    onSubmit: hanldeaddNewEdrXdr,
+    onSubmit: hanldeaddNewNdr,
   });
 
   return (
@@ -94,10 +94,10 @@ function CreateNdrDetections() {
               fullWidth
               // margin="normal"
             >
-              <MenuItem value="Low">Low</MenuItem>
-              <MenuItem value="Medium">Medium</MenuItem>
-              <MenuItem value="High">High</MenuItem>
-              <MenuItem value="Critical">Critical</MenuItem>
+              <MenuItem value="low">Low</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="high">High</MenuItem>
+              <MenuItem value="critical">Critical</MenuItem>
             </Select>
           </Box>
           {formik.errors.severity && formik.touched.severity ? (

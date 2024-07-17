@@ -7,7 +7,7 @@ export const Context = createContext();
 
 export function ContextProvider(props) {
   const navigate = useNavigate();
-  const [isLoading, setIsLsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [adminToken, setAdminToken] = useState(
     localStorage.getItem("AdminToken")
   );
@@ -45,10 +45,9 @@ export function ContextProvider(props) {
     {}
   );
 
-  /********************************** Dark Web Monitring ******************** */
+  /********************************** Dark Web Monitoring ******************** */
 
   // Dark Web Mentions
-
   const [darkWebMentions, setDarkWebMentions] = useState([]);
   const [oneDarkWebMention, setOneDarkWebMention] = useState({});
 
@@ -92,31 +91,29 @@ export function ContextProvider(props) {
     setUserToken(token);
   }
 
-  //   login
+  // Login
   async function handleLogingIn(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
         values
       );
 
-      setIsLsLoading(false);
+      setIsLoading(false);
 
       if (response.status === 200) {
-        const token = response.data.token;
-        const role = response.data.data.role;
-
+        const { token } = response.data;
+        const { role } = response.data.data;
         if (role === "admin") {
           saveAdminToken(token);
         } else {
           saveUserToken(token);
         }
-
+        navigate("/dashboard");
         toast.success("Logged in successfully", {
           position: "top-center",
         });
-        navigate("/dashboard");
       } else {
         toast.error("Invalid Email Or Password", {
           position: toast.POSITION.TOP_CENTER,
@@ -124,89 +121,92 @@ export function ContextProvider(props) {
       }
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
   // Helper function to get the appropriate headers
-  const getAuthHeaders = () => {
-    const token = adminToken || userToken;
+  const getAuthAdminHeaders = () => {
     return {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${adminToken}`,
+    };
+  };
+
+  const getAuthUserHeaders = () => {
+    return {
+      Authorization: `Bearer ${userToken}`,
     };
   };
 
   /*********************** Assets ******************************/
-
-  // add  new Ips
+  // Add new IP
   async function addNewIp(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-
       if (response.status === 201) {
         toast.success("Ip Added Successfully");
         navigate("/assets/ips");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All IPs
+  // Fetch all IPs
   async function fetchAllIps() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setIps(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch One IP
+  // Fetch one IP
   async function fetchOneIp(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneIp(response.data.data);
       return oneIp;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
       throw error;
     }
   }
 
-  // update IP
+  // Update IP
   async function updateIp(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       response.status === 200
         ? toast.success("Ip updated successfully")
         : toast.error("Ip not found");
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
 
@@ -216,21 +216,21 @@ export function ContextProvider(props) {
         toast.error("Server Error");
       }
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // delete IP
+  // Delete IP
   async function deleteIp(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         {
-          headers: getAuthHeaders(),
+          headers: getAuthAdminHeaders(),
         }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Ip Deleted successfully");
       } else if (response.status === "fail") {
@@ -241,77 +241,77 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Ip Not Found");
       } else {
         toast.error("Server Error");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   // Domains
-
-  // add  new Domains
+  // Add new domain
   async function addNewDomain(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       if (response.status === 201) {
         toast.success("Domain Added successfully");
         navigate("/assets/domains");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
-    }
-  }
-  // fetch All Domains
-  async function fetchAllDomains() {
-    try {
-      setIsLsLoading(true);
-      const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
-        { headers: getAuthHeaders() }
-      );
-      setDomains(response.data.data);
-      setIsLsLoading(false);
-    } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  //  Fetch One Domain
+  // Fetch all domains
+  async function fetchAllDomains() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+      );
+      setDomains(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
+  // Fetch one domain
   async function fetchOneDomain(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneDomain(response.data.data);
       return oneDomain;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update  One Domain
+  // Update domain
   async function updateDomain(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       response.status === 200
         ? toast.success("Domain updated successfully")
@@ -321,15 +321,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // delete One Domain
+  // Delete domain
   async function deleteDomain(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Domain Deleted successfully");
       } else if (response.status === "fail") {
@@ -340,7 +340,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Domain Not Found");
       } else {
         toast.error("Server Error");
@@ -349,68 +349,67 @@ export function ContextProvider(props) {
   }
 
   // Portals
-
-  // add new Portals
+  // Add new portal
   async function addNewPortal(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Portal Created Successfully");
         navigate("/assets/portals");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All Portals
+  // Fetch all portals
   async function fetchAllPortals() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setPortals(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return portals;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One portal
+  // Fetch one portal
   async function fetchOnePortal(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setOnePortal(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return onePortal;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One Portal
+  // Update portal
   async function updatePortal(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       response.status === 200
         ? toast.success("Portal updated successfully")
@@ -420,15 +419,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One Portal
+  // Delete portal
   async function deletePortal(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Portal Deleted successfully");
       } else if (response.status === "fail") {
@@ -439,7 +438,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Portal Not Found");
       } else {
         toast.error("Server Error");
@@ -447,80 +446,80 @@ export function ContextProvider(props) {
     }
   }
 
-  /*********************** threat intelligence ******************************/
+  /*********************** Threat Intelligence ******************************/
 
-  /***************** IOCS *******************/
-  // add  new Iocs
+  /***************** IOCs *******************/
+  // Add new IOC
   async function addNewIoc(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       if (response.status === 201) {
         toast.success("Ioc Added Successfully");
         navigate("/threat-intelligence/iocs");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All IOCs
+  // Fetch all IOCs
   async function fetchAllIocs() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
 
       setIocs(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return iocs;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch One IOC
+  // Fetch one IOC
   async function fetchOneIoc(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneIoc(response.data.data);
       return oneIoc;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
       throw error;
     }
   }
 
-  // update IOC
+  // Update IOC
   async function updateIoc(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       response.status === 200
         ? toast.success("IOC updated successfully")
         : toast.error("IOC not found");
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
 
@@ -530,21 +529,21 @@ export function ContextProvider(props) {
         toast.error("Server Error");
       }
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // delete IOCS
+  // Delete IOC
   async function deleteIoc(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
         {
-          headers: getAuthHeaders(),
+          headers: getAuthAdminHeaders(),
         }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("IOC Deleted successfully");
       } else if (response.status === "fail") {
@@ -555,113 +554,113 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("IOC Not Found");
       } else {
         toast.error("Server Error");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   /************* Suspicious IPs ************* */
 
-  // add  new Suspicious IPs
+  // Add new Suspicious IPs
   async function addNewSuspiciousIps(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       if (response.status === 201) {
         toast.success("Suspicious ip Added Successfully");
         navigate("/threat-intelligence/suspicious-ips");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All suspicious-ips
+  // Fetch all suspicious IPs
   async function fetchAllSuspiciousIps() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setSuspiciousIps(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return suspiciousIps;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch One IOC
+  // Fetch one suspicious IP
   async function fetchOneSuspiciousIp(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneSuspiciousIp(response.data.data);
       return oneSuspiciousIp;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
       throw error;
     }
   }
 
-  // update IOC
+  // Update suspicious IP
   async function updateSuspiciousIp(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       response.status === 200
-        ? toast.success("suspicious Ip updated successfully")
-        : toast.error("suspicious Ip not found");
+        ? toast.success("Suspicious Ip updated successfully")
+        : toast.error("Suspicious Ip not found");
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
 
       if (error.response && error.response.status === 404) {
-        toast.error("suspicious Ip Not Found");
+        toast.error("Suspicious Ip Not Found");
       } else {
         toast.error("Server Error");
       }
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // delete suspicious-ips
+  // Delete suspicious IP
   async function deleteSuspiciousIp(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
         {
-          headers: getAuthHeaders(),
+          headers: getAuthAdminHeaders(),
         }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
-        toast.success("suspicious Ip Deleted successfully");
+        toast.success("Suspicious Ip Deleted successfully");
       } else if (response.status === "fail") {
         toast.error(response.message);
       } else {
@@ -670,85 +669,86 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
-        toast.error("suspicious Ip Not Found");
+        setIsLoading(false);
+        toast.error("Suspicious Ip Not Found");
       } else {
         toast.error("Server Error");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
     }
   }
-  /************* APTs Feeds ************* */
 
-  // add  new APTs Feeds
+  /************* APT Feeds ************* */
+
+  // Add new APT Feeds
   async function addNewAptFeeds(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       if (response.status === 201) {
         toast.success("Apt Feed Added Successfully");
         navigate("/threat-intelligence/apt-feeds");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All APTs Feeds
+  // Fetch all APT Feeds
   async function fetchAllAptFeeds() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setAptFeeds(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch One APT Feed
+  // Fetch one APT Feed
   async function fetchOneAptFeed(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneAptFeed(response.data.data);
       return oneAptFeed;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
       throw error;
     }
   }
 
-  // update IOC
+  // Update APT Feed
   async function updateAptFeed(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       response.status === 200
         ? toast.success("APT Feed updated successfully")
         : toast.error("APT Feed not found");
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
 
@@ -758,21 +758,21 @@ export function ContextProvider(props) {
         toast.error("Server Error");
       }
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // delete apt-feeds
+  // Delete APT Feed
   async function deleteAptFeed(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
         {
-          headers: getAuthHeaders(),
+          headers: getAuthAdminHeaders(),
         }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Apt Feed Deleted successfully");
       } else if (response.status === "fail") {
@@ -783,112 +783,112 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Apt Feed Not Found");
       } else {
         toast.error("Server Error");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   /************* Threat Intelligence Feeds ************* */
 
-  // add  new Threat Intelligence Feeds
+  // Add new Threat Intelligence Feeds
   async function addNewThreatIntelligenceFeeds(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       if (response.status === 201) {
         toast.success("Threat intelligence Feed Added Successfully");
         navigate("/threat-intelligence/threat-intelligence-feeds");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All threatintelligences Feeds
+  // Fetch all threat intelligence Feeds
   async function fetchAllthreatintelligenceFeeds() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setThreatIntelligenceFeeds(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch One threat intelligences Feed
+  // Fetch one threat intelligence Feed
   async function fetchOnethreatintelligenceFeed(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       setOneThreatIntelligenceFeed(response.data.data);
       return oneThreatIntelligenceFeed;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
       throw error;
     }
   }
 
-  // update threat intelligences Feed
+  // Update threat intelligence Feed
   async function updatethreatintelligenceFeed(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
 
       response.status === 200
-        ? toast.success("threatintelligence Feed updated successfully")
-        : toast.error("threatintelligence Feed not found");
+        ? toast.success("Threat Intelligence Feed updated successfully")
+        : toast.error("Threat Intelligence Feed not found");
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error:", error);
 
       if (error.response && error.response.status === 404) {
-        toast.error("threatintelligence Feed Not Found");
+        toast.error("Threat Intelligence Feed Not Found");
       } else {
         toast.error("Server Error");
       }
 
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // delete threat intelligence feed
+  // Delete threat intelligence Feed
   async function deletethreatintelligenceFeed(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
         {
-          headers: getAuthHeaders(),
+          headers: getAuthAdminHeaders(),
         }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
-        toast.success("threatintelligence Feed Deleted successfully");
+        toast.success("Threat Intelligence Feed Deleted successfully");
       } else if (response.status === "fail") {
         toast.error(response.message);
       } else {
@@ -897,80 +897,79 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
-        toast.error("threatintelligence Feed Not Found");
+        setIsLoading(false);
+        toast.error("Threat Intelligence Feed Not Found");
       } else {
         toast.error("Server Error");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
     }
   }
 
   /**************************************** Dark Web Monitoring ***************************************** */
 
-  //  Dark Web Mentions
-
-  // add new Dark Web Mentions
+  // Dark Web Mentions
+  // Add new Dark Web Mentions
   async function addNewDarkWebMentions(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Dark Web Mention Created Successfully");
         navigate("/dark-web-monitoring/dark-web-mentions");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All DarkWebMentions
+  // Fetch all Dark Web Mentions
   async function fetchAllDarkWebMentions() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setDarkWebMentions(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return darkWebMentions;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One DarkWebMention
+  // Fetch one Dark Web Mention
   async function fetchOneDarkWebMention(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneDarkWebMention(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneDarkWebMention;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One DarkWebMention
+  // Update Dark Web Mention
   async function updateDarkWebMention(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       response.status === 200
         ? toast.success("Dark Web Mention updated successfully")
@@ -980,15 +979,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One DarkWebMention
+  // Delete Dark Web Mention
   async function deleteDarkWebMention(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Dark Web Mention Deleted successfully");
       } else if (response.status === "fail") {
@@ -999,7 +998,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Dark Web Mention Not Found");
       } else {
         toast.error("Server Error");
@@ -1007,69 +1006,68 @@ export function ContextProvider(props) {
     }
   }
 
-  //  Leaked Credentials
-
-  // add new Leaked Credentials
+  // Leaked Credentials
+  // Add new Leaked Credentials
   async function addNewLeakedCredentials(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Leaked Credentials Created Successfully");
         navigate("/dark-web-monitoring/leaked-credentials");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All LeakedCredentials
+  // Fetch all Leaked Credentials
   async function fetchAllLeakedCredentials() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setLeakedCredentials(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return leakedCredentials;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One LeakedCredentials
+  // Fetch one Leaked Credential
   async function fetchOneLeakedCredentials(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneLeakedCredential(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneLeakedCredential;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One LeakedCredentials
+  // Update Leaked Credentials
   async function updateLeakedCredentials(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       response.status === 200
         ? toast.success("Leaked Credentials updated successfully")
@@ -1079,15 +1077,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One LeakedCredentials
+  // Delete Leaked Credentials
   async function deleteLeakedCredentials(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Leaked Credentials Deleted successfully");
       } else if (response.status === "fail") {
@@ -1098,7 +1096,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Leaked Credentials Not Found");
       } else {
         toast.error("Server Error");
@@ -1106,69 +1104,68 @@ export function ContextProvider(props) {
     }
   }
 
-  //  EDR XDR
-
-  // add new EDR XDR
+  // EDR XDR
+  // Add new EDR XDR
   async function addNewEdrXdr(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("EDR XDR Created Successfully");
         navigate("/detections/drxdr-detections");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All EdrXdr
+  // Fetch all EDR XDR
   async function fetchAllEdrXdr() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setEdrXdr(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return edrXdrs;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One EdrXdr
+  // Fetch one EDR XDR
   async function fetchOneEdrXdr(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneEdrXDR(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneEdrXDR;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One EdrXdr
+  // Update EDR XDR
   async function updateEdrXdr(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
@@ -1179,15 +1176,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One EdrXdr
+  // Delete EDR XDR
   async function deleteEdrXdr(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("EDR XDR Deleted successfully");
       } else if (response.status === "fail") {
@@ -1198,7 +1195,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("EDR XDR Not Found");
       } else {
         toast.error("Server Error");
@@ -1206,69 +1203,68 @@ export function ContextProvider(props) {
     }
   }
 
-  //  NDR
-
-  // add new NDR
+  // NDR
+  // Add new NDR
   async function addNewNdr(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("NDR Created Successfully");
         navigate("/detections/ndr-detections");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All Ndr
+  // Fetch all NDR
   async function fetchAllNdr() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setNdr(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return ndrs;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One Ndr
+  // Fetch one NDR
   async function fetchOneNdr(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneNdr(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneNdr;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One Ndr
+  // Update NDR
   async function updateNdr(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
@@ -1279,15 +1275,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One Ndr
+  // Delete NDR
   async function deleteNdr(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("NDR Deleted successfully");
       } else if (response.status === "fail") {
@@ -1298,7 +1294,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("NDR Not Found");
       } else {
         toast.error("Server Error");
@@ -1306,69 +1302,68 @@ export function ContextProvider(props) {
     }
   }
 
-  //  ATO
-
-  // add new ATO
+  // ATO
+  // Add new ATO
   async function addNewATO(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("ATO Created Successfully");
         navigate("/account-take-over");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All ATO
+  // Fetch all ATO
   async function fetchAllATOs() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setATOs(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return atos;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Fetch One ATO
+  // Fetch one ATO
   async function fetchOneATO(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneATO(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneATO;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // update One ATO
+  // Update ATO
   async function updateATO(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
@@ -1379,15 +1374,15 @@ export function ContextProvider(props) {
     }
   }
 
-  // Delete One ATO
+  // Delete ATO
   async function deleteATO(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("ATO Deleted successfully");
       } else if (response.status === "fail") {
@@ -1398,7 +1393,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("ATO Not Found");
       } else {
         toast.error("Server Error");
@@ -1406,85 +1401,89 @@ export function ContextProvider(props) {
     }
   }
 
-  // Attck Surface
-  // add new Attck Surface
+  // Attack Surface
+  // Add new Attack Surface
   async function addNewAttckSurface(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Attack Surface Created Successfully");
         navigate("/attack-surface");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // fetch All Attck Surfaces
+
+  // Fetch all Attack Surfaces
   async function fetchAllAttckSurfaces() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setAttackSurfaces(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return attackSurfaces;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // Fetch One Attck Surface
+
+  // Fetch one Attack Surface
   async function fetchOneAttckSurface(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneAttackSurface(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneAttackSurface;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // update One Attck Surface
+
+  // Update Attack Surface
   async function updateAttckSurface(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
         ? toast.success("Attack Surface updated successfully")
         : toast.error("Attack Surface not found");
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // Delete One Attck Surface
+
+  // Delete Attack Surface
   async function deleteAttckSurface(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Attack Surface Deleted successfully");
       } else if (response.status === "fail") {
@@ -1495,7 +1494,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Attack Surface Not Found");
       } else {
         toast.error("Server Error");
@@ -1503,87 +1502,89 @@ export function ContextProvider(props) {
     }
   }
 
-  // Brand reputation
-  // add new Brand reputation
+  // Brand Reputation
+  // Add new Brand Reputation
   async function addNewBrandReputation(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Brand Reputation Created Successfully");
         navigate("/brand-reputation");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All Brand Reputations
+  // Fetch all Brand Reputations
   async function fetchAllBrandReputations() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setBrandReputations(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return brandReputations;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // Fetch One Brand Reputation
+
+  // Fetch one Brand Reputation
   async function fetchOneBrandReputation(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneBrandReputation(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneBrandReputation;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // update One Brand Reputation
+
+  // Update Brand Reputation
   async function updateBrandReputation(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
         ? toast.success("Brand Reputation updated successfully")
         : toast.error("Brand Reputation not found");
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // Delete One Brand Reputation
+  // Delete Brand Reputation
   async function deleteBrandReputation(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Brand Reputation Deleted successfully");
       } else if (response.status === "fail") {
@@ -1594,7 +1595,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Brand Reputation Not Found");
       } else {
         toast.error("Server Error");
@@ -1602,86 +1603,89 @@ export function ContextProvider(props) {
     }
   }
 
-  // vulnerabilities intelligences
-  // add new Vulnerabilities Intelligence
+  // Vulnerabilities Intelligence
+  // Add new Vulnerabilities Intelligence
   async function addNewVulnerabilitiesIntelligence(values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       if (response.status === 201) {
         toast.success("Vulnerabilities Intelligence Created Successfully");
         navigate("/vulnerabilities-intelligences");
-        setIsLsLoading(false);
+        setIsLoading(false);
       }
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       toast.error(error.response.data.message);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
 
-  // fetch All Vulnerabilities Intelligences
+  // Fetch all Vulnerabilities Intelligences
   async function fetchAllVulnerabilitiesIntelligences() {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
-        { headers: getAuthHeaders() }
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
       );
       setVulnerabilitiesIntelligences(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return vulnerabilitiesIntelligences;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // Fetch One Vulnerabilities Intelligence
+
+  // Fetch one Vulnerabilities Intelligence
   async function fetchOneVulnerabilitiesIntelligence(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       setOneVulnerabilitiesIntelligence(response.data.data);
-      setIsLsLoading(false);
+      setIsLoading(false);
       return oneVulnerabilitiesIntelligence;
     } catch (error) {
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // update One Vulnerabilities Intelligence
+
+  // Update Vulnerabilities Intelligence
   async function updateVulnerabilitiesIntelligence(id, values) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
         values,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
       console.log(response);
       response.status === 200
         ? toast.success("Vulnerabilities Intelligence updated successfully")
         : toast.error("Vulnerabilities Intelligence not found");
-      setIsLsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-      setIsLsLoading(false);
+      setIsLoading(false);
     }
   }
-  // Delete One Vulnerabilities Intelligence
+
+  // Delete Vulnerabilities Intelligence
   async function deleteVulnerabilitiesIntelligence(id) {
     try {
-      setIsLsLoading(true);
+      setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
-        { headers: getAuthHeaders() }
+        { headers: getAuthAdminHeaders() }
       );
-      setIsLsLoading(false);
+      setIsLoading(false);
       if (response.status === 204) {
         toast.success("Vulnerabilities Intelligence Deleted successfully");
       } else if (response.status === "fail") {
@@ -1692,7 +1696,7 @@ export function ContextProvider(props) {
     } catch (error) {
       console.error("Error:", error);
       if (error.response && error.response.status === 404) {
-        setIsLsLoading(false);
+        setIsLoading(false);
         toast.error("Vulnerabilities Intelligence Not Found");
       } else {
         toast.error("Server Error");
@@ -1719,21 +1723,9 @@ export function ContextProvider(props) {
   };
 
   useEffect(() => {
-    fetchAllDomains();
-    fetchAllIps();
-    fetchAllPortals();
-    fetchAllIocs();
-    fetchAllSuspiciousIps();
-    fetchAllAptFeeds();
-    fetchAllthreatintelligenceFeeds();
-    fetchAllDarkWebMentions();
-    fetchAllLeakedCredentials();
-    fetchAllEdrXdr();
-    fetchAllNdr();
-    fetchAllATOs();
-    fetchAllAttckSurfaces();
-    fetchAllBrandReputations();
-    fetchAllVulnerabilitiesIntelligences();
+    if (adminToken || userToken) {
+      refreshData();
+    }
   }, [adminToken, userToken]);
 
   return (

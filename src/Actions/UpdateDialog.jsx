@@ -248,33 +248,34 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               ) : null}
             </Box>
           )}
-          {item && !item?.vendor && (
-            <Box>
-              <InputLabel id="status-label">status</InputLabel>
-              <Select
-                labelId="status-label"
-                id="status"
-                name="status"
-                value={formik.values.status}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                required
-                fullWidth
-                margin="normal"
-              >
-                <MenuItem value="taking down">Taking Down</MenuItem>
-                <MenuItem value="in progress">In Progress</MenuItem>
-                <MenuItem value="false positive">False Positive</MenuItem>
-                <MenuItem value="resolving">Resolving</MenuItem>
-              </Select>
-              {formik.errors.status && formik.touched.status ? (
-                <Alert severity="error">
-                  <AlertTitle>Error</AlertTitle>
-                  {formik.errors.status}
-                </Alert>
-              ) : null}
-            </Box>
-          )}
+          {(item && !item?.vendor) ||
+            (!item?.alertID && (
+              <Box>
+                <InputLabel id="status-label">status</InputLabel>
+                <Select
+                  labelId="status-label"
+                  id="status"
+                  name="status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  required
+                  fullWidth
+                  margin="normal"
+                >
+                  <MenuItem value="taking down">Taking Down</MenuItem>
+                  <MenuItem value="in progress">In Progress</MenuItem>
+                  <MenuItem value="false positive">False Positive</MenuItem>
+                  <MenuItem value="resolving">Resolving</MenuItem>
+                </Select>
+                {formik.errors.status && formik.touched.status ? (
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {formik.errors.status}
+                  </Alert>
+                ) : null}
+              </Box>
+            ))}
 
           {item && item?.indicatorValue && (
             <TextField
@@ -503,6 +504,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
             />
           )}
           {/* Date */}
+          <br />
           {item && item?.leakDate && (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
@@ -521,6 +523,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               />
             </LocalizationProvider>
           )}
+          <br />
           {/* Detection Date */}
           {item && item?.detectionTime && (
             <LocalizationProvider dateAdapter={AdapterDayjs}>
