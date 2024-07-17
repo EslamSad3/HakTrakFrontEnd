@@ -64,6 +64,24 @@ export function ContextProvider(props) {
   const [ndrs, setNdr] = useState([]);
   const [oneNdr, setOneNdr] = useState({});
 
+  // ATO
+  const [atos, setATOs] = useState([]);
+  const [oneATO, setOneATO] = useState({});
+
+  // Attack surface
+  const [attackSurfaces, setAttackSurfaces] = useState([]);
+  const [oneAttackSurface, setOneAttackSurface] = useState({});
+
+  // Brand reputation
+  const [brandReputations, setBrandReputations] = useState([]);
+  const [oneBrandReputation, setOneBrandReputation] = useState({});
+
+  // vulnerabilities intelligences
+  const [vulnerabilitiesIntelligences, setVulnerabilitiesIntelligences] =
+    useState([]);
+  const [oneVulnerabilitiesIntelligence, setOneVulnerabilitiesIntelligence] =
+    useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -1288,6 +1306,400 @@ export function ContextProvider(props) {
     }
   }
 
+  //  ATO
+
+  // add new ATO
+  async function addNewATO(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("ATO Created Successfully");
+        navigate("/account-take-over");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All ATO
+  async function fetchAllATOs() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
+        { headers: getAuthHeaders() }
+      );
+      setATOs(response.data.data);
+      setIsLsLoading(false);
+      return atos;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // Fetch One ATO
+  async function fetchOneATO(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneATO(response.data.data);
+      setIsLsLoading(false);
+      return oneATO;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+
+  // update One ATO
+  async function updateATO(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      response.status === 200
+        ? toast.success("ATO updated successfully")
+        : toast.error("ATO not found");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // Delete One ATO
+  async function deleteATO(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("ATO Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("ATO Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
+  // Attck Surface
+  // add new Attck Surface
+  async function addNewAttckSurface(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Attack Surface Created Successfully");
+        navigate("/attack-surface");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+  // fetch All Attck Surfaces
+  async function fetchAllAttckSurfaces() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
+        { headers: getAuthHeaders() }
+      );
+      setAttackSurfaces(response.data.data);
+      setIsLsLoading(false);
+      return attackSurfaces;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // Fetch One Attck Surface
+  async function fetchOneAttckSurface(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneAttackSurface(response.data.data);
+      setIsLsLoading(false);
+      return oneAttackSurface;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // update One Attck Surface
+  async function updateAttckSurface(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      response.status === 200
+        ? toast.success("Attack Surface updated successfully")
+        : toast.error("Attack Surface not found");
+      setIsLsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLsLoading(false);
+    }
+  }
+  // Delete One Attck Surface
+  async function deleteAttckSurface(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Attack Surface Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Attack Surface Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
+  // Brand reputation
+  // add new Brand reputation
+  async function addNewBrandReputation(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Brand Reputation Created Successfully");
+        navigate("/brand-reputation");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All Brand Reputations
+  async function fetchAllBrandReputations() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
+        { headers: getAuthHeaders() }
+      );
+      setBrandReputations(response.data.data);
+      setIsLsLoading(false);
+      return brandReputations;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // Fetch One Brand Reputation
+  async function fetchOneBrandReputation(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneBrandReputation(response.data.data);
+      setIsLsLoading(false);
+      return oneBrandReputation;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // update One Brand Reputation
+  async function updateBrandReputation(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      response.status === 200
+        ? toast.success("Brand Reputation updated successfully")
+        : toast.error("Brand Reputation not found");
+      setIsLsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLsLoading(false);
+    }
+  }
+
+  // Delete One Brand Reputation
+  async function deleteBrandReputation(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Brand Reputation Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Brand Reputation Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
+  // vulnerabilities intelligences
+  // add new Vulnerabilities Intelligence
+  async function addNewVulnerabilitiesIntelligence(values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Vulnerabilities Intelligence Created Successfully");
+        navigate("/vulnerabilities-intelligence");
+        setIsLsLoading(false);
+      }
+      setIsLsLoading(false);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLsLoading(false);
+    }
+  }
+
+  // fetch All Vulnerabilities Intelligences
+  async function fetchAllVulnerabilitiesIntelligences() {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence`,
+        { headers: getAuthHeaders() }
+      );
+      setVulnerabilitiesIntelligences(response.data.data);
+      setIsLsLoading(false);
+      return vulnerabilitiesIntelligences;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // Fetch One Vulnerabilities Intelligence
+  async function fetchOneVulnerabilitiesIntelligence(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setOneVulnerabilitiesIntelligence(response.data.data);
+      setIsLsLoading(false);
+      return oneVulnerabilitiesIntelligence;
+    } catch (error) {
+      setIsLsLoading(false);
+    }
+  }
+  // update One Vulnerabilities Intelligence
+  async function updateVulnerabilitiesIntelligence(id, values) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        values,
+        { headers: getAuthHeaders() }
+      );
+      console.log(response);
+      response.status === 200
+        ? toast.success("Vulnerabilities Intelligence updated successfully")
+        : toast.error("Vulnerabilities Intelligence not found");
+      setIsLsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLsLoading(false);
+    }
+  }
+  // Delete One Vulnerabilities Intelligence
+  async function deleteVulnerabilitiesIntelligence(id) {
+    try {
+      setIsLsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligence/${id}`,
+        { headers: getAuthHeaders() }
+      );
+      setIsLsLoading(false);
+      if (response.status === 204) {
+        toast.success("Vulnerabilities Intelligence Deleted successfully");
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLsLoading(false);
+        toast.error("Vulnerabilities Intelligence Not Found");
+      } else {
+        toast.error("Server Error");
+      }
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1300,6 +1712,10 @@ export function ContextProvider(props) {
     fetchAllLeakedCredentials();
     fetchAllEdrXdr();
     fetchAllNdr();
+    fetchAllATOs();
+    fetchAllAttckSurfaces();
+    fetchAllBrandReputations();
+    fetchAllVulnerabilitiesIntelligences();
   };
 
   useEffect(() => {
@@ -1314,6 +1730,10 @@ export function ContextProvider(props) {
     fetchAllLeakedCredentials();
     fetchAllEdrXdr();
     fetchAllNdr();
+    fetchAllATOs();
+    fetchAllAttckSurfaces();
+    fetchAllBrandReputations();
+    fetchAllVulnerabilitiesIntelligences();
   }, [adminToken, userToken]);
 
   return (
@@ -1376,6 +1796,26 @@ export function ContextProvider(props) {
         fetchOneNdr,
         updateNdr,
         deleteNdr,
+        addNewATO,
+        fetchAllATOs,
+        fetchOneATO,
+        updateATO,
+        deleteATO,
+        addNewAttckSurface,
+        fetchAllAttckSurfaces,
+        fetchOneAttckSurface,
+        updateAttckSurface,
+        deleteAttckSurface,
+        addNewBrandReputation,
+        fetchAllBrandReputations,
+        fetchOneBrandReputation,
+        updateBrandReputation,
+        deleteBrandReputation,
+        addNewVulnerabilitiesIntelligence,
+        fetchAllVulnerabilitiesIntelligences,
+        fetchOneVulnerabilitiesIntelligence,
+        updateVulnerabilitiesIntelligence,
+        deleteVulnerabilitiesIntelligence,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1400,6 +1840,14 @@ export function ContextProvider(props) {
         oneEdrXDR,
         ndrs,
         oneNdr,
+        atos,
+        oneATO,
+        attackSurfaces,
+        oneAttackSurface,
+        brandReputations,
+        oneBrandReputation,
+        vulnerabilitiesIntelligences,
+        oneVulnerabilitiesIntelligence,
         isLoading,
         adminToken,
         userToken,

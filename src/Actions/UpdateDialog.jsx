@@ -49,6 +49,11 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
       sourceIP: item?.sourceIP || "",
       sourcePort: item?.sourcePort || "",
       actionTaken: item?.actionTaken || "",
+      url: item?.url || "",
+      domainName: item?.domainName || "",
+      brandName: item?.brandName || "",
+      incidentDescription: item?.incidentDescription || "",
+      status: item?.status || "",
       leakDate: item?.leakDate ? dayjs(item.leakDate) : null,
       detectionTime: item?.detectionTime ? dayjs(item.detectionTime) : null,
     },
@@ -86,6 +91,11 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
         sourceIP: item.sourceIP || "",
         sourcePort: item.sourcePort || "",
         actionTaken: item.actionTaken || "",
+        url: item.url || "",
+        domainName: item.domainName || "",
+        brandName: item.brandName || "",
+        incidentDescription: item.incidentDescription || "",
+        status: item.status || "",
         leakDate: item.leakDate ? dayjs(item.leakDate) : null,
         detectionTime: item.detectionTime ? dayjs(item.detectionTime) : null,
       });
@@ -124,6 +134,21 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
+
+          {item && item?.url && (
+            <TextField
+              fullWidth
+              id="url"
+              name="url"
+              label="url"
+              value={formik.values.url}
+              onChange={formik.handleChange}
+              error={formik.touched.url && Boolean(formik.errors.url)}
+              helperText={formik.touched.url && formik.errors.url}
+              margin="normal"
+            />
+          )}
+
           {item && item?.description && (
             <TextField
               fullWidth
@@ -208,6 +233,34 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
                 <Alert severity="error">
                   <AlertTitle>Error</AlertTitle>
                   {formik.errors.severity}
+                </Alert>
+              ) : null}
+            </Box>
+          )}
+
+          {item && item?.status && (
+            <Box>
+              <InputLabel id="status-label">status</InputLabel>
+              <Select
+                labelId="status-label"
+                id="status"
+                name="status"
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                required
+                fullWidth
+                margin="normal"
+              >
+                <MenuItem value="taking down">Taking Down</MenuItem>
+                <MenuItem value="in progress">In Progress</MenuItem>
+                <MenuItem value="false positive">False Positive</MenuItem>
+                <MenuItem value="resolving">Resolving</MenuItem>
+              </Select>
+              {formik.errors.status && formik.touched.status ? (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {formik.errors.status}
                 </Alert>
               ) : null}
             </Box>
@@ -533,6 +586,7 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               margin="normal"
             />
           )}
+
           {item && item?.destinationPort && (
             <TextField
               fullWidth
@@ -547,6 +601,55 @@ const UpdateDialog = ({ open, onClose, item, onConfirm }) => {
               }
               helperText={
                 formik.touched.destinationPort && formik.errors.destinationPort
+              }
+              margin="normal"
+            />
+          )}
+          {item && item?.domainName && (
+            <TextField
+              fullWidth
+              id="domainName"
+              name="domainName"
+              label="domainName"
+              value={formik.values.domainName}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.domainName && Boolean(formik.errors.domainName)
+              }
+              helperText={formik.touched.domainName && formik.errors.domainName}
+              margin="normal"
+            />
+          )}
+          {item && item?.brandName && (
+            <TextField
+              fullWidth
+              id="brandName"
+              name="brandName"
+              label="brandName"
+              value={formik.values.brandName}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.brandName && Boolean(formik.errors.brandName)
+              }
+              helperText={formik.touched.brandName && formik.errors.brandName}
+              margin="normal"
+            />
+          )}
+          {item && item?.incidentDescription && (
+            <TextField
+              fullWidth
+              id="incidentDescription"
+              name="incidentDescription"
+              label="incidentDescription"
+              value={formik.values.incidentDescription}
+              onChange={formik.handleChange}
+              error={
+                formik.touched.incidentDescription &&
+                Boolean(formik.errors.incidentDescription)
+              }
+              helperText={
+                formik.touched.incidentDescription &&
+                formik.errors.incidentDescription
               }
               margin="normal"
             />

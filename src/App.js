@@ -36,6 +36,10 @@ import EdrXdr from "./components/Detections/EdrXdr";
 import CreateEdrXdrDetections from "./Actions/Detections/CreateEdrXdrDetections";
 import CreateNdrDetections from "./Actions/Detections/CreateNdrDetections";
 import Ndr from "./components/Detections/NDR";
+import ATOs from "./components/Atos";
+import CreateATO from "./Actions/CreateATO";
+import BrandReputation from "./components/BrandReputation";
+import CreateBrandReputation from "./Actions/CreateBrandReputation";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -145,6 +149,18 @@ function App() {
                     <ProtectedRoute>{<CreateNdrDetections />}</ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/actions/account-take-over"
+                  forceRefresh={true}
+                  element={<ProtectedRoute>{<CreateATO />}</ProtectedRoute>}
+                />
+                <Route
+                  path="/admin/actions/brand-reputation"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateBrandReputation />}</ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/admin/actions"
@@ -191,6 +207,8 @@ function App() {
                   element={<EdrXdr />}
                 />
                 <Route path="/detections/ndr-detections" element={<Ndr />} />
+                <Route path="/account-take-over" element={<ATOs />} />
+                <Route path="/brand-reputation" element={<BrandReputation />} />
               </Route>
             </Routes>
           </AuthRoute>

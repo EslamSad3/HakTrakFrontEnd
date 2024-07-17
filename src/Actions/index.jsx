@@ -27,7 +27,6 @@ import {
   ChevronRightOutlined,
 } from "@mui/icons-material";
 
-
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
@@ -561,7 +560,9 @@ function AdminActions() {
             {/* Account Take Over */}
             <ListItem disablePadding>
               <ListItemButton
-                onClick={() => handleNavigate("/account-take-over")}
+                onClick={() =>
+                  handleNavigate("/admin/actions/account-take-over")
+                }
                 sx={{
                   backgroundColor:
                     active === "account-take-over"
@@ -635,7 +636,9 @@ function AdminActions() {
             {/* Brand Reputation */}
             <ListItem disablePadding>
               <ListItemButton
-                onClick={() => handleNavigate("/brand-reputation")}
+                onClick={() =>
+                  handleNavigate("/admin/actions/brand-reputation")
+                }
                 sx={{
                   backgroundColor:
                     active === "Brand Reputation"
