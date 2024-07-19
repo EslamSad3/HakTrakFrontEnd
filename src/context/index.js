@@ -107,7 +107,7 @@ export function ContextProvider(props) {
         const { role } = response.data.data;
         if (role === "admin") {
           saveAdminToken(token);
-        } else {
+        } else if (role === "user") {
           saveUserToken(token);
         }
         navigate("/dashboard");
@@ -1704,6 +1704,8 @@ export function ContextProvider(props) {
     }
   }
 
+
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1723,10 +1725,8 @@ export function ContextProvider(props) {
   };
 
   useEffect(() => {
-    if (adminToken || userToken) {
-      refreshData();
-    }
-  }, [adminToken, userToken]);
+    refreshData();
+  }, []);
 
   return (
     <Context.Provider

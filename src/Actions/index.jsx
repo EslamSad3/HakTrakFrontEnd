@@ -599,7 +599,7 @@ function AdminActions() {
             {/* Attack Surface */}
             <ListItem disablePadding>
               <ListItemButton
-                onClick={() => handleNavigate("/attack-surface")}
+                onClick={() => handleNavigate("/admin/actions/attack-surface")}
                 sx={{
                   backgroundColor:
                     active === "Attack Surface"

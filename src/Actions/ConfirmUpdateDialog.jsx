@@ -11,7 +11,9 @@ const ConfirmUpdateDialog = ({ open, onClose, onConfirm, itemId }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm Update</DialogTitle>
-      <DialogContent>Are you sure you want to update this item?</DialogContent>
+      <DialogContent>
+        Are you sure you want to update this item? {itemId}
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="secondary">
           Cancel

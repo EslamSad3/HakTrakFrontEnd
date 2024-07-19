@@ -42,6 +42,8 @@ import BrandReputation from "./components/BrandReputation";
 import CreateBrandReputation from "./Actions/CreateBrandReputation";
 import VulnerabilitiesIntelligences from "./components/VulnerabilitiesIntelligences";
 import CreateVulnerabilitiesIntelligences from "./Actions/CreateVulnerabilitiesIntelligences";
+import AttackSurface from "./components/AttackSurface";
+import CreateAttackSurface from "./Actions/CreateAttackSurface";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -172,6 +174,13 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin/actions/attack-surface"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateAttackSurface />}</ProtectedRoute>
+                  }
+                />
 
                 <Route
                   path="/admin/actions"
@@ -224,6 +233,7 @@ function App() {
                   path="/vulnerabilities-intelligences"
                   element={<VulnerabilitiesIntelligences />}
                 />
+                <Route path="/attack-surface" element={<AttackSurface />} />
               </Route>
             </Routes>
           </AuthRoute>
