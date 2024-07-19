@@ -1,4 +1,6 @@
 import React, { useContext, useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+
 import { MuiFileInput } from "mui-file-input";
 import { useFormik } from "formik";
 import { Context } from "../context";
@@ -33,7 +35,7 @@ function CreateAttackSurface() {
     fd.append("services", values.services);
     fd.append("mitigationSteps", values.mitigationSteps);
 
-    await addNewAttckSurface(fd); // Assuming `addNewAttckSurface` expects FormData
+    await addNewAttckSurface(fd);
   }
 
   let formik = useFormik({
@@ -57,7 +59,7 @@ function CreateAttackSurface() {
         alignItems: "center",
       }}
     >
-      <Header title={"Add New ATO"}></Header>
+      <Header title={"Add New Attack Serface"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* affectedSystems */}
@@ -104,11 +106,14 @@ function CreateAttackSurface() {
           <MuiFileInput
             sx={{ my: "25px" }}
             label="Select a screenshot"
-            placeholder="Select a screenshot"
             value={formik.values.screenshot}
             onChange={(e) => setFile(e)}
             inputProps={{ accept: "image/*" }}
-            getInputText={(value) => (value ? "Thanks!" : "Upload")}
+            getInputText={(value) => (value ? "uploading..." : "Select a screenshot")}
+            clearIconButtonProps={{
+              title: "Remove",
+              children: <CloseIcon fontSize="small" />,
+            }}
           />
 
           {/* Services */}

@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   Typography,
+  Divider,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -11,6 +12,7 @@ import Header from "../Header";
 import { useContext } from "react";
 import { Context } from "../../context";
 import { useNavigate } from "react-router-dom";
+import NdrPieChart from "../Scenes/NdrPieChart";
 
 function Home() {
   const {
@@ -30,67 +32,82 @@ function Home() {
     brandReputations,
     vulnerabilitiesIntelligences,
     isLoading,
-    language,
   } = useContext(Context);
 
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const cardsData = [
-    { label: "Ips", count: ips?.length, path: "/assets/ips" },
-    { label: "Domains", count: domains?.length, path: "/assets/domains" },
-    { label: "Portals", count: portals?.length, path: "/assets/portals" },
-    { label: "IOCs", count: iocs?.length, path: "/threat-intelligence/iocs" },
+  const combinedCardsData = [
     {
-      label: "APT Feeds",
-      count: aptFeeds?.length,
-      path: "/threat-intelligence/apt-feeds",
+      label: "Assets",
+      count:
+        (ips?.length || 0) + (domains?.length || 0) + (portals?.length || 0),
+      subCounts: [
+        { label: "IPs", count: ips?.length },
+        { label: "Domains", count: domains?.length },
+        { label: "Portals", count: portals?.length },
+      ],
+      path: "/assets",
     },
     {
-      label: "Threat Intelligence Feeds",
-      count: threatIntelligenceFeeds?.length,
-      path: "/threat-intelligence/threat-intelligence-feeds",
+      label: "Threat Intelligence",
+      count:
+        (suspiciousIps?.length || 0) +
+        (iocs?.length || 0) +
+        (aptFeeds?.length || 0) +
+        (threatIntelligenceFeeds?.length || 0),
+      subCounts: [
+        { label: "Suspicious IPs", count: suspiciousIps?.length },
+        { label: "IOCs", count: iocs?.length },
+        { label: "APT Feeds", count: aptFeeds?.length },
+        {
+          label: "Threat Intelligence Feeds",
+          count: threatIntelligenceFeeds?.length,
+        },
+      ],
+      path: "/threat-intelligence",
     },
     {
-      label: "Suspicious IPs",
-      count: suspiciousIps?.length,
-      path: "/threat-intelligence/suspicious-ips",
+      label: "Detections",
+      count: (edrXdrs?.length || 0) + (ndrs?.length || 0),
+      subCounts: [
+        { label: "EDR/XDR Detections", count: edrXdrs?.length },
+        { label: "NDR Detections", count: ndrs?.length },
+      ],
+      path: "/detections",
     },
     {
-      label: "Dark Web Mentions",
-      count: darkWebMentions?.length,
-      path: "/dark-web-monitoring/dark-web-mentions",
+      label: "Dark Web Monitoring",
+      count: (darkWebMentions?.length || 0) + (leakedCredentials?.length || 0),
+      subCounts: [
+        { label: "Dark Web Mentions", count: darkWebMentions?.length },
+        { label: "Leaked Credentials", count: leakedCredentials?.length },
+      ],
+      path: "/dark-web-monitoring",
     },
     {
-      label: "Leaked Credentials",
-      count: leakedCredentials?.length,
-      path: "/dark-web-monitoring/leaked-credentials",
+      label: "ATOs",
+      count: atos?.length,
+      subCounts: [],
+      path: "/account-take-over",
     },
-    {
-      label: "EDR/XDR Detections",
-      count: edrXdrs?.length,
-      path: "/detections/drxdr-detections",
-    },
-    {
-      label: "NDR Detections",
-      count: ndrs?.length,
-      path: "/detections/ndr-detections",
-    },
-    { label: "ATOs", count: atos?.length, path: "/account-take-over" },
     {
       label: "Attack Surfaces",
       count: attackSurfaces?.length,
+      subCounts: [],
       path: "/attack-surface",
     },
     {
       label: "Brand Reputations",
       count: brandReputations?.length,
+      subCounts: [],
       path: "/brand-reputation",
     },
     {
       label: "Vulnerabilities Intelligences",
       count: vulnerabilitiesIntelligences?.length,
+      subCounts: [],
       path: "/vulnerabilities-intelligences",
     },
   ];
@@ -110,71 +127,54 @@ function Home() {
             sx={{
               "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               width: "100%",
-              height: "15rem",
+              height: "auto",
             }}
           >
-            {cardsData.map(({ label, count, path }) => {
-              const isLongLabel = label.split(" ").length > 1;
-              return (
-                <Card
-                  key={label}
-                  sx={{
-                    backgroundImage: "none",
-                    backgroundColor: theme.palette.background.alt,
-                    borderRadius: "0.55rem",
-                    cursor: "pointer",
-                    position: "relative",
-                    overflow: "visible",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    
-                  }}
-                  onClick={() => navigate(path)}
-                >
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: "-1.5rem",
-                      left: "0.25rem",
-                      minWidth: isLongLabel ? "100%" : "90%",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      padding:"15px"
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        backgroundColor: theme.palette.neutral.main,
-                        boxShadow: "1px 1px 5px rgba(0,0,0,1)",
-                        borderRadius: "0.55rem",
-                        width: isLongLabel ? "100%" : "5rem",
-                        height: "3rem",
-                        display: "flex",
-                        marginRight: "10px",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Typography
-                        sx={{
-                          fontSize: 16,
-                        }}
-                        color={theme.palette.secondary[200]}
-                      >
-                        {label}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  <CardContent sx={{ marginTop: "4rem" }}>
-                    <Typography variant="h3" textAlign={"center"}>
-                      {count}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {combinedCardsData.map(({ label, count, subCounts, path }) => (
+              <Card
+                key={label}
+                sx={{
+                  backgroundImage: "none",
+                  backgroundColor: theme.palette.background.alt,
+                  borderRadius: "0.55rem",
+                  cursor: "pointer",
+                  position: "relative",
+                  overflow: "visible",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  padding: "1rem",
+                }}
+                onClick={() => navigate(path)}
+              >
+                <Typography variant="h6" align="center" mb={1}>
+                  {label}
+                </Typography>
+                <Typography variant="h4" color={theme.palette.secondary[200]}>
+                  {count}
+                </Typography>
+                <Box mt={2} width="100%">
+                  {subCounts.map((subCount, index) => (
+                    <React.Fragment key={subCount.label}>
+                      {index > 0 && <Divider sx={{ my: 1 }} />}
+                      <Box display="flex" justifyContent="space-between" px={2}>
+                        <Typography variant="body2">
+                          {subCount.label}
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          color={theme.palette.secondary[200]}
+                        >
+                          {subCount.count}
+                        </Typography>
+                      </Box>
+                    </React.Fragment>
+                  ))}
+                </Box>
+              </Card>
+            ))}
+
+            <Box><NdrPieChart/></Box>
           </Box>
         ) : (
           <>Loading...</>
