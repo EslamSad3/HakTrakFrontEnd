@@ -74,6 +74,7 @@ const ATOs = () => {
     { field: "password", headerName: "Password", width: 150 },
     { field: "url", headerName: "Url", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
+    { field: "bu", headerName: "Bu", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
     adminToken
       ? {

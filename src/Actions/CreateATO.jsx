@@ -21,6 +21,7 @@ function CreateATO() {
     password: Yup.string().required("password Required"),
     url: Yup.string().required("url Required"),
     source: Yup.string().required("source Required"),
+    bu: Yup.string().required("bu Required"),
     mitigationSteps: Yup.string().required("Mitigation Steps Required"),
   });
 
@@ -34,6 +35,7 @@ function CreateATO() {
       password: "",
       url: "",
       source: "",
+      bu: "",
       mitigationSteps: "",
     },
     validationSchema,
@@ -141,6 +143,26 @@ function CreateATO() {
               {formik.errors.source}
             </Alert>
           ) : null}
+
+          <TextField
+            value={formik.values.bu}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            type="text"
+            name="bu"
+            id="bu"
+            margin="normal"
+            required
+            fullWidth
+            label={"bu"}
+          />
+          {formik.errors.bu && formik.touched.bu ? (
+            <Alert severity="error">
+              <AlertTitle> Error </AlertTitle>
+              {formik.errors.bu}
+            </Alert>
+          ) : null}
+
           <TextField
             value={formik.values.mitigationSteps}
             onChange={formik.handleChange}

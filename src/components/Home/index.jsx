@@ -12,6 +12,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "../Header";
 import NdrPieChart from "../Scenes/NdrPieChart";
 import { Context } from "../../context";
+import ExdrPieChart from "../Scenes/ExdrPieChart";
+import AtoBarChart from "../Scenes/AtoBarChart";
 
 function Home() {
   const {
@@ -39,9 +41,11 @@ function Home() {
 
   const severityOptions = ["low", "medium", "high", "critical"];
 
-  const vulnerabilitySeverities = severityOptions.map(severity => ({
+  const vulnerabilitySeverities = severityOptions.map((severity) => ({
     label: severity.charAt(0).toUpperCase() + severity.slice(1),
-    count: vulnerabilitiesIntelligences?.filter(vuln => vuln.severity === severity).length || 0,
+    count:
+      vulnerabilitiesIntelligences?.filter((vuln) => vuln.severity === severity)
+        .length || 0,
   }));
 
   const combinedCardsData = [
@@ -127,70 +131,131 @@ function Home() {
       <Box m="1.5rem 2.5rem">
         <Header title="Summary" />
         {!isLoading ? (
-          <Box
-            mt="5rem"
-            display="grid"
-            gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-            justifyContent="space-between"
-            rowGap="3rem"
-            columnGap="3rem"
-            sx={{
-              "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              width: "100%",
-              height: "auto",
-            }}
-          >
-            {combinedCardsData.map(({ label, count, subCounts, path }) => (
-              <Card
-                key={label}
-                sx={{
-                  backgroundImage: "none",
-                  backgroundColor: theme.palette.background.alt,
-                  borderRadius: "0.55rem",
-                  cursor: "pointer",
-                  position: "relative",
-                  overflow: "visible",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  padding: "1rem",
-                }}
-                onClick={() => navigate(path)}
-              >
-                <Typography variant="h6" align="center" mb={1}>
-                  {label}
-                </Typography>
-                <Typography variant="h4" color={theme.palette.secondary[200]}>
-                  {count}
-                </Typography>
-                <Box mt={2} width="100%">
-                  {subCounts.map((subCount, index) => (
-                    <React.Fragment key={subCount.label}>
-                      {index > 0 && <Divider sx={{ my: 1 }} />}
-                      <Box display="flex" justifyContent="space-between" px={2}>
-                        <Typography
-                          variant="body2"
-                          component={Link}
-                          to={subCount.path}
-                          sx={{ textDecoration: "none", color: "inherit" }}
+          <>
+            <Box
+              mt="5rem"
+              display="grid"
+              gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              justifyContent="space-between"
+              rowGap="3rem"
+              columnGap="3rem"
+              sx={{
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                width: "100%",
+                height: "auto",
+              }}
+            >
+              {combinedCardsData.map(({ label, count, subCounts, path }) => (
+                <Card
+                  key={label}
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    cursor: "pointer",
+                    position: "relative",
+                    overflow: "visible",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                  onClick={() => navigate(path)}
+                >
+                  <Typography variant="h6" align="center" mb={1}>
+                    {label}
+                  </Typography>
+                  <Typography variant="h4" color={theme.palette.secondary[200]}>
+                    {count}
+                  </Typography>
+                  <Box mt={2} width="100%">
+                    {subCounts.map((subCount, index) => (
+                      <React.Fragment key={subCount.label}>
+                        {index > 0 && <Divider sx={{ my: 1 }} />}
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          px={2}
                         >
-                          {subCount.label}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color={theme.palette.secondary[200]}
-                        >
-                          {subCount.count}
-                        </Typography>
-                      </Box>
-                    </React.Fragment>
-                  ))}
-                </Box>
-              </Card>
-            ))}
+                          <Typography
+                            variant="body2"
+                            component={Link}
+                            to={subCount.path}
+                            sx={{ textDecoration: "none", color: "inherit" }}
+                          >
+                            {subCount.label}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color={theme.palette.secondary[200]}
+                          >
+                            {subCount.count}
+                          </Typography>
+                        </Box>
+                      </React.Fragment>
+                    ))}
+                  </Box>
+                </Card>
+              ))}
+            </Box>
 
-            <Box><NdrPieChart/></Box>
-          </Box>
+            <Box mt="5rem">
+              <Header title="Charts" />
+              <Box
+                mt="3rem"
+                display="grid"
+                gridTemplateColumns="repeat(2, 1fr)"
+                justifyContent="space-between"
+                rowGap="3rem"
+                columnGap="3rem"
+                sx={{
+                  "& > div": { gridColumn: isNonMobile ? undefined : "span 2" },
+                  width: "100%",
+                  height: "auto",
+                }}
+              >
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <NdrPieChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <ExdrPieChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <AtoBarChart />
+                </Card>
+              </Box>
+            </Box>
+          </>
         ) : (
           <>Loading...</>
         )}
