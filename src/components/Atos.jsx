@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
+import AtoBarChart from "./Scenes/AtoBarChart";
 
 const ATOs = () => {
   const {
@@ -111,9 +112,11 @@ const ATOs = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header title={"atos"} subtitle={"List of ATOs"} />
-      <Typography variant="h4">Number of ATOs: {atos?.length}</Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"ATOs"} mb="2rem"/>
+      <br />
+      {/* <Typography variant="h4">Number of ATOs: {atos?.length}</Typography> */}
+      <AtoBarChart />
       <Box
         mt="40px"
         sx={{

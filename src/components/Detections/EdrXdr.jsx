@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import ExdrPieChart from "../Scenes/ExdrPieChart";
 
 const EdrXdr = () => {
   const {
@@ -114,14 +115,16 @@ const EdrXdr = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header
-        title={"EDR XDR Detections"}
-        subtitle={"List of EDR XDR Detections"}
-      />
-      <Typography variant="h4">
-        Number of EDR XDR Detections: {edrXdrs?.length}
-      </Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"EDR XDR Detections"} />
+      <Box sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        mb: "20px",
+      }}>
+        <ExdrPieChart />
+      </Box>
       <Box
         mt="40px"
         sx={{

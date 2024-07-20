@@ -6,6 +6,7 @@ import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
 import ConfirmUpdateDialog from "../../Actions/ConfirmUpdateDialog"; // Import the confirmation dialog
+import NdrPieChart from "../Scenes/NdrPieChart";
 
 const Ndr = () => {
   const {
@@ -129,11 +130,19 @@ const Ndr = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header title={"NDRs Detections"} subtitle={"List of NDRs Detections"} />
-      <Typography variant="h4">
-        Number of NDRs Detections: {ndrs?.length}
-      </Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"NDRs Detections"}  />
+      <br />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: "20px",
+        }}
+      >
+        <NdrPieChart />
+      </Box>
       <Box
         mt="40px"
         sx={{
