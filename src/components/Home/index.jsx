@@ -6,6 +6,15 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+
+import {
+  Public,
+  Language,
+  Dns,
+  Policy,
+  ReportProblem,
+  Info,
+} from "@mui/icons-material";
 import React from "react";
 import { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,6 +28,20 @@ import VulnsPieChart from "../Scenes/VulnsPieChart";
 import EdrXdrBuBarChart from "../Scenes/ExdrBuBarChart.jsx";
 import NdrBuBarChart from "../Scenes/NdrBuBarChart.jsx";
 import AttackSurfaceBarChart from "../Scenes/AttackSurfaceBarChart.jsx";
+
+import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
+import BugReportIcon from "@mui/icons-material/BugReport";
+import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import ApprovalIcon from "@mui/icons-material/Approval";
+import FmdBadIcon from "@mui/icons-material/FmdBad";
+import FindInPageIcon from "@mui/icons-material/FindInPage";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
+import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
+import LanIcon from "@mui/icons-material/Lan";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
 
 function Home() {
   const {
@@ -59,11 +82,26 @@ function Home() {
       count:
         (ips?.length || 0) + (domains?.length || 0) + (portals?.length || 0),
       subCounts: [
-        { label: "IPs", count: ips?.length },
-        { label: "Domains", count: domains?.length },
-        { label: "Portals", count: portals?.length },
+        {
+          label: "IPs",
+          count: ips?.length,
+          path: "/assets/ips",
+          icon: <ApprovalIcon fontSize="small" />,
+        },
+        {
+          label: "Domains",
+          count: domains?.length,
+          path: "/assets/domains",
+          icon: <Language fontSize="small" />,
+        },
+        {
+          label: "Portals",
+          count: portals?.length,
+          path: "/assets/portals",
+          icon: <Dns fontSize="small" />,
+        },
       ],
-      path: "/assets/ips",
+      icon: <Public fontSize="small" />,
     },
     {
       label: "Threat Intelligence",
@@ -73,51 +111,91 @@ function Home() {
         (aptFeeds?.length || 0) +
         (threatIntelligenceFeeds?.length || 0),
       subCounts: [
-        { label: "Suspicious IPs", count: suspiciousIps?.length },
-        { label: "IOCs", count: iocs?.length },
-        { label: "APT Feeds", count: aptFeeds?.length },
+        {
+          label: "Suspicious IPs",
+          count: suspiciousIps?.length,
+          path: "/threat-intelligence/suspicious-ips",
+          icon: <FmdBadIcon fontSize="small" />,
+        },
+        {
+          label: "IOCs",
+          count: iocs?.length,
+          path: "/threat-intelligence/iocs",
+          icon: <Policy fontSize="small" />,
+        },
+        {
+          label: "APT Feeds",
+          count: aptFeeds?.length,
+          path: "/threat-intelligence/apt-feeds",
+          icon: <ReportProblem fontSize="small" />,
+        },
         {
           label: "Threat Intelligence Feeds",
           count: threatIntelligenceFeeds?.length,
+          path: "/threat-intelligence/threat-intelligence-feeds",
+          icon: <Info fontSize="small" />,
         },
       ],
-      path: "/threat-intelligence/iocs",
+      icon: <EngineeringOutlinedIcon fontSize="small" />,
     },
     {
       label: "Detections",
       count: (edrXdrs?.length || 0) + (ndrs?.length || 0),
       subCounts: [
-        { label: "EDR / XDR Detections", count: edrXdrs?.length },
-        { label: "NDR Detections", count: ndrs?.length },
+        {
+          label: "EDR / XDR Detections",
+          count: edrXdrs?.length,
+          path: "/detections/edr-xdr-detections",
+          icon: <ScreenSearchDesktopIcon fontSize="small" />,
+        },
+        {
+          label: "NDR Detections",
+          count: ndrs?.length,
+          path: "/detections/ndr-detections",
+          icon: <LanIcon fontSize="small" />,
+        },
       ],
-      path: "/detections/ndr-detections",
+      icon: <CrisisAlertIcon fontSize="small" />,
     },
     {
       label: "Dark Web Monitoring",
       count: (darkWebMentions?.length || 0) + (leakedCredentials?.length || 0),
       subCounts: [
-        { label: "Dark Web Mention", count: darkWebMentions?.length },
-        { label: "Leaked Credential", count: leakedCredentials?.length },
+        {
+          label: "Dark Web Mentions",
+          count: darkWebMentions?.length,
+          path: "/dark-web-monitoring/dark-web-mentions",
+          icon: <FindInPageIcon fontSize="small" />,
+        },
+        {
+          label: "Leaked Credentials",
+          count: leakedCredentials?.length,
+          path: "/dark-web-monitoring/leaked-credentials",
+          icon: <PersonSearchIcon fontSize="small" />,
+        },
       ],
-      path: "/dark-web-monitoring/dark-web-mentions",
+      icon: <TravelExploreIcon fontSize="small" />,
     },
     {
       label: "ATOs",
       count: atos?.length,
       subCounts: [],
       path: "/account-take-over",
+      icon: <FolderSharedIcon fontSize="small" />,
     },
     {
       label: "Attack Surface",
       count: attackSurfaces?.length,
       subCounts: [],
       path: "/attack-surface",
+      icon: <LocalOfferIcon fontSize="small" />,
     },
     {
       label: "Brand Reputation",
       count: brandReputations?.length,
       subCounts: [],
       path: "/brand-reputation",
+      icon: <BrandingWatermarkIcon fontSize="small" />,
     },
     {
       label: "Vulnerabilities",
@@ -126,8 +204,10 @@ function Home() {
         label,
         count,
         path: `/vulnerabilities/${label.toLowerCase()}`,
+        icon: <BugReportIcon fontSize="small" />,
       })),
-      path: "/vulnerabilities",
+      path: "/vulnerabilities-intelligences",
+      icon: <BugReportIcon fontSize="small" />,
     },
   ];
 
@@ -152,58 +232,78 @@ function Home() {
                 height: "auto",
               }}
             >
-              {combinedCardsData.map(({ label, count, subCounts, path }) => (
-                <Card
-                  key={label}
-                  sx={{
-                    backgroundImage: "none",
-                    backgroundColor: theme.palette.background.alt,
-                    borderRadius: "0.55rem",
-                    cursor: "pointer",
-                    position: "relative",
-                    overflow: "visible",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: "1rem",
-                  }}
-                  onClick={() => navigate(path)}
-                >
-                  <Typography variant="h6" align="center" mb={1}>
-                    {label}
-                  </Typography>
-                  <Typography variant="h4" color={theme.palette.secondary[200]}>
-                    {count}
-                  </Typography>
-                  <Box mt={2} width="100%">
-                    {subCounts.map((subCount, index) => (
-                      <React.Fragment key={subCount.label}>
-                        {index > 0 && <Divider sx={{ my: 1 }} />}
-                        <Box
-                          display="flex"
-                          justifyContent="space-between"
-                          px={2}
-                        >
-                          <Typography
-                            variant="body2"
-                            component={Link}
-                            to={subCount.path}
-                            sx={{ textDecoration: "none", color: "inherit" }}
+              {combinedCardsData.map(
+                ({ label, count, subCounts, path, icon }) => (
+                  <Card
+                    key={label}
+                    sx={{
+                      backgroundImage: "none",
+                      backgroundColor: theme.palette.background.alt,
+                      borderRadius: "0.55rem",
+                      cursor: "pointer",
+                      position: "relative",
+                      overflow: "visible",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      padding: "1rem",
+                    }}
+                    onClick={() => path && navigate(path)}
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      mb={1}
+                    >
+                      {icon}
+                      <Typography variant="h6" align="center" ml={1}>
+                        {label}
+                      </Typography>
+                    </Box>
+                    <Typography
+                      variant="h4"
+                      color={theme.palette.secondary[200]}
+                    >
+                      {count}
+                    </Typography>
+                    <Box mt={2} width="100%">
+                      {subCounts.map((subCount, index) => (
+                        <React.Fragment key={subCount.label}>
+                          {index > 0 && <Divider sx={{ my: 1 }} />}
+                          <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            px={2}
                           >
-                            {subCount.label}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color={theme.palette.secondary[200]}
-                          >
-                            {subCount.count}
-                          </Typography>
-                        </Box>
-                      </React.Fragment>
-                    ))}
-                  </Box>
-                </Card>
-              ))}
+                            <Box display="flex" alignItems="center">
+                              {subCount.icon}
+                              <Typography
+                                variant="body2"
+                                component={Link}
+                                to={subCount.path}
+                                sx={{
+                                  textDecoration: "none",
+                                  color: "inherit",
+                                  ml: 1,
+                                }}
+                              >
+                                {subCount.label}
+                              </Typography>
+                            </Box>
+                            <Typography
+                              variant="body2"
+                              color={theme.palette.secondary[200]}
+                            >
+                              {subCount.count}
+                            </Typography>
+                          </Box>
+                        </React.Fragment>
+                      ))}
+                    </Box>
+                  </Card>
+                )
+              )}
             </Box>
 
             <Box mt="5rem">

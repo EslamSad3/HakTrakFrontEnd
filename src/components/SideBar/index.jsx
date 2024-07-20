@@ -31,13 +31,21 @@ import {
 import profileImage from "../../assets/images/logo.png";
 
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
-import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import BugReportIcon from "@mui/icons-material/BugReport";
-import PinchIcon from "@mui/icons-material/Pinch";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
+import ApprovalIcon from "@mui/icons-material/Approval";
+import FmdBadIcon from "@mui/icons-material/FmdBad";	
+import FindInPageIcon from "@mui/icons-material/FindInPage";
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";	
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
+import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
+import LanIcon from "@mui/icons-material/Lan";
+import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import PsychologyIcon from "@mui/icons-material/Psychology";
+import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
 
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../FlexBetween";
@@ -192,7 +200,7 @@ const SideBar = ({
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <Dns />
+                          <ApprovalIcon />
                         </ListItemIcon>
                         <ListItemText primary="IPs" sx={{ pl: 2 }} />
                       </ListItemButton>
@@ -409,7 +417,7 @@ const SideBar = ({
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <Warning />
+                          <FmdBadIcon />
                         </ListItemIcon>
                         <ListItemText primary="Suspicious IPs" sx={{ pl: 2 }} />
                       </ListItemButton>
@@ -474,7 +482,7 @@ const SideBar = ({
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <Policy />
+                          <FindInPageIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary="Dark Web Mentions"
@@ -510,7 +518,7 @@ const SideBar = ({
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <ReportProblem />
+                          <PersonSearchIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary="leaked Credentials"
@@ -545,7 +553,7 @@ const SideBar = ({
                       ml: "1rem",
                     }}
                   >
-                    <PinchIcon />
+                    <CrisisAlertIcon />
                   </ListItemIcon>
                   <Typography>Detections</Typography>
                 </AccordionSummary>
@@ -554,15 +562,15 @@ const SideBar = ({
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() =>
-                          handleNavigate("/detections/drxdr-detections")
+                          handleNavigate("/detections/edrxdr-detections")
                         }
                         sx={{
                           backgroundColor:
-                            active === "detections/drxdr-detections"
+                            active === "detections/edrxdr-detections"
                               ? theme.palette.secondary[300]
                               : "transparent",
                           color:
-                            active === "detections/drxdr-detections"
+                            active === "detections/edrxdr-detections"
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100],
                         }}
@@ -571,12 +579,12 @@ const SideBar = ({
                           sx={{
                             ml: "3rem",
                             color:
-                              active === "detections/drxdr-detections"
+                              active === "detections/edrxdr-detections"
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <Policy />
+                          <ScreenSearchDesktopIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary="EDR / XDR Detections"
@@ -609,7 +617,7 @@ const SideBar = ({
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <ReportProblem />
+                          <LanIcon />
                         </ListItemIcon>
                         <ListItemText primary="NDR Detections" sx={{ pl: 2 }} />
                       </ListItemButton>
@@ -642,7 +650,7 @@ const SideBar = ({
                           : theme.palette.secondary[200],
                     }}
                   >
-                    <BorderColorOutlinedIcon />
+                    <FolderSharedIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Account Takeover"
@@ -788,7 +796,7 @@ const SideBar = ({
                           : theme.palette.secondary[200],
                     }}
                   >
-                    <BugReportIcon />
+                    <PsychologyIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Attack Scenarios"
@@ -823,7 +831,7 @@ const SideBar = ({
                           : theme.palette.secondary[200],
                     }}
                   >
-                    <BugReportIcon />
+                    <AssuredWorkloadIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary="Compliance"

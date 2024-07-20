@@ -141,7 +141,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/admin/actions/detections/drxdr-detections"
+                  path="/admin/actions/detections/edrxdr-detections"
                   forceRefresh={true}
                   element={
                     <ProtectedRoute>
@@ -226,7 +226,7 @@ function App() {
                 />
                 {/* Detections */}
                 <Route
-                  path="/detections/drxdr-detections"
+                  path="/detections/edrxdr-detections"
                   element={<EdrXdr />}
                 />
                 <Route path="/detections/ndr-detections" element={<Ndr />} />
