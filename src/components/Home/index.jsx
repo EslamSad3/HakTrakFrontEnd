@@ -14,6 +14,7 @@ import NdrPieChart from "../Scenes/NdrPieChart";
 import { Context } from "../../context";
 import ExdrPieChart from "../Scenes/ExdrPieChart";
 import AtoBarChart from "../Scenes/AtoBarChart";
+import LeakedCreBarChart from "../Scenes/LeakedCreBarChart";
 
 function Home() {
   const {
@@ -257,6 +258,19 @@ function Home() {
                   }}
                 >
                   <AtoBarChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <LeakedCreBarChart />
                 </Card>
               </Box>
             </Box>
