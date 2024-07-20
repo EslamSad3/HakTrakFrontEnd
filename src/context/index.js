@@ -12,7 +12,7 @@ export function ContextProvider(props) {
     localStorage.getItem("AdminToken")
   );
   const [userToken, setUserToken] = useState(localStorage.getItem("UserToken"));
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   /** ************************** Assets States *******************/
   // Ips
   const [ips, setIps] = useState([]);
@@ -91,39 +91,44 @@ export function ContextProvider(props) {
     setUserToken(token);
   }
 
+
+    // useEffect(() => {
+    //   if (adminToken || userToken) {
+    //     setIsLoggedIn(true);
+    //     navigate("/dashboard");
+    //   }
+    // }, [adminToken, userToken, navigate]);
   // Login
-  async function handleLogingIn(values) {
-    try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
-        values
-      );
+async function handleLogingIn(values) {
+  try {
+    setIsLoading(true);
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
+      values
+    );
+    setIsLoading(false);
 
-      setIsLoading(false);
-
-      if (response.status === 200) {
-        const { token } = response.data;
-        const { role } = response.data.data;
-        if (role === "admin") {
-          saveAdminToken(token);
-        } else if (role === "user") {
-          saveUserToken(token);
-        }
-        navigate("/dashboard");
-        toast.success("Logged in successfully", {
-          position: "top-center",
-        });
-      } else {
-        toast.error("Invalid Email Or Password", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+    if (response.status === 200) {
+      const { token } = response.data;
+      const { role } = response.data.data;
+      if (role === "admin") {
+        saveAdminToken(token);
+      } else if (role === "user") {
+        saveUserToken(token);
       }
-    } catch (error) {
-      toast.error(error.response.data.message);
-      setIsLoading(false);
+      setIsLoggedIn(true);
+      navigate("/dashboard");
+      toast.success("Logged in successfully", { position: "top-center" });
+    } else {
+      toast.error("Invalid Email Or Password", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     }
+  } catch (error) {
+    toast.error(error.response.data.message);
+    setIsLoading(false);
   }
+}
 
   // Helper function to get the appropriate headers
   const getAuthAdminHeaders = () => {

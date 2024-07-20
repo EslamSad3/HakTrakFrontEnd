@@ -25,7 +25,6 @@ import { useDispatch } from "react-redux";
 import { setMode } from "../../state";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
-  const dispatch = useDispatch();
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,8 +35,6 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
     navigate("/login");
     setAnchorEl(null);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <AppBar
@@ -57,13 +54,6 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
 
         {/* Right */}
         <FlexBetween gap="1.5rem">
-          {/* <IconButton onClick={() => dispatch(setMode())}>
-            {theme.palette.mode === "dark" ? (
-              <DarkModeOutlined sx={{ fontSize: "25px" }} />
-            ) : (
-              <LightModeOutlined sx={{ fontSize: "25px" }} />
-            )}
-          </IconButton> */}
           <FlexBetween
             sx={{
               " .MuiOutlinedInput-notchedOutline": { border: "0px" },
@@ -109,7 +99,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               onClose={() => setAnchorEl(null)}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
-              <MenuItem onClick={handleClose}>Log Out</MenuItem>
+              <MenuItem onClick={() => handleClose()}>Log Out</MenuItem>
             </Menu>
           </FlexBetween>
         </FlexBetween>
