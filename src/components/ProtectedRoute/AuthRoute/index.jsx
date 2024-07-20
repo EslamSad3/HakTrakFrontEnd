@@ -4,7 +4,10 @@ function AuthRoute(props) {
   const storedAdminToken = localStorage.getItem("AdminToken");
   const storedUserToken = localStorage.getItem("UserToken");
 
-  if (!storedAdminToken && !storedUserToken) {
+  console.log(storedAdminToken, "storedAdminToken");
+  console.log(storedUserToken, "storedUserToken");
+
+  if (!(storedAdminToken || storedUserToken)) {
     return <Navigate to={"/login"} />;
   } else {
     return props.children;

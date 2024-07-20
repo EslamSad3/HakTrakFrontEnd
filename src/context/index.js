@@ -91,44 +91,37 @@ export function ContextProvider(props) {
     setUserToken(token);
   }
 
-
-    // useEffect(() => {
-    //   if (adminToken || userToken) {
-    //     setIsLoggedIn(true);
-    //     navigate("/dashboard");
-    //   }
-    // }, [adminToken, userToken, navigate]);
   // Login
-async function handleLogingIn(values) {
-  try {
-    setIsLoading(true);
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
-      values
-    );
-    setIsLoading(false);
+  async function handleLogingIn(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/auth/login`,
+        values
+      );
+      setIsLoading(false);
 
-    if (response.status === 200) {
-      const { token } = response.data;
-      const { role } = response.data.data;
-      if (role === "admin") {
-        saveAdminToken(token);
-      } else if (role === "user") {
-        saveUserToken(token);
+      if (response.status === 200) {
+        const { token } = response.data;
+        const { role } = response.data.data;
+        if (role === "admin") {
+          saveAdminToken(token);
+        } else if (role === "user") {
+          saveUserToken(token);
+        }
+        navigate("/dashboard");
+        setIsLoggedIn(true);
+        toast.success("Logged in successfully", { position: "top-center" });
+      } else {
+        toast.error("Invalid Email Or Password", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
-      setIsLoggedIn(true);
-      navigate("/dashboard");
-      toast.success("Logged in successfully", { position: "top-center" });
-    } else {
-      toast.error("Invalid Email Or Password", {
-        position: toast.POSITION.TOP_CENTER,
-      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
     }
-  } catch (error) {
-    toast.error(error.response.data.message);
-    setIsLoading(false);
   }
-}
 
   // Helper function to get the appropriate headers
   const getAuthAdminHeaders = () => {
@@ -1709,8 +1702,6 @@ async function handleLogingIn(values) {
     }
   }
 
-
-
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1727,6 +1718,7 @@ async function handleLogingIn(values) {
     fetchAllAttckSurfaces();
     fetchAllBrandReputations();
     fetchAllVulnerabilitiesIntelligences();
+
   };
 
   useEffect(() => {
