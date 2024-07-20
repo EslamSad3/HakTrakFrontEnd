@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from "react";
-import {
-  ArrowDropDownOutlined,
-  DarkModeOutlined,
-  LightModeOutlined,
-  Menu as MenuIcon,
-  SettingsOutlined,
-} from "@mui/icons-material";
+import React, { useContext, useEffect, useState } from "react";
+import { ArrowDropDownOutlined, Menu as MenuIcon } from "@mui/icons-material";
 import FlexBetween from "../FlexBetween";
 import {
   AppBar,
@@ -13,18 +7,25 @@ import {
   IconButton,
   Button,
   Box,
-  Typography,
   Menu,
   MenuItem,
+  Typography,
 } from "@mui/material";
-
+import { jwtDecode } from "jwt-decode";
 import profileImage from "../../assets/images/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
-import { useDispatch } from "react-redux";
-import { setMode } from "../../state";
+import { Context } from "../../context";
 
 function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
+  const { adminToken, userToken } = useContext(Context);
+
+  const [adminData, setAdminData] = useState({});
+  const [userTokenData, setUserTokenData] = useState({});
+
+  console.log(adminData, "adminData");
+  console.log(userTokenData, "userTokenData");
+
   const theme = useTheme();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -35,6 +36,18 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
     navigate("/login");
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    const dataDecoded = () => {
+      if (adminToken) {
+        setAdminData(jwtDecode(adminToken));
+      }
+      if (userToken) {
+        setUserTokenData(jwtDecode(userToken));
+      }
+    };
+    dataDecoded();
+  }, [adminToken, userToken]);
 
   return (
     <AppBar
@@ -62,33 +75,19 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
           ></FlexBetween>
 
           <FlexBetween>
-            <Box
-              component="img"
-              alt="profile"
-              src={profileImage}
-              height="32px"
-              width="100%"
-              sx={{ objectFit: "cover", mr: "2rem" }}
-            />
+            <Typography variant="body1" color="white">
+              {adminToken
+                ? `Welcome ${adminData?.payload?.name}`
+                : `Welcome ${userTokenData?.payload?.name}`}
+            </Typography>
             <Button
               onClick={handleClick}
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "center",
                 alignItems: "center",
-                textTransform: "none",
-                gap: "1rem",
               }}
             >
-              <Box textAlign="center">
-                <Typography
-                  fontWeight="bold"
-                  fontSize="0.85rem"
-                  sx={{ color: theme.palette.secondary[100] }}
-                >
-                  Log Out
-                </Typography>
-              </Box>
               <ArrowDropDownOutlined
                 sx={{ color: theme.palette.secondary[300], fontSize: "25px" }}
               />
@@ -97,7 +96,7 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
               anchorEl={anchorEl}
               open={isOpen}
               onClose={() => setAnchorEl(null)}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              // anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >
               <MenuItem onClick={() => handleClose()}>Log Out</MenuItem>
             </Menu>

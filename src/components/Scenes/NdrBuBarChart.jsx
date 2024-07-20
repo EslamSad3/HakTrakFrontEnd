@@ -42,6 +42,7 @@ export default function NdrBuBarChart() {
             data: buValues,
             label: "NDR By BU",
             id: "ndrId",
+            color: "#3f51b5",
           },
         ]}
         xAxis={[
