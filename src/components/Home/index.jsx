@@ -1,18 +1,17 @@
 import {
   Box,
   Card,
-  CardContent,
   Typography,
   Divider,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import React from "react";
-import Header from "../Header";
 import { useContext } from "react";
-import { Context } from "../../context";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Header from "../Header";
 import NdrPieChart from "../Scenes/NdrPieChart";
+import { Context } from "../../context";
 
 function Home() {
   const {
@@ -38,6 +37,13 @@ function Home() {
   const theme = useTheme();
   const navigate = useNavigate();
 
+  const severityOptions = ["low", "medium", "high", "critical"];
+
+  const vulnerabilitySeverities = severityOptions.map(severity => ({
+    label: severity.charAt(0).toUpperCase() + severity.slice(1),
+    count: vulnerabilitiesIntelligences?.filter(vuln => vuln.severity === severity).length || 0,
+  }));
+
   const combinedCardsData = [
     {
       label: "Assets",
@@ -48,7 +54,7 @@ function Home() {
         { label: "Domains", count: domains?.length },
         { label: "Portals", count: portals?.length },
       ],
-      path: "/assets",
+      path: "/assets/ips",
     },
     {
       label: "Threat Intelligence",
@@ -66,7 +72,7 @@ function Home() {
           count: threatIntelligenceFeeds?.length,
         },
       ],
-      path: "/threat-intelligence",
+      path: "/threat-intelligence/iocs",
     },
     {
       label: "Detections",
@@ -75,7 +81,7 @@ function Home() {
         { label: "EDR/XDR Detections", count: edrXdrs?.length },
         { label: "NDR Detections", count: ndrs?.length },
       ],
-      path: "/detections",
+      path: "/detections/ndr-detections",
     },
     {
       label: "Dark Web Monitoring",
@@ -84,7 +90,7 @@ function Home() {
         { label: "Dark Web Mentions", count: darkWebMentions?.length },
         { label: "Leaked Credentials", count: leakedCredentials?.length },
       ],
-      path: "/dark-web-monitoring",
+      path: "/dark-web-monitoring/dark-web-mentions",
     },
     {
       label: "ATOs",
@@ -105,10 +111,14 @@ function Home() {
       path: "/brand-reputation",
     },
     {
-      label: "Vulnerabilities Intelligences",
-      count: vulnerabilitiesIntelligences?.length,
-      subCounts: [],
-      path: "/vulnerabilities-intelligences",
+      label: "Vulnerabilities",
+      count: vulnerabilitiesIntelligences?.length || 0,
+      subCounts: vulnerabilitySeverities.map(({ label, count }) => ({
+        label,
+        count,
+        path: `/vulnerabilities/${label.toLowerCase()}`,
+      })),
+      path: "/vulnerabilities",
     },
   ];
 
@@ -158,7 +168,12 @@ function Home() {
                     <React.Fragment key={subCount.label}>
                       {index > 0 && <Divider sx={{ my: 1 }} />}
                       <Box display="flex" justifyContent="space-between" px={2}>
-                        <Typography variant="body2">
+                        <Typography
+                          variant="body2"
+                          component={Link}
+                          to={subCount.path}
+                          sx={{ textDecoration: "none", color: "inherit" }}
+                        >
                           {subCount.label}
                         </Typography>
                         <Typography

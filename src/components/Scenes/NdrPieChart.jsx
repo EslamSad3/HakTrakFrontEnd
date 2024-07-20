@@ -1,7 +1,25 @@
 import React, { useContext } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
-import { pieArcLabelClasses, PieChart } from "@mui/x-charts/PieChart";
+import { Box, Typography, useTheme, styled } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
+import { useDrawingArea } from "@mui/x-charts/hooks";
 import { Context } from "../../context";
+
+// Styled text for center label
+const StyledText = styled("text")(({ theme }) => ({
+  fill: theme.palette.text.primary,
+  textAnchor: "middle",
+  dominantBaseline: "central",
+  fontSize: 20,
+}));
+
+function PieCenterLabel({ children }) {
+  const { width, height, left, top } = useDrawingArea();
+  return (
+    <StyledText x={left + width / 2} y={top + height / 2}>
+      {children}
+    </StyledText>
+  );
+}
 
 export default function NdrPieChart() {
   const { ndrs } = useContext(Context);
@@ -17,11 +35,13 @@ export default function NdrPieChart() {
     color: colors[index], // Assign corresponding color
   }));
 
+  const size = {
+    width: 400,
+    height: 200,
+  };
+
   return (
     <>
-      <Typography variant="h6" align="center" mb={1}>
-        NDRs
-      </Typography>
       <PieChart
         series={[
           {
@@ -30,20 +50,14 @@ export default function NdrPieChart() {
               value: item.value,
               label: `${item.label} (${item.value})`,
               color: item.color, // Set the color for each slice
-              arcLabel: (item) => `${item.label} (${item.value})`,
-              arcLabelMinAngle: 45,
             })),
+            innerRadius: 80,
           },
         ]}
-        sx={{
-          [`& .${pieArcLabelClasses.root}`]: {
-            fill: "white",
-            fontWeight: "bold",
-          },
-        }}
-        width={400}
-        height={200}
-      />
+        {...size}
+      >
+        <PieCenterLabel>NDRs</PieCenterLabel>
+      </PieChart>
     </>
   );
 }
