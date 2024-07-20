@@ -1,11 +1,10 @@
 import React, { useContext } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Context } from "../../context";
 
 export default function AtoBarChart() {
   const { atos } = useContext(Context);
-  const theme = useTheme();
 
   // Group by `bu` property
   const buCounts = atos.reduce((acc, ato) => {
@@ -50,6 +49,13 @@ export default function AtoBarChart() {
           {
             data: buLabels,
             scaleType: "band",
+          },
+        ]}
+        yAxis={[
+          {
+            min: 0, // Ensure the minimum value of the Y-axis starts at 0
+            tickCount: buValues.length + 1, // Control the number of ticks on the Y-axis
+            tickFormat: (value) => value, // Ensure the ticks increment by 1
           },
         ]}
       />

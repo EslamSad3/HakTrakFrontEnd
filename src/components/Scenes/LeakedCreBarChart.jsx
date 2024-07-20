@@ -1,24 +1,40 @@
 import React, { useContext } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Context } from "../../context";
 
 export default function LeakedCreBarChart() {
   const { leakedCredentials } = useContext(Context);
 
+  if (!leakedCredentials || leakedCredentials.length === 0) {
+    return (
+      <Typography variant="h6" align="center">
+        No leaked credentials available
+      </Typography>
+    );
+  }
+
   // Group by `bu` property
-  const buCounts = leakedCredentials.reduce((acc, leakedCre) => {
-    acc[leakedCre.bu] = (acc[leakedCre.bu] || 0) + 1;
+  const buCounts = leakedCredentials.reduce((acc, { bu }) => {
+    acc[bu] = (acc[bu] || 0) + 1;
     return acc;
   }, {});
 
-  const buData = Object.keys(buCounts).map((bu, index) => ({
+  const buData = Object.entries(buCounts).map(([bu, value]) => ({
     label: bu,
-    value: buCounts[bu], // Correctly set the value to the count of the bu
+    value,
   }));
 
-  const buLabels = buData.map((item) => item.label);
-  const buValues = buData.map((item) => item.value);
+  const buLabels = buData.map(({ label }) => label);
+  const buValues = buData.map(({ value }) => value);
+
+  // Generate a list of colors
+  const colors = [
+    "#4caf50",
+    "#2196f3",
+    "#ff9800",
+
+  ];
 
   return (
     <Box
@@ -32,23 +48,28 @@ export default function LeakedCreBarChart() {
       }}
     >
       <Typography variant="h6" align="center" mb={1}>
-        Leaked Credential by Business Unit
+        Leaked Credentials by Business Unit
       </Typography>
       <BarChart
         width={500}
         height={300}
-        series={[
-          {
-            data: buValues,
-            label: "Leaked Credential",
-            id: "leakedCreId",
-            color: "#f44336",
-          },
-        ]}
+        series={buLabels.map((label, index) => ({
+          data: [buValues[index]],
+          label: label,
+          id: `leakedCreId-${index}`,
+          color: colors[index % colors.length], // Assign a color to each bar
+        }))}
         xAxis={[
           {
             data: buLabels,
             scaleType: "band",
+          },
+        ]}
+        yAxis={[
+          {
+            min: 0,
+            tickCount: Math.max(...buValues) + 1, // Ensure there are enough ticks to cover the range
+            tickFormat: (value) => value, // Ensure the ticks increment by 1
           },
         ]}
       />
