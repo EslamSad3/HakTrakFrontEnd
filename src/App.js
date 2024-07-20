@@ -43,6 +43,7 @@ import CreateBrandReputation from "./Actions/CreateBrandReputation";
 import VulnerabilitiesIntelligences from "./components/VulnerabilitiesIntelligences";
 import CreateVulnerabilitiesIntelligences from "./Actions/CreateVulnerabilitiesIntelligences";
 import AttackSurface from "./components/AttackSurface";
+import CreateAttackSurface from "./Actions/CreateAttackSurface";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -55,170 +56,190 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
           </Routes>
+          <AuthRoute>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route
+                  path="/"
+                  element={<Navigate to="/dashboard" replace />}
+                />
+                <Route path="/dashboard" element={<Home />} />
 
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Home />} />
+                {/* Assets Actions Routes */}
+                <Route
+                  path="/admin/actions/assets/ips"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreateIps />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/assets/domains"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreateDomains />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/assets/portals"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <CreatePortals />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Assets Actions Routes */}
-              <Route
-                path="/admin/actions/assets/ips"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    <CreateIps />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/assets/domains"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    <CreateDomains />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/assets/portals"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    <CreatePortals />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Threat intelligence Actions Routes */}
 
-              {/* Threat intelligence Actions Routes */}
+                <Route
+                  path="/admin/actions/threat-intelligence/iocs"
+                  forceRefresh={true}
+                  element={<ProtectedRoute>{<CreateIocs />}</ProtectedRoute>}
+                />
+                <Route
+                  path="/admin/actions/threat-intelligence/suspicious-ips"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateSuspiciousIps />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/threat-intelligence/apt-feeds"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateAptFeeds />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/threat-intelligence/threat-intelligence-feeds"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateThreatIntelligenceFeeds />}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/dark-web-monitoring/dark-web-mentions"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateDarkWebMentions />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/dark-web-monitoring/leaked-credentials"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateLeakedCredentials />}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/detections/drxdr-detections"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateEdrXdrDetections />}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/detections/ndr-detections"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateNdrDetections />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/account-take-over"
+                  forceRefresh={true}
+                  element={<ProtectedRoute>{<CreateATO />}</ProtectedRoute>}
+                />
+                <Route
+                  path="/admin/actions/brand-reputation"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateBrandReputation />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/vulnerabilities-intelligences"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      {<CreateVulnerabilitiesIntelligences />}
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/attack-surface"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateAttackSurface />}</ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/admin/actions/threat-intelligence/iocs"
-                forceRefresh={true}
-                element={<ProtectedRoute>{<CreateIocs />}</ProtectedRoute>}
-              />
-              <Route
-                path="/admin/actions/threat-intelligence/suspicious-ips"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateSuspiciousIps />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/threat-intelligence/apt-feeds"
-                forceRefresh={true}
-                element={<ProtectedRoute>{<CreateAptFeeds />}</ProtectedRoute>}
-              />
-              <Route
-                path="/admin/actions/threat-intelligence/threat-intelligence-feeds"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    {<CreateThreatIntelligenceFeeds />}
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/dark-web-monitoring/dark-web-mentions"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateDarkWebMentions />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/dark-web-monitoring/leaked-credentials"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateLeakedCredentials />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/detections/drxdr-detections"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateEdrXdrDetections />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/detections/ndr-detections"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateNdrDetections />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/account-take-over"
-                forceRefresh={true}
-                element={<ProtectedRoute>{<CreateATO />}</ProtectedRoute>}
-              />
-              <Route
-                path="/admin/actions/brand-reputation"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>{<CreateBrandReputation />}</ProtectedRoute>
-                }
-              />
-              <Route
-                path="/admin/actions/vulnerabilities-intelligences"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    {<CreateVulnerabilitiesIntelligences />}
-                  </ProtectedRoute>
-                }
-              />
+                <Route
+                  path="/admin/actions"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>
+                      <AdminAcions />
+                    </ProtectedRoute>
+                  }
+                />
 
-              <Route
-                path="/admin/actions"
-                forceRefresh={true}
-                element={
-                  <ProtectedRoute>
-                    <AdminAcions />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Assets Routes */}
+                <Route path="/assets/ips" element={<IPs />} />
+                <Route path="/assets/domains" element={<Domains />} />
+                <Route path="/assets/portals" element={<Portals />} />
 
-              {/* Assets Routes */}
-              <Route path="/assets/ips" element={<IPs />} />
-              <Route path="/assets/domains" element={<Domains />} />
-              <Route path="/assets/portals" element={<Portals />} />
+                {/* Threat intelligence Routes */}
+                <Route path="/threat-intelligence/iocs" element={<Iocs />} />
+                <Route
+                  path="/threat-intelligence/suspicious-ips"
+                  element={<SuspiciousIps />}
+                />
+                <Route
+                  path="/threat-intelligence/apt-feeds"
+                  element={<AptFeeds />}
+                />
+                <Route
+                  path="/threat-intelligence/threat-intelligence-feeds"
+                  element={<ThreatIntelligenceFeeds />}
+                />
 
-              {/* Threat intelligence Routes */}
-              <Route path="/threat-intelligence/iocs" element={<Iocs />} />
-              <Route
-                path="/threat-intelligence/suspicious-ips"
-                element={<SuspiciousIps />}
-              />
-              <Route
-                path="/threat-intelligence/apt-feeds"
-                element={<AptFeeds />}
-              />
-              <Route
-                path="/threat-intelligence/threat-intelligence-feeds"
-                element={<ThreatIntelligenceFeeds />}
-              />
-
-              {/* Dark Web Montring routes */}
-              <Route
-                path="/dark-web-monitoring/dark-web-mentions"
-                element={<DarkWebMentions />}
-              />
-              <Route
-                path="/dark-web-monitoring/leaked-credentials"
-                element={<LeakedCredentials />}
-              />
-              {/* Detections */}
-              <Route path="/detections/drxdr-detections" element={<EdrXdr />} />
-              <Route path="/detections/ndr-detections" element={<Ndr />} />
-              <Route path="/account-take-over" element={<ATOs />} />
-              <Route path="/brand-reputation" element={<BrandReputation />} />
-              <Route
-                path="/vulnerabilities-intelligences"
-                element={<VulnerabilitiesIntelligences />}
-              />
-              <Route path="/attack-surfaces" element={<AttackSurface />} />
-            </Route>
-          </Routes>
+                {/* Dark Web Montring routes */}
+                <Route
+                  path="/dark-web-monitoring/dark-web-mentions"
+                  element={<DarkWebMentions />}
+                />
+                <Route
+                  path="/dark-web-monitoring/leaked-credentials"
+                  element={<LeakedCredentials />}
+                />
+                {/* Detections */}
+                <Route
+                  path="/detections/drxdr-detections"
+                  element={<EdrXdr />}
+                />
+                <Route path="/detections/ndr-detections" element={<Ndr />} />
+                <Route path="/account-take-over" element={<ATOs />} />
+                <Route path="/brand-reputation" element={<BrandReputation />} />
+                <Route
+                  path="/vulnerabilities-intelligences"
+                  element={<VulnerabilitiesIntelligences />}
+                />
+                <Route path="/attack-surfaces" element={<AttackSurface />} />
+              </Route>
+            </Routes>
+          </AuthRoute>
         </ContextProvider>
       </ThemeProvider>
       <ToastContainer />

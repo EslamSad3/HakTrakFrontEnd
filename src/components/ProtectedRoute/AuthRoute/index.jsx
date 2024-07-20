@@ -1,13 +1,11 @@
+import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import { Context } from "../../../context";
 
 function AuthRoute(props) {
-  const storedAdminToken = localStorage.getItem("AdminToken");
-  const storedUserToken = localStorage.getItem("UserToken");
+  const { adminToken, userToken } = useContext(Context);
 
-  console.log(storedAdminToken, "storedAdminToken");
-  console.log(storedUserToken, "storedUserToken");
-
-  if (!(storedAdminToken || storedUserToken)) {
+  if (!adminToken && !userToken) {
     return <Navigate to={"/login"} />;
   } else {
     return props.children;
