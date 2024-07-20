@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
+import AttackSurfaceBarChart from "./Scenes/AttackSurfaceBarChart";
 
 const AttackSurface = () => {
   const {
@@ -83,10 +84,7 @@ const AttackSurface = () => {
       headerName: "Screenshot",
       width: 150,
       renderCell: (params) => (
-        <Button
-          variant="contained"
-          color="info"
-        >
+        <Button variant="contained" color="info">
           <a href={params.row.screenshot} target="_blank">
             View
           </a>
@@ -129,11 +127,18 @@ const AttackSurface = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header title={"Attack Surfaces"} subtitle={"List of Attack Surfaces"} />
-      <Typography variant="h4">
-        Number of Attack Surfaces: {attackSurfaces?.length}
-      </Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"Attack Surface"} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mb: "20px",
+        }}
+      >
+        <AttackSurfaceBarChart />
+      </Box>
       <Box
         mt="40px"
         sx={{

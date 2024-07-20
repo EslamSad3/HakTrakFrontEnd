@@ -44,6 +44,7 @@ export default function AttackSurfaceBarChart() {
             data: portValues,
             label: "Attack Surface by Open Ports",
             id: "attackId",
+            color: "#fff333"
           },
         ]}
         xAxis={[

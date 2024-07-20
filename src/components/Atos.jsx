@@ -73,9 +73,9 @@ const ATOs = () => {
     },
     { field: "user", headerName: "User", width: 150 },
     { field: "password", headerName: "Password", width: 150 },
-    { field: "url", headerName: "Url", width: 150 },
+    { field: "url", headerName: "URL", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
-    { field: "bu", headerName: "Bu", width: 150 },
+    { field: "bu", headerName: "BU", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
     adminToken
       ? {
@@ -115,7 +115,6 @@ const ATOs = () => {
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
       <Header title={"ATOs"} mb="2rem"/>
       <br />
-      {/* <Typography variant="h4">Number of ATOs: {atos?.length}</Typography> */}
       <AtoBarChart />
       <Box
         mt="40px"

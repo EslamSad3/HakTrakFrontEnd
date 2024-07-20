@@ -72,7 +72,7 @@ const ThreatIntelligenceFeeds = () => {
     { field: "threatType", headerName: "Threat Type", width: 150 },
     { field: "severity", headerName: "Severity", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
-    { field: "description", headerName: "description", width: 300 },
+    { field: "description", headerName: "Description", width: 300 },
     adminToken
       ? {
           field: "delete",
@@ -109,9 +109,12 @@ const ThreatIntelligenceFeeds = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"threatIntelligenceFeeds"} subtitle={"List of threatIntelligenceFeeds"} />
+      <Header
+        title={"Threat Intelligence Feeds"}
+        subtitle={"List of Threat Intelligence Feeds"}
+      />
       <Typography variant="h4">
-        Number of threatIntelligenceFeeds: {threatIntelligenceFeeds?.length}
+        Number of Threat Intelligence Feeds: {threatIntelligenceFeeds?.length}
       </Typography>
       <Box
         mt="40px"

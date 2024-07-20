@@ -109,8 +109,8 @@ const Portals = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"portals"} subtitle={"List of portals"} />
-      <Typography variant="h4">Number of portals: {portals?.length}</Typography>
+      <Header title={"Portals"} subtitle={"List of Portals"} />
+      <Typography variant="h4">Number of Portals: {portals?.length}</Typography>
       <Box
         mt="40px"
         sx={{

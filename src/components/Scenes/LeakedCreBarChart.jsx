@@ -32,7 +32,7 @@ export default function LeakedCreBarChart() {
       }}
     >
       <Typography variant="h6" align="center" mb={1}>
-        leaked Credential by Business Unit
+        Leaked Credential by Business Unit
       </Typography>
       <BarChart
         width={500}
@@ -42,6 +42,7 @@ export default function LeakedCreBarChart() {
             data: buValues,
             label: "Leaked Credential",
             id: "leakedCreId",
+            color: "#f44336",
           },
         ]}
         xAxis={[

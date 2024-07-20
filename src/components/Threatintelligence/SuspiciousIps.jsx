@@ -109,9 +109,9 @@ const SuspiciousIps = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"IPS"} subtitle={"List of IPS"} />
+      <Header title={"Suspicious IPs"} subtitle={"List of Suspicious IPs"} />
       <Typography variant="h4">
-        Number of Suspicious Ips: {suspiciousIps?.length}
+        Number of Suspicious IPs: {suspiciousIps?.length}
       </Typography>
       <Box
         mt="40px"

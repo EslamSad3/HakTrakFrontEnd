@@ -73,12 +73,12 @@ const AptFeeds = () => {
     },
     { field: "aptGroupName", headerName: "Apt Group Name", width: 150 },
     { field: "threatType", headerName: "Threat Type", width: 150 },
-    { field: "ttps", headerName: "ttps", width: 150 },
+    { field: "ttps", headerName: "TTPs", width: 150 },
     { field: "targetSectors", headerName: "Target Sectors", width: 150 },
     { field: "geographicFocus", headerName: "Geographic Focus", width: 150 },
-    { field: "iocs", headerName: "Iocs", width: 150 },
+    { field: "iocs", headerName: "IOCs", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
-    { field: "description", headerName: "description", width: 300 },
+    { field: "description", headerName: "Description", width: 300 },
     adminToken
       ? {
           field: "delete",

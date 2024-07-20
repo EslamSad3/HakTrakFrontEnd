@@ -77,7 +77,7 @@ const BrandReputation = () => {
       headerName: "Incident Description",
       width: 150,
     },
-    { field: "status", headerName: "status", width: 150 },
+    { field: "status", headerName: "Status", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
     adminToken
       ? {
@@ -116,11 +116,11 @@ const BrandReputation = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header
-        title={"Brand Reputations"}
-        subtitle={"List of Brand Reputations"}
+        title={"Brand Reputation "}
+        subtitle={"List of Brand Reputation "}
       />
       <Typography variant="h4">
-        Number of Brand Reputations: {brandReputations?.length}
+        Number of Brand Reputation : {brandReputations?.length}
       </Typography>
       <Box
         mt="40px"

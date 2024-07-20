@@ -75,7 +75,7 @@ const EdrXdr = () => {
     { field: "alertID", headerName: "Alert ID", width: 150 },
     { field: "threatType", headerName: "Threat Type", width: 150 },
     { field: "severity", headerName: "Severity", width: 150 },
-    { field: "bu", headerName: "Bu", width: 150 },
+    { field: "bu", headerName: "BU", width: 150 },
     { field: "device", headerName: "Device", width: 150 },
     { field: "filePath", headerName: "File Path", width: 150 },
     { field: "actionTaken", headerName: "Action Taken", width: 150 },
@@ -116,7 +116,7 @@ const EdrXdr = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"EDR XDR Detections"} />
+      <Header title={"EDR XDR Detection"} />
       <Box sx={{
         display: "flex",
         justifyContent: "space-between",

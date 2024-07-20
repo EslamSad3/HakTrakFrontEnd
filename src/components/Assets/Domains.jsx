@@ -109,8 +109,8 @@ const Domains = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"domains"} subtitle={"List of domains"} />
-      <Typography variant="h4">Number of domains: {domains?.length}</Typography>
+      <Header title={"Domains"} subtitle={"List of Domains"} />
+      <Typography variant="h4">Number of Domains: {domains?.length}</Typography>
       <Box
         mt="40px"
         sx={{

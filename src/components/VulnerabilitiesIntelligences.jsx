@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
+import VulnsPieChart from "./Scenes/VulnsPieChart";
 
 const VulnerabilitiesIntelligences = () => {
   const {
@@ -80,16 +81,16 @@ const VulnerabilitiesIntelligences = () => {
         return params.api.getRowIndex(params.id) + 1;
       },
     },
-    { field: "vulnerabilityID", headerName: "vulnerability ID", width: 150 },
+    { field: "vulnerabilityID", headerName: "Vulnerability ID", width: 150 },
     { field: "description", headerName: "Description", width: 150 },
     {
       field: "affectedSystems",
       headerName: "Affected Systems",
       width: 150,
     },
-    { field: "severity", headerName: "severity", width: 150 },
-    { field: "impact", headerName: "impact", width: 150 },
-    { field: "cvsScore", headerName: "cvsScore", width: 150 },
+    { field: "severity", headerName: "Severity", width: 150 },
+    { field: "impact", headerName: "Impact", width: 150 },
+    { field: "cvsScore", headerName: "CVS Score", width: 150 },
     {
       field: "exploitAvailability",
       headerName: "Exploit Availability",
@@ -143,15 +144,18 @@ const VulnerabilitiesIntelligences = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header
-        title={"Vulnerabilities Intelligences"}
-        subtitle={"List of Vulnerabilities Intelligences"}
-      />
-      <Typography variant="h4">
-        Number of Vulnerabilities Intelligences:{" "}
-        {vulnerabilitiesIntelligences?.length}
-      </Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"Vulnerability Intelligence"} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: "20px",
+        }}
+      >
+        <VulnsPieChart />
+      </Box>
       <Box
         mt="40px"
         sx={{

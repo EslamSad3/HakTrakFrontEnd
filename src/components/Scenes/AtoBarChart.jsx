@@ -13,7 +13,6 @@ export default function AtoBarChart() {
     return acc;
   }, {});
 
-
   const buData = Object.keys(buCounts).map((bu, index) => ({
     label: bu,
     value: buCounts[bu], // Correctly set the value to the count of the bu
@@ -44,6 +43,7 @@ export default function AtoBarChart() {
             data: buValues,
             label: "ATOs",
             id: "atoId",
+            color: "#4caf50",
           },
         ]}
         xAxis={[

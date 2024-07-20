@@ -87,7 +87,7 @@ const Ndr = () => {
     { field: "detectionTime", headerName: "Detection Time", width: 150 },
     { field: "alertID", headerName: "Alert ID", width: 150 },
     { field: "threatType", headerName: "Threat Type", width: 150 },
-    { field: "bu", headerName: "Bu", width: 150 },
+    { field: "bu", headerName: "BU", width: 150 },
     { field: "sourceIP", headerName: "Source IP", width: 150 },
     { field: "sourcePort", headerName: "Source Port", width: 150 },
     { field: "destinationIP", headerName: "Destination IP", width: 150 },
@@ -131,7 +131,7 @@ const Ndr = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"NDRs Detections"}  />
+      <Header title={"NDR Detection"}  />
       <br />
       <Box
         sx={{

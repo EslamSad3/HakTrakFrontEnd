@@ -109,8 +109,8 @@ const IPs = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"IPS"} subtitle={"List of IPS"} />
-      <Typography variant="h4">Number of IPS: {ips?.length}</Typography>
+      <Header title={"IPs"} subtitle={"List of IPs"} />
+      <Typography variant="h4">Number of IPs: {ips?.length}</Typography>
       <Box
         mt="40px"
         sx={{

@@ -108,8 +108,8 @@ const DarkWebMentions = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header
-        title={"Dark Web MentionsS"}
-        subtitle={"List of Dark Web MentionsS"}
+        title={"Dark Web Mentions"}
+        subtitle={"List of Dark Web Mentions"}
       />
       <Typography variant="h4">
         Number of Dark Web Mentions: {darkWebMentions?.length}

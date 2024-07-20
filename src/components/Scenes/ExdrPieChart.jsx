@@ -25,13 +25,15 @@ export default function ExdrPieChart() {
   const { edrXdrs } = useContext(Context);
   const theme = useTheme();
 
-  const severityOptions = ["low", "medium", "high", "critical"];
+  const severityOptions = ["Low", "Medium", "High", "Critical"];
   const colors = ["#4caf50", "#ffeb3b", "#ff9800", "#f44336"]; // Custom colors for each severity level
 
   // Count the occurrences of each severity level
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
-    value: edrXdrs.filter((ndr) => ndr.severity === severity).length,
+    value: edrXdrs.filter(
+      (ndr) => ndr.severity === severity.toLocaleLowerCase()
+    ).length,
     color: colors[index], // Assign corresponding color
   }));
 

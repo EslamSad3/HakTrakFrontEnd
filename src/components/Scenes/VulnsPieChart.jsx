@@ -24,14 +24,14 @@ function PieCenterLabel({ children }) {
 export default function VulnsPieChart() {
   const { vulnerabilitiesIntelligences } = useContext(Context);
 
-  const severityOptions = ["low", "medium", "high", "critical"];
+  const severityOptions = ["Low", "Medium", "High", "Critical"];
   const colors = ["#4caf50", "#ffeb3b", "#ff9800", "#f44336"]; // Custom colors for each severity level
 
   // Count the occurrences of each severity level
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
     value: vulnerabilitiesIntelligences.filter(
-      (vuln) => vuln.severity === severity
+      (vuln) => vuln.severity === severity.toLocaleLowerCase()
     ).length,
     color: colors[index], // Assign corresponding color
   }));
@@ -57,7 +57,7 @@ export default function VulnsPieChart() {
         ]}
         {...size}
       >
-        <PieCenterLabel>vulnerabilities</PieCenterLabel>
+        <PieCenterLabel>Vulnerabilities</PieCenterLabel>
       </PieChart>
     </>
   );

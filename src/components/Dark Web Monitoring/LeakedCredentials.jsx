@@ -70,9 +70,9 @@ const LeakedCredentials = () => {
         return params.api.getRowIndex(params.id) + 1;
       },
     },
-    { field: "user", headerName: "Uer", width: 150 },
+    { field: "user", headerName: "User", width: 150 },
     { field: "password", headerName: "Password", width: 150 },
-    { field: "bu", headerName: "Bu", width: 150 },
+    { field: "bu", headerName: "BU", width: 150 },
     { field: "leakDate", headerName: "Leak Date", width: 200 },
     { field: "source", headerName: "Source", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 150 },
@@ -113,11 +113,11 @@ const LeakedCredentials = () => {
   return (
     <Box m="1.5rem 2.5rem">
       <Header
-        title={"Leaked Credentials"}
-        subtitle={"List of Leaked Credentials"}
+        title={"Leaked Credential"}
+        subtitle={"List of Leaked Credential"}
       />
       <Typography variant="h4">
-        Number of Leaked Credentials: {leakedCredentials?.length}
+        Number of Leaked Credential: {leakedCredentials?.length}
       </Typography>
       <Box
         mt="40px"
