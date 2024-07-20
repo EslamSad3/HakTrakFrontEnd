@@ -83,7 +83,7 @@ function Home() {
       label: "Detections",
       count: (edrXdrs?.length || 0) + (ndrs?.length || 0),
       subCounts: [
-        { label: "EDR/XDR Detections", count: edrXdrs?.length },
+        { label: "EDR / XDR Detections", count: edrXdrs?.length },
         { label: "NDR Detections", count: ndrs?.length },
       ],
       path: "/detections/ndr-detections",
@@ -92,8 +92,8 @@ function Home() {
       label: "Dark Web Monitoring",
       count: (darkWebMentions?.length || 0) + (leakedCredentials?.length || 0),
       subCounts: [
-        { label: "Dark Web Mentions", count: darkWebMentions?.length },
-        { label: "Leaked Credentials", count: leakedCredentials?.length },
+        { label: "Dark Web Mention", count: darkWebMentions?.length },
+        { label: "Leaked Credential", count: leakedCredentials?.length },
       ],
       path: "/dark-web-monitoring/dark-web-mentions",
     },
@@ -104,13 +104,13 @@ function Home() {
       path: "/account-take-over",
     },
     {
-      label: "Attack Surfaces",
+      label: "Attack Surface",
       count: attackSurfaces?.length,
       subCounts: [],
       path: "/attack-surface",
     },
     {
-      label: "Brand Reputations",
+      label: "Brand Reputation",
       count: brandReputations?.length,
       subCounts: [],
       path: "/brand-reputation",
