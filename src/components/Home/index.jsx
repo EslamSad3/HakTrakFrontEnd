@@ -15,6 +15,10 @@ import { Context } from "../../context";
 import ExdrPieChart from "../Scenes/ExdrPieChart";
 import AtoBarChart from "../Scenes/AtoBarChart";
 import LeakedCreBarChart from "../Scenes/LeakedCreBarChart";
+import VulnsPieChart from "../Scenes/VulnsPieChart";
+import EdrXdrBuBarChart from "../Scenes/ExdrBuBarChart.jsx";
+import NdrBuBarChart from "../Scenes/NdrBuBarChart.jsx";
+import AttackSurfaceBarChart from "../Scenes/AttackSurfaceBarChart.jsx";
 
 function Home() {
   const {
@@ -257,6 +261,19 @@ function Home() {
                     padding: "1rem",
                   }}
                 >
+                  <VulnsPieChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
                   <AtoBarChart />
                 </Card>
                 <Card
@@ -271,6 +288,45 @@ function Home() {
                   }}
                 >
                   <LeakedCreBarChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <EdrXdrBuBarChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <NdrBuBarChart />
+                </Card>
+                <Card
+                  sx={{
+                    backgroundImage: "none",
+                    backgroundColor: theme.palette.background.alt,
+                    borderRadius: "0.55rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    padding: "1rem",
+                  }}
+                >
+                  <AttackSurfaceBarChart />
                 </Card>
               </Box>
             </Box>

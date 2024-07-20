@@ -236,7 +236,7 @@ function App() {
                   path="/vulnerabilities-intelligences"
                   element={<VulnerabilitiesIntelligences />}
                 />
-                <Route path="/attack-surfaces" element={<AttackSurface />} />
+                <Route path="/attack-surface" element={<AttackSurface />} />
               </Route>
             </Routes>
           </AuthRoute>

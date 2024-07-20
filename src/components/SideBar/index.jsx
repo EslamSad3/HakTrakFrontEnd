@@ -645,7 +645,7 @@ const SideBar = ({
                     <BorderColorOutlinedIcon />
                   </ListItemIcon>
                   <ListItemText
-                    primary="Account take over"
+                    primary="Account Takeover"
                     sx={{ textAlign: "start" }}
                   />
                   {active === "account-take-over" && (
@@ -759,6 +759,77 @@ const SideBar = ({
                     sx={{ textAlign: "start" }}
                   />
                   {active === "Vulnerabilities Intelligences" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              {/* Attack Scenarios
+               */}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/attack-scenarios")}
+                  sx={{
+                    backgroundColor:
+                      active === "Attack Scenarios"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "Attack Scenarios"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "Attack Scenarios"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <BugReportIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Attack Scenarios"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "Attack Scenarios" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              {/* Compliance */}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/compliance")}
+                  sx={{
+                    backgroundColor:
+                      active === "Compliance"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "Compliance"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "Compliance"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <BugReportIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Compliance"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "Compliance" && (
                     <ChevronRightOutlined sx={{ ml: "auto" }} />
                   )}
                 </ListItemButton>

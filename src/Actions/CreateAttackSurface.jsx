@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-
 import { MuiFileInput } from "mui-file-input";
 import { useFormik } from "formik";
 import { Context } from "../context";
@@ -31,7 +30,10 @@ function CreateAttackSurface() {
     const fd = new FormData();
     fd.append("screenshot", file);
     fd.append("affectedSystems", values.affectedSystems);
-    fd.append("openPorts", values.openPorts);
+    // Append each open port individually
+    values.openPorts.split(",").forEach((port) => {
+      fd.append("openPorts[]", port.trim());
+    });
     fd.append("services", values.services);
     fd.append("mitigationSteps", values.mitigationSteps);
 
@@ -59,7 +61,7 @@ function CreateAttackSurface() {
         alignItems: "center",
       }}
     >
-      <Header title={"Add New Attack Serface"}></Header>
+      <Header title={"Add New Attack Surface"}></Header>
       <form onSubmit={formik.handleSubmit}>
         <FormControl>
           {/* affectedSystems */}
@@ -87,7 +89,7 @@ function CreateAttackSurface() {
             margin="normal"
             required
             fullWidth
-            label={"Open Ports"}
+            label={"Open Ports (comma separated)"}
             value={formik.values.openPorts}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -109,7 +111,9 @@ function CreateAttackSurface() {
             value={formik.values.screenshot}
             onChange={(e) => setFile(e)}
             inputProps={{ accept: "image/*" }}
-            getInputText={(value) => (value ? "uploading..." : "Select a screenshot")}
+            getInputText={(value) =>
+              value ? "uploading..." : "Select a screenshot"
+            }
             clearIconButtonProps={{
               title: "Remove",
               children: <CloseIcon fontSize="small" />,
