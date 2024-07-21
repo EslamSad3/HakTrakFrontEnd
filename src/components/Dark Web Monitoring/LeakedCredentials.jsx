@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import LeakedCreBarChart from "../Scenes/LeakedCreBarChart";
 
 const LeakedCredentials = () => {
   const {
@@ -111,14 +112,17 @@ const LeakedCredentials = () => {
   ].filter(Boolean); // Filter out null values
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header
-        title={"Leaked Credential"}
-        subtitle={"List of Leaked Credential"}
-      />
-      <Typography variant="h4">
-        Number of Leaked Credential: {leakedCredentials?.length}
-      </Typography>
+    <Box m="1.5rem 2.5rem" textAlign={"center"}>
+      <Header title={"Leaked Credential"} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LeakedCreBarChart />
+      </Box>
       <Box
         mt="40px"
         sx={{
@@ -155,14 +159,12 @@ const LeakedCredentials = () => {
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
-
       <DeleteDialog
         open={openDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         item={deleteId}
       />
-
       <UpdateDialog
         open={openUpdate}
         onClose={handleCloseUpdate}
