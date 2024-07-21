@@ -23,7 +23,7 @@ const ATOs = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedAto, setDeletedAto] = useState(null);
   const [selectedAto, setSelectedAto] = useState(null);
-  console.log(selectedAto);
+
 
   const handleClickOpenDelete = (id) => {
     setDeletedAto(id);
@@ -62,14 +62,16 @@ const ATOs = () => {
     refreshData();
   }, []);
 
+     const transformedData = atos?.map((item, index) => ({
+       ...item,
+       id: index + 1,
+     }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "user", headerName: "User", width: 150 },
     { field: "password", headerName: "Password", width: 150 },
@@ -86,7 +88,7 @@ const ATOs = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleClickOpenDelete(params?.id)}
+              onClick={() => handleClickOpenDelete(params.id)}
             >
               Delete
             </Button>
@@ -102,7 +104,7 @@ const ATOs = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.id)}
             >
               Update
             </Button>
@@ -113,7 +115,7 @@ const ATOs = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"ATOs"} mb="2rem"/>
+      <Header title={"ATOs"} mb="2rem" />
       <br />
       <AtoBarChart />
       <Box
@@ -142,14 +144,21 @@ const ATOs = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={atos || []}
-          loading={isLoading || !atos}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

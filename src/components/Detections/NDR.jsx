@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
-import ConfirmUpdateDialog from "../../Actions/ConfirmUpdateDialog"; // Import the confirmation dialog
 import NdrPieChart from "../Scenes/NdrPieChart";
 
 const Ndr = () => {
@@ -22,7 +21,6 @@ const Ndr = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [openConfirmUpdate, setOpenConfirmUpdate] = useState(false); // State for confirmation dialog
   const [deleteId, setDeleteId] = useState(null);
   const [selectedndrs, setSelectedndrs] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -44,17 +42,12 @@ const Ndr = () => {
     handleCloseDelete();
   };
 
-  const handleClickOpenUpdate = (id) => {
+  const handleClickOpenUpdate = async (id) => {
     setSelectedUpdateId(id); // Store the ID to be updated
-    setOpenConfirmUpdate(true); // Open confirmation dialog
-  };
-
-  const handleConfirmUpdate = async (id) => {
     setIsFetching(true);
     const ndr = await fetchOneNdr(id);
     setSelectedndrs(ndr);
     setIsFetching(false);
-    setOpenConfirmUpdate(false); // Close confirmation dialog
     setOpenUpdate(true); // Open update dialog
   };
 
@@ -74,14 +67,16 @@ const Ndr = () => {
     refreshData();
   }, []);
 
+  const transformedData = ndrs?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "severity", headerName: "Severity", width: 150 },
     { field: "detectionTime", headerName: "Detection Time", width: 150 },
@@ -104,7 +99,7 @@ const Ndr = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleClickOpenDelete(params.id)}
+              onClick={() => handleClickOpenDelete(params.row._id)}
             >
               Delete
             </Button>
@@ -120,7 +115,7 @@ const Ndr = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.row._id)}
             >
               Update
             </Button>
@@ -131,7 +126,7 @@ const Ndr = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"NDR Detection"}  />
+      <Header title={"NDR Detection"} />
       <br />
       <Box
         sx={{
@@ -169,14 +164,21 @@ const Ndr = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={ndrs || []}
-          loading={isLoading || !ndrs}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 
@@ -185,13 +187,6 @@ const Ndr = () => {
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         item={deleteId}
-      />
-
-      <ConfirmUpdateDialog
-        open={openConfirmUpdate}
-        onClose={() => setOpenConfirmUpdate(false)}
-        onConfirm={handleConfirmUpdate}
-        itemId={selectedUpdateId} // Pass the selected ID to the confirmation dialog
       />
 
       <UpdateDialog

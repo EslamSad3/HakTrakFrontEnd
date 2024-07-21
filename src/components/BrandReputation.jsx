@@ -20,18 +20,18 @@ const BrandReputation = () => {
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [deletedAto, setDeletedAto] = useState(null);
-  const [selectedAto, setSelectedAto] = useState(null);
-  console.log(selectedAto);
+  const [deletedBrand, setDeletedBrand] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
+  console.log(selectedBrand);
 
   const handleClickOpenDelete = (id) => {
-    setDeletedAto(id);
+    setDeletedBrand(id);
     setOpenDelete(true);
   };
 
   const handleCloseDelete = () => {
     setOpenDelete(false);
-    setDeletedAto(null);
+    setDeletedBrand(null);
   };
 
   const handleConfirmDelete = async (id) => {
@@ -41,18 +41,18 @@ const BrandReputation = () => {
   };
 
   const handleClickOpenUpdate = async (id) => {
-    const ato = await fetchOneBrandReputation(id);
-    setSelectedAto(ato);
+    const brand = await fetchOneBrandReputation(id);
+    setSelectedBrand(brand);
     setOpenUpdate(true);
   };
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
-    setSelectedAto(null);
+    setSelectedBrand(null);
   };
 
   const handleupdateBrandReputation = async (values) => {
-    await updateBrandReputation(selectedAto?._id, values);
+    await updateBrandReputation(selectedBrand?._id, values);
     refreshData();
     handleCloseUpdate();
   };
@@ -61,14 +61,16 @@ const BrandReputation = () => {
     refreshData();
   }, []);
 
+  const transformedData = brandReputations?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "domainName", headerName: "Domain Name", width: 150 },
     { field: "brandName", headerName: "Brand Name", width: 150 },
@@ -120,7 +122,7 @@ const BrandReputation = () => {
         subtitle={"List of Brand Reputation "}
       />
       <Typography variant="h4">
-        Number of Brand Reputation : {brandReputations?.length}
+        Number of Brand Reputation : {transformedData?.length}
       </Typography>
       <Box
         mt="40px"
@@ -148,14 +150,21 @@ const BrandReputation = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={brandReputations || []}
-          loading={isLoading || !brandReputations}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 
@@ -163,13 +172,13 @@ const BrandReputation = () => {
         open={openDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
-        item={deletedAto}
+        item={deletedBrand}
       />
 
       <UpdateDialog
         open={openUpdate}
         onClose={handleCloseUpdate}
-        item={selectedAto}
+        item={selectedBrand}
         onConfirm={handleupdateBrandReputation}
       />
     </Box>

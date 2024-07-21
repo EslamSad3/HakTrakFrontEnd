@@ -22,7 +22,7 @@ const IPs = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [selectedIp, setSelectedIp] = useState(null);
-  console.log(selectedIp);
+
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -61,51 +61,53 @@ const IPs = () => {
     refreshData();
   }, []);
 
-  const columns = [
-    {
-      field: "id",
-      headerName: "ID",
-      width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
-    },
-    { field: "value", headerName: "Value", width: 150 },
-    { field: "location", headerName: "Location", width: 150 },
-    { field: "description", headerName: "Description", width: 150 },
-    adminToken
-      ? {
-          field: "delete",
-          headerName: "Delete",
-          width: 150,
-          renderCell: (params) => (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => handleClickOpenDelete(params.id)}
-            >
-              Delete
-            </Button>
-          ),
-        }
-      : null,
-    adminToken
-      ? {
-          field: "update",
-          headerName: "Update",
-          width: 150,
-          renderCell: (params) => (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
-            >
-              Update
-            </Button>
-          ),
-        }
-      : null,
-  ].filter(Boolean); // Filter out null values
+const transformedData = ips?.map((item, index) => ({
+  ...item,
+  id: index + 1,
+}));
+
+const columns = [
+  {
+    field: "id",
+    headerName: "ID",
+    width: 90,
+  },
+  { field: "value", headerName: "Value", width: 150 },
+  { field: "location", headerName: "Location", width: 150 },
+  { field: "description", headerName: "Description", width: 150 },
+  adminToken
+    ? {
+        field: "delete",
+        headerName: "Delete",
+        width: 150,
+        renderCell: (params) => (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => handleClickOpenDelete(params.id)}
+          >
+            Delete
+          </Button>
+        ),
+      }
+    : null,
+  adminToken
+    ? {
+        field: "update",
+        headerName: "Update",
+        width: 150,
+        renderCell: (params) => (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleClickOpenUpdate(params?.id)}
+          >
+            Update
+          </Button>
+        ),
+      }
+    : null,
+].filter(Boolean); // Filter out null values
 
   return (
     <Box m="1.5rem 2.5rem">
@@ -137,14 +139,21 @@ const IPs = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={ips || []}
-          loading={isLoading || !ips}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

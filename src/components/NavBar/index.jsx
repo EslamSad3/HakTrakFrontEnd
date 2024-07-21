@@ -23,8 +23,6 @@ function NavBar({ isSidebarOpen, setIsSidebarOpen }) {
   const [adminData, setAdminData] = useState({});
   const [userTokenData, setUserTokenData] = useState({});
 
-  console.log(adminData, "adminData");
-  console.log(userTokenData, "userTokenData");
 
   const theme = useTheme();
   const navigate = useNavigate();

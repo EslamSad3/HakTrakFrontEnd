@@ -62,14 +62,16 @@ const AptFeeds = () => {
     refreshData();
   }, []);
 
+     const transformedData = aptFeeds?.map((item, index) => ({
+       ...item,
+       id: index + 1,
+     }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "aptGroupName", headerName: "Apt Group Name", width: 150 },
     { field: "threatType", headerName: "Threat Type", width: 150 },
@@ -145,14 +147,21 @@ const AptFeeds = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={aptFeeds || []}
-          loading={isLoading || !aptFeeds}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

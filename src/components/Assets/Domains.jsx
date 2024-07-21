@@ -22,7 +22,6 @@ const Domains = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedDomain, setDeletedDomain] = useState(null);
   const [selectedDomain, setSelectedDomain] = useState(null);
-  console.log(selectedDomain);
 
   const handleClickOpenDelete = (id) => {
     setDeletedDomain(id);
@@ -61,14 +60,16 @@ const Domains = () => {
     refreshData();
   }, []);
 
+  const transformedData = domains?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "value", headerName: "Value", width: 150 },
     { field: "location", headerName: "Location", width: 150 },
@@ -137,14 +138,21 @@ const Domains = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={domains || []}
-          loading={isLoading || !domains}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

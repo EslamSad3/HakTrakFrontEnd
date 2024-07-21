@@ -64,11 +64,11 @@ const LeakedCredentials = () => {
 
   const columns = [
     {
-      field: "id",
+      field: "_id",
       headerName: "ID",
       width: 90,
       valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
+        return params;
       },
     },
     { field: "user", headerName: "User", width: 150 },
@@ -149,14 +149,21 @@ const LeakedCredentials = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
           rows={leakedCredentials || []}
           loading={isLoading || !leakedCredentials}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
       <DeleteDialog

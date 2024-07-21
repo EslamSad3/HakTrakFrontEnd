@@ -18,12 +18,10 @@ const Iocs = () => {
   } = useContext(Context);
   const theme = useTheme();
 
-
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedIoc, setDeletedIoc] = useState(null);
   const [selectedIoc, setSelectedIoc] = useState(null);
-
 
   const handleClickOpenDelete = (id) => {
     setDeletedIoc(id);
@@ -62,14 +60,16 @@ const Iocs = () => {
     refreshData();
   }, []);
 
+  const transformedData = iocs?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "iOCType", headerName: "IOC Type", width: 150 },
     { field: "indicatorValue", headerName: "Indicator Value", width: 150 },
@@ -112,8 +112,8 @@ const Iocs = () => {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title={"Iocs"} subtitle={"List of Iocs"} />
-      <Typography variant="h4">Number of Iocs: {iocs?.length}</Typography>
+      <Header title={"IOCs"} subtitle={"List of IOCs"} />
+      <Typography variant="h4">Number of IOCs: {iocs?.length}</Typography>
       <Box
         mt="40px"
         sx={{
@@ -140,14 +140,21 @@ const Iocs = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={iocs || []}
-          loading={isLoading || !iocs}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

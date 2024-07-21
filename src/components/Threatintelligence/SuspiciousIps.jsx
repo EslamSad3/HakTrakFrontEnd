@@ -22,7 +22,6 @@ const SuspiciousIps = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [selectedIp, setSelectedIp] = useState(null);
-  console.log(suspiciousIps, "suspiciousIps");
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -61,14 +60,15 @@ const SuspiciousIps = () => {
     refreshData();
   }, []);
 
+  const transformedData = suspiciousIps?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "value", headerName: "Value", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
@@ -139,14 +139,21 @@ const SuspiciousIps = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={suspiciousIps || []}
-          loading={isLoading || !suspiciousIps}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

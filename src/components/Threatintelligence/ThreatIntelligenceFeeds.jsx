@@ -21,7 +21,8 @@ const ThreatIntelligenceFeeds = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedthreatIntelligenceFeeds, setSelectedthreatIntelligenceFeeds] = useState({});
+  const [selectedthreatIntelligenceFeeds, setSelectedthreatIntelligenceFeeds] =
+    useState({});
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -51,7 +52,10 @@ const ThreatIntelligenceFeeds = () => {
   };
 
   const handleupdatethreatintelligenceFeed = async (values) => {
-    await updatethreatintelligenceFeed(selectedthreatIntelligenceFeeds._id, values);
+    await updatethreatintelligenceFeed(
+      selectedthreatIntelligenceFeeds._id,
+      values
+    );
     refreshData();
     handleCloseUpdate();
   };
@@ -60,14 +64,16 @@ const ThreatIntelligenceFeeds = () => {
     refreshData();
   }, []);
 
+  const transformedData = threatIntelligenceFeeds?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "threatType", headerName: "Threat Type", width: 150 },
     { field: "severity", headerName: "Severity", width: 150 },
@@ -142,14 +148,21 @@ const ThreatIntelligenceFeeds = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={threatIntelligenceFeeds || []}
-          loading={isLoading || !threatIntelligenceFeeds}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

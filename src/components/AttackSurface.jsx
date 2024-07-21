@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 import Header from "./Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
@@ -23,7 +23,6 @@ const AttackSurface = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedAttack, setDeletedAttack] = useState(null);
   const [selectedAttack, setSelectedAttack] = useState(null);
-  console.log(selectedAttack);
 
   const handleClickOpenDelete = (id) => {
     setDeletedAttack(id);
@@ -62,21 +61,24 @@ const AttackSurface = () => {
     refreshData();
   }, []);
 
+      const transformedData = attackSurfaces?.map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
+
     },
     { field: "affectedSystems", headerName: "Affected Systems", width: 150 },
     {
       field: "openPorts",
       headerName: "Open Ports",
       width: 150,
-      valueGetter: (params) => params.row.openPorts.join(", "),
+      valueGetter: (params) => params.join(", "),
     },
     { field: "services", headerName: "Services", width: 150 },
     {
@@ -85,7 +87,11 @@ const AttackSurface = () => {
       width: 150,
       renderCell: (params) => (
         <Button variant="contained" color="info">
-          <a href={params.row.screenshot} target="_blank">
+          <a
+            href={params.row.screenshot}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             View
           </a>
         </Button>
@@ -101,7 +107,7 @@ const AttackSurface = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleClickOpenDelete(params?.id)}
+              onClick={() => handleClickOpenDelete(params.id)}
             >
               Delete
             </Button>
@@ -117,7 +123,7 @@ const AttackSurface = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.id)}
             >
               Update
             </Button>
@@ -165,14 +171,21 @@ const AttackSurface = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={attackSurfaces || []}
-          loading={isLoading || !attackSurfaces}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

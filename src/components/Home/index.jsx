@@ -5,14 +5,12 @@ import { Context } from "../../context";
 import CardComponent from "./CardComponent";
 import Charts from "./Charts";
 import {
-
   Public,
   Language,
   Dns,
   Policy,
   ReportProblem,
   Info,
-
 } from "@mui/icons-material";
 
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
@@ -27,7 +25,6 @@ import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import LanIcon from "@mui/icons-material/Lan";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
-
 
 function Home() {
   const {
@@ -130,7 +127,7 @@ function Home() {
         {
           label: "EDR / XDR Detections",
           count: edrXdrs?.length,
-          path: "/detections/edr-xdr-detections",
+          path: "/detections/edrxdr-detections",
           icon: <ScreenSearchDesktopIcon fontSize="small" />,
         },
         {

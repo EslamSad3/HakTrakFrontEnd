@@ -22,7 +22,6 @@ const Portals = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedPortal, setDeletedPortal] = useState(null);
   const [selectedPortal, setSelectedPortal] = useState(null);
-  console.log(selectedPortal);
 
   const handleClickOpenDelete = (id) => {
     setDeletedPortal(id);
@@ -60,15 +59,17 @@ const Portals = () => {
   useEffect(() => {
     refreshData();
   }, []);
+     const transformedData = portals?.map((item, index) => ({
+       ...item,
+       id: index + 1,
+     }));
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
+  
     },
     { field: "value", headerName: "Value", width: 150 },
     { field: "location", headerName: "Location", width: 150 },
@@ -137,14 +138,21 @@ const Portals = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={portals || []}
-          loading={isLoading || !portals}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 

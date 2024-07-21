@@ -61,14 +61,16 @@ const EdrXdr = () => {
     refreshData();
   }, []);
 
+     const transformedData = edrXdrs?.map((item, index) => ({
+       ...item,
+       id: index + 1,
+     }));
+
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      valueGetter: (params) => {
-        return params.api.getRowIndex(params.id) + 1;
-      },
     },
     { field: "user", headerName: "User", width: 150 },
     { field: "detectionTime", headerName: "Detection Time", width: 150 },
@@ -89,7 +91,7 @@ const EdrXdr = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleClickOpenDelete(params.id)}
+              onClick={() => handleClickOpenDelete(params.row._id)}
             >
               Delete
             </Button>
@@ -105,7 +107,7 @@ const EdrXdr = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.row._id)}
             >
               Update
             </Button>
@@ -117,12 +119,14 @@ const EdrXdr = () => {
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
       <Header title={"EDR XDR Detection"} />
-      <Box sx={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        mb: "20px",
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: "20px",
+        }}
+      >
         <ExdrPieChart />
       </Box>
       <Box
@@ -151,14 +155,21 @@ const EdrXdr = () => {
             color: `${theme.palette.secondary[200]} !important`,
           },
           height: "75vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <DataGrid
-          rows={edrXdrs || []}
-          loading={isLoading || !edrXdrs}
+          sx={{
+            height: " 80vh",
+            width: " 70vw",
+          }}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
-          components={{ Toolbar: GridToolbar }}
+          slots={{ toolbar: GridToolbar }}
         />
       </Box>
 
