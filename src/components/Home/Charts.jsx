@@ -8,14 +8,11 @@ import VulnsPieChart from "../Scenes/VulnsPieChart";
 import EdrXdrBuBarChart from "../Scenes/ExdrBuBarChart.jsx";
 import NdrBuBarChart from "../Scenes/NdrBuBarChart.jsx";
 import AttackSurfaceBarChart from "../Scenes/AttackSurfaceBarChart.jsx";
-import Header from "../Header/index.js";
+
 
 const Charts = ({ theme, isNonMobile }) => (
   <Box mt="5rem">
     <Divider mt="2rem" />
-    <Box textAlign={"center"}>
-      <Header title="Charts" />
-    </Box>
     <Box
       mt="3rem"
       display="grid"

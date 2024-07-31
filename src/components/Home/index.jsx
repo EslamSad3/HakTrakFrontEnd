@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
-import Header from "../Header";
+import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
 import { Context } from "../../context";
 import CardComponent from "./CardComponent";
 import Charts from "./Charts";
@@ -195,9 +194,6 @@ function Home() {
 
   return (
     <Box m="1.5rem 2.5rem">
-      <Box textAlign={"center"}>
-        <Header title="Summary" />
-      </Box>
       {!isLoading ? (
         <>
           <Box
@@ -220,7 +216,14 @@ function Home() {
           <Charts theme={theme} isNonMobile={isNonMobile} />
         </>
       ) : (
-        <>Loading...</>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress size={100} />
+        </Box>
       )}
     </Box>
   );

@@ -5,17 +5,16 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@mantine/charts": "^7.11.2",
     "@mui/icons-material": "^5.10.15",
     "@mui/lab": "^5.0.0-alpha.154",
     "@mui/material": "^5.16.4",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "@mui/x-charts": "^7.11.0",
+    "@mui/x-charts": "^7.11.1",
     "@mui/x-data-grid": "^7.11.0",
     "@mui/x-date-pickers": "^7.10.0",
-    "@nivo/bar": "^0.87.0",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.2",
-    "chart.js": "^4.4.3",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.11",
     "formik": "^2.4.5",
@@ -23,7 +22,6 @@
     "material-ui-popup-state": "^5.0.10",
     "mui-file-input": "^4.0.6",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
     "react-flags-select": "^2.2.3",
@@ -63,6 +61,9 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "gh-pages": "^6.1.1"
+    "gh-pages": "^6.1.1",
+    "postcss": "^8.4.40",
+    "postcss-preset-mantine": "^1.17.0",
+    "postcss-simple-vars": "^7.0.1"
   }
 }

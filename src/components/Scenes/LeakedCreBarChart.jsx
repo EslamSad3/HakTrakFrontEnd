@@ -1,57 +1,55 @@
-import React, { useContext } from "react";
-import { Box, Typography, useTheme } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
+import { BarChart } from "@mantine/charts";
+import { useContext } from "react";
 import { Context } from "../../context";
+import { Box, Typography } from "@mui/material";
+
+// Function to generate a unique color
+const colors = [
+  "#eff669",
+  "#f29f3d",
+  "#cf3333",
+  "#ff6464",
+  "#5eb7b7",
+  "#96d1c7",
+  "#fc7978",
+  "#ffafb0",
+  "#35d0ba",
+];
 
 export default function LeakedCreBarChart() {
   const { leakedCredentials } = useContext(Context);
 
-  // Group by `bu` property
-  const buCounts = leakedCredentials.reduce((acc, leakedCre) => {
-    acc[leakedCre.bu] = (acc[leakedCre.bu] || 0) + 1;
+  // Group data by 'bu'
+  const groupByBu = leakedCredentials.reduce((acc, leakedCredential) => {
+    (acc[leakedCredential.bu] = acc[leakedCredential.bu] || []).push(leakedCredential);
     return acc;
   }, {});
 
-  const buData = Object.keys(buCounts).map((bu, index) => ({
-    label: bu,
-    value: buCounts[bu], // Correctly set the value to the count of the bu
+  // Convert grouped data to the format expected by BarChart
+  const chartData = Object.keys(groupByBu).map((bu, index) => ({
+    bu,
+    count: groupByBu[bu].length,
+    color: colors[index % colors.length], // Assign a unique color
   }));
 
-  const buLabels = buData.map((item) => item.label);
-  const buValues = buData.map((item) => item.value);
-
+  console.log(chartData, "chartData");
   return (
-    <Box
-      sx={{
-        borderRadius: "0.55rem",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography variant="h6" align="center" mb={1}>
+    <>
+      <Typography variant="h6" align="center" mb={3}>
         Leaked Credential by Business Unit
       </Typography>
+
       <BarChart
-        width={500}
-        height={300}
-        series={[
-          {
-            data: buValues,
-            label: "Leaked Credential",
-            id: "leakedCreId",
-            color: "#f44336", // Correctly set the color to red for leaked credentials.
-          },
-        ]}
-        xAxis={[
-          {
-            data: buLabels,
-            scaleType: "band",
-          },
-        ]}
+        h={300}
+        data={chartData}
+        dataKey="bu"
+        series={chartData.map((item) => ({
+          name: "count",
+          color: item.color,
+        }))}
+        tickLine="x"
+        type="stacked"
       />
-    </Box>
+    </>
   );
 }

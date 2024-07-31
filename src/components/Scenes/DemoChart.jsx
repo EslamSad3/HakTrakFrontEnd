@@ -4,24 +4,14 @@ import { Context } from "../../context";
 import { Box, Typography } from "@mui/material";
 
 // Function to generate a unique color
-const colors = [
-  "#f95959",
-  "#f29f3d",
-  "#cf3333",
-  "#ff6464",
-  "#5eb7b7",
-  "#96d1c7",
-  "#fc7978",
-  "#ffafb0",
-  "#35d0ba",
-];
+const colors = ["#f3a", "#f93", "#3af", "#0f0", "#f0f", "#ff0", "#0ff", "#f00"];
 
-export default function ExdrBuBarChart() {
-  const { edrXdrs } = useContext(Context);
+export default function Demo() {
+  const { atos } = useContext(Context);
 
   // Group data by 'bu'
-  const groupByBu = edrXdrs.reduce((acc, edrXdr) => {
-    (acc[edrXdr.bu] = acc[edrXdr.bu] || []).push(edrXdr);
+  const groupByBu = atos.reduce((acc, ato) => {
+    (acc[ato.bu] = acc[ato.bu] || []).push(ato);
     return acc;
   }, {});
 
@@ -36,7 +26,7 @@ export default function ExdrBuBarChart() {
   return (
     <>
       <Typography variant="h6" align="center" mb={3}>
-        EDR / XDR by Business Unit
+        ATOs by Business Unit
       </Typography>
 
       <BarChart

@@ -1,64 +1,45 @@
-import React, { useContext } from "react";
-import { Box, Typography } from "@mui/material";
-import { BarChart } from "@mui/x-charts/BarChart";
+import { BarChart } from "@mantine/charts";
+import { useContext } from "react";
 import { Context } from "../../context";
+import { Box, Typography } from "@mui/material";
+
+// Function to generate a unique color
+const colors = ["#f3a", "#f93", "#3af", "#0f0", "#f0f", "#ff0", "#0ff", "#f00"];
 
 export default function AtoBarChart() {
   const { atos } = useContext(Context);
 
-  // Group by `bu` property
-  const buCounts = atos.reduce((acc, ato) => {
-    acc[ato.bu] = (acc[ato.bu] || 0) + 1;
+  // Group data by 'bu'
+  const groupByBu = atos.reduce((acc, ato) => {
+    (acc[ato.bu] = acc[ato.bu] || []).push(ato);
     return acc;
   }, {});
 
-  const buData = Object.keys(buCounts).map((bu, index) => ({
-    label: bu,
-    value: buCounts[bu], // Correctly set the value to the count of the bu
+  // Convert grouped data to the format expected by BarChart
+  const chartData = Object.keys(groupByBu).map((bu, index) => ({
+    bu,
+    count: groupByBu[bu].length,
+    color: colors[index % colors.length], // Assign a unique color
   }));
 
-  const buLabels = buData.map((item) => item.label);
-  const buValues = buData.map((item) => item.value);
-
+  console.log(chartData, "chartData ATO");
   return (
-    <Box
-      sx={{
-        borderRadius: "0.55rem",
-        padding: "1rem",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <Typography variant="h6" align="center" mb={1}>
+    <>
+      <Typography variant="h6" align="center" mb={3}>
         ATOs by Business Unit
       </Typography>
+
       <BarChart
-        width={500}
-        height={300}
-        series={[
-          {
-            data: buValues,
-            label: "ATOs",
-            id: "atoId",
-            color: "#4caf50",
-          },
-        ]}
-        xAxis={[
-          {
-            data: buLabels,
-            scaleType: "band",
-          },
-        ]}
-        yAxis={[
-          {
-            min: 0, // Ensure the minimum value of the Y-axis starts at 0
-            tickCount: buValues.length + 1, // Control the number of ticks on the Y-axis
-            tickFormat: (value) => value, // Ensure the ticks increment by 1
-          },
-        ]}
+        h={300}
+        data={chartData}
+        dataKey="bu"
+        series={chartData.map((item) => ({
+          name: "count",
+          color: item.color,
+        }))}
+        tickLine="x"
+        type="stacked"
       />
-    </Box>
+    </>
   );
 }
