@@ -148,6 +148,41 @@ const SideBar = ({
                 </ListItemButton>
               </ListItem>
 
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/excutive-dashboard")}
+                  sx={{
+                    backgroundColor:
+                      active === "excutive-dashboard"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "excutive-dashboard"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "excutive-dashboard"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <HomeOutlined />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Excutive Dashboard"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "excutive-dashboard" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+
               {/* Assetes */}
               <Accordion
                 sx={{
