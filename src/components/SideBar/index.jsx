@@ -37,9 +37,9 @@ import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import BugReportIcon from "@mui/icons-material/BugReport";
 import TravelExploreIcon from "@mui/icons-material/TravelExplore";
 import ApprovalIcon from "@mui/icons-material/Approval";
-import FmdBadIcon from "@mui/icons-material/FmdBad";	
+import FmdBadIcon from "@mui/icons-material/FmdBad";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
-import PersonSearchIcon from "@mui/icons-material/PersonSearch";	
+import PersonSearchIcon from "@mui/icons-material/PersonSearch";
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import LanIcon from "@mui/icons-material/Lan";
@@ -660,6 +660,101 @@ const SideBar = ({
                   </List>
                 </AccordionDetails>
               </Accordion>
+              {/* Attack Scenarios  */}
+              <Accordion
+                sx={{
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  "&.Mui-expanded": {
+                    backgroundColor: theme.palette.background.alt,
+                  },
+                  "& .MuiAccordionSummary-root": {
+                    padding: "0 2rem",
+                  },
+                  "& .MuiAccordionDetails-root": {
+                    padding: 0,
+                  },
+                }}
+              >
+                <AccordionSummary expandIcon={<ExpandMore />}>
+                  <ListItemIcon
+                    sx={{
+                      color: theme.palette.secondary[200],
+                      ml: "1rem",
+                    }}
+                  >
+                    <CrisisAlertIcon />
+                  </ListItemIcon>
+                  <Typography>Attack Scenarios</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/attack-scenarios/mitre-attack")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "attack-scenarios/mitre-attack"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "attack-scenarios/mitre-attack"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "attack-scenarios/mitre-attack"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <ScreenSearchDesktopIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="MITRE ATT&CK®" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/detections/cyber-kill-chain")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "detections/cyber-kill-chain"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "detections/cyber-kill-chain"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "detections/cyber-kill-chain"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <LanIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary="Cyber Kill Chain"
+                          sx={{ pl: 2 }}
+                        />
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
+                </AccordionDetails>
+              </Accordion>
 
               {/* Account Take Over */}
               <ListItem disablePadding>
@@ -806,42 +901,7 @@ const SideBar = ({
                   )}
                 </ListItemButton>
               </ListItem>
-              {/* Attack Scenarios
-               */}
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={() => handleNavigate("/attack-scenarios")}
-                  sx={{
-                    backgroundColor:
-                      active === "Attack Scenarios"
-                        ? theme.palette.secondary[300]
-                        : "transparent",
-                    color:
-                      active === "Attack Scenarios"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[100],
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                      color:
-                        active === "Attack Scenarios"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[200],
-                    }}
-                  >
-                    <PsychologyIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Attack Scenarios"
-                    sx={{ textAlign: "start" }}
-                  />
-                  {active === "Attack Scenarios" && (
-                    <ChevronRightOutlined sx={{ ml: "auto" }} />
-                  )}
-                </ListItemButton>
-              </ListItem>
+
               {/* Compliance */}
               <ListItem disablePadding>
                 <ListItemButton
