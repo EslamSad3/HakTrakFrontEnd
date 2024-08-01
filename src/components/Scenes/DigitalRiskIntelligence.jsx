@@ -57,7 +57,7 @@ export default function DigitalRiskIntelligence() {
                 justifyContent: "space-between",
                 alignItems: "center",
                 width: "100%",
-                color: "#fff",
+                color: "#fefefe",
               }}
             >
               <Typography variant="body1">{item.title}</Typography>

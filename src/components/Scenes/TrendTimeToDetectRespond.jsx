@@ -1,9 +1,5 @@
 import * as React from "react";
 import { Card, CardContent, Typography, Box, Chip } from "@mui/material";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import PublicIcon from "@mui/icons-material/Public";
-import FingerprintIcon from "@mui/icons-material/Fingerprint";
-import ShareIcon from "@mui/icons-material/Share";
 import {
   LineChart,
   Line,
@@ -27,17 +23,14 @@ export default function TrendTimeToDetectRespond() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#346357",
+        backgroundColor: "#393e46",
       }}
     >
       <CardContent>
         <Typography variant="h6" align="center">
-          Digital Risk Intelligence
+          Trend of Time to Detect (TTD) & Time to Respond (TTR)
         </Typography>
         <Box mt={4}>
-          <Typography variant="h6" align="center">
-            Trend of Time to Detect (TTD) & Time to Respond (TTR)
-          </Typography>
           <LineChart width={500} height={300} data={data}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />

@@ -139,7 +139,7 @@ const SideBar = ({
                     <HomeOutlined />
                   </ListItemIcon>
                   <ListItemText
-                    primary="Dashboard"
+                    primary="Security Posture"
                     sx={{ textAlign: "start" }}
                   />
                   {active === "dashboard" && (
@@ -873,6 +873,73 @@ const SideBar = ({
                     sx={{ textAlign: "start" }}
                   />
                   {active === "Compliance" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              {/* reports */}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/reports")}
+                  sx={{
+                    backgroundColor:
+                      active === "reports"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "reports"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "reports"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <AssuredWorkloadIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Reports" sx={{ textAlign: "start" }} />
+                  {active === "reports" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              {/* cyber map */}
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/cyber-map")}
+                  sx={{
+                    backgroundColor:
+                      active === "cyber map"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "cyber map"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "cyber map"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <AssuredWorkloadIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Cyber Map"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "cyber map" && (
                     <ChevronRightOutlined sx={{ ml: "auto" }} />
                   )}
                 </ListItemButton>
