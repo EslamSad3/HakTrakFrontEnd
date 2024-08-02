@@ -78,6 +78,9 @@ export function ContextProvider(props) {
   // vulnerabilities intelligences
   const [vulnerabilitiesIntelligences, setVulnerabilitiesIntelligences] =
     useState([]);
+  const [noncompliancegapsoverview, setnoncompliancegapsoverview] = useState(
+    []
+  );
   const [oneVulnerabilitiesIntelligence, setOneVulnerabilitiesIntelligence] =
     useState({});
 
@@ -1702,6 +1705,105 @@ export function ContextProvider(props) {
     }
   }
 
+  {
+    /************************ExeCutive Dashboard********************************* */
+  }
+
+  // Fetch all Non-Compliance Gaps Overview
+  async function fetchAllnoncompliancegapsoverview() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview`,
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+      );
+      setnoncompliancegapsoverview(response.data.data);
+      setIsLoading(false);
+      return noncompliancegapsoverview;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
+  // Add New Non-Compliance Gaps Overview
+  async function addNewNoncompliancegapsoverview(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Non-Compliance Gaps Overview Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+
+  // Get One Non-Compliance Gaps Overview
+  async function fetchOneNoncompliancegapsoverview(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setOneNoncompliancegapsoverview(response.data.data);
+      setIsLoading(false);
+      return oneNoncompliancegapsoverview;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Non-Compliance Gaps Overview
+  async function deleteNoncompliancegapsoverview(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Non-Compliance Gaps Overview Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLoading(false);
+        toast.error("Non-Compliance Gaps");
+      }
+    }
+  }
+  // Update Non-Compliance Gaps Overview
+  async function updateNoncompliancegapsoverview(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      response.status === 200
+        ? toast.success("Non-Compliance Gaps Overview updated successfully")
+        : toast.error("Non-Compliance Gaps Overview not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1718,7 +1820,7 @@ export function ContextProvider(props) {
     fetchAllAttckSurfaces();
     fetchAllBrandReputations();
     fetchAllVulnerabilitiesIntelligences();
-
+    fetchAllnoncompliancegapsoverview();
   };
 
   useEffect(() => {
@@ -1805,6 +1907,11 @@ export function ContextProvider(props) {
         fetchOneVulnerabilitiesIntelligence,
         updateVulnerabilitiesIntelligence,
         deleteVulnerabilitiesIntelligence,
+        fetchAllnoncompliancegapsoverview,
+        addNewNoncompliancegapsoverview,
+        fetchOneNoncompliancegapsoverview,
+        deleteNoncompliancegapsoverview,
+        updateNoncompliancegapsoverview,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1837,6 +1944,7 @@ export function ContextProvider(props) {
         oneBrandReputation,
         vulnerabilitiesIntelligences,
         oneVulnerabilitiesIntelligence,
+        noncompliancegapsoverview,
         isLoading,
         adminToken,
         userToken,
