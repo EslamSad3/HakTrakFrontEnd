@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   Typography,
-  LinearProgress,
   Box,
   CircularProgress,
 } from "@mui/material";
@@ -11,7 +10,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const SecurityPostureScore = () => {
-  const currentScore = 83;
+  const currentScore = 70;
   const previousScore = 78;
   const isIncrease = currentScore > previousScore;
 
@@ -39,13 +38,27 @@ const SecurityPostureScore = () => {
             {isIncrease ? "+" : ""}
           </Typography>
         </Box>
-        <CircularProgress
-          color="primary"
-          determinate
-          size="lg"
-          value={currentScore}
-          variant="outlined"
-        />
+        <Box position="relative" display="flex" justifyContent="center" mt={2}>
+          <CircularProgress
+            color="primary"
+            variant="determinate"
+            value={currentScore}
+            size={250}
+            thickness={8}
+          />
+          <Box
+            position="absolute"
+            top="50%"
+            left="50%"
+            sx={{
+              transform: "translate(-50%, -50%)",
+              fontWeight: "bold",
+              fontSize: "3rem",
+            }}
+          >
+            B
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );
