@@ -78,10 +78,32 @@ export function ContextProvider(props) {
   // vulnerabilities intelligences
   const [vulnerabilitiesIntelligences, setVulnerabilitiesIntelligences] =
     useState([]);
+  const [oneVulnerabilitiesIntelligence, setOneVulnerabilitiesIntelligence] =
+    useState({});
+
+  /*****************Executive Dashboard *******************************/
+
+  // noncompliancegapsoverview
   const [noncompliancegapsoverview, setnoncompliancegapsoverview] = useState(
     []
   );
-  const [oneVulnerabilitiesIntelligence, setOneVulnerabilitiesIntelligence] =
+  const [oneNoncompliancegapsoverview, setOneNoncompliancegapsoverview] =
+    useState({});
+
+  // threatCompositionOverview
+  const [threatCompositionOverview, setThreatCompositionOverview] = useState(
+    []
+  );
+  const [oneThreatCompositionOverview, setOneThreatCompositionOverview] =
+    useState({});
+
+  // Security Posture Score
+  const [securityPostureScore, setSecurityPostureScore] = useState([]);
+  const [oneSecurityPostureScore, setOneSecurityPostureScore] = useState({});
+
+  // Security Breach Indicators
+  const [securityBreachIndicators, setSecurityBreachIndicators] = useState([]);
+  const [oneSecurityBreachIndicators, setOneSecurityBreachIndicators] =
     useState({});
 
   function saveAdminToken(token) {
@@ -1804,6 +1826,336 @@ export function ContextProvider(props) {
     }
   }
 
+  // Add New  Threat Composition Overview
+  async function addNewThreatCompositionOverview(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success(" Threat Composition Overview Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+
+  // fetch all ThreatCompositionOverview
+  async function fetchAllThreatCompositionOverview() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview`,
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+      );
+      setThreatCompositionOverview(response.data.data);
+      setIsLoading(false);
+      return threatCompositionOverview;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
+  // Get One  Threat Composition Overview
+  async function fetchOneThreatCompositionOverview(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setOneThreatCompositionOverview(response.data.data);
+      setIsLoading(false);
+      return oneThreatCompositionOverview;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One  Threat Composition Overview
+  async function deleteThreatCompositionOverview(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success(" Threat Composition Overview Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLoading(false);
+        toast.error("Non-Compliance Gaps");
+      }
+    }
+  }
+  // Update  Threat Composition Overview
+  async function updateThreatCompositionOverview(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      response.status === 200
+        ? toast.success(" Threat Composition Overview updated successfully")
+        : toast.error(" Threat Composition Overview not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
+  // Security Posture Score
+
+  // Add New Security Posture Score
+  async function addNewSecurityPostureScore(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Security Posture Score Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all Security Posture Score
+  async function fetchAllSecurityPostureScore() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score`,
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+      );
+      setSecurityPostureScore(response.data.data);
+      setIsLoading(false);
+      return securityPostureScore;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Get One Security Posture Score
+  async function fetchOneSecurityPostureScore(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setOneSecurityPostureScore(response.data.data);
+      setIsLoading(false);
+      return oneSecurityPostureScore;
+    } catch (error) {
+      setIsLoading(false);
+    }
+
+    // Delete One Security Posture Score
+    async function deleteSecurityPostureScore(id) {
+      try {
+        setIsLoading(true);
+        const response = await axios.delete(
+          `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
+          { headers: getAuthAdminHeaders() }
+        );
+        setIsLoading(false);
+        if (response.status === 204) {
+          toast.success("Security Posture Score Deleted successfully");
+          refreshData();
+        } else if (response.status === "fail") {
+          toast.error(response.message);
+        } else {
+          toast.error("Server Error");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        if (error.response && error.response.status === 404) {
+          setIsLoading(false);
+          toast.error("Security Posture Score");
+        }
+      }
+    }
+  }
+  // Update Security Posture Score
+  async function updateSecurityPostureScore(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      response.status === 200
+        ? toast.success("Security Posture Score updated successfully")
+        : toast.error("Security Posture Score not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
+  // Delete Security Posture Score
+  async function deleteSecurityPostureScore(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Security Posture Score Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLoading(false);
+        toast.error("Security Posture Score");
+      }
+    }
+  }
+
+  // Security Breach Indicators
+  // Add New Security Breach Indicators
+  async function addNewSecurityBreachIndicators(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      if (response.status === 201) {
+        toast.success("Security Breach Indicators Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all Security Breach Indicators
+  async function fetchAllSecurityBreachIndicators() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators`,
+        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+      );
+      setSecurityBreachIndicators(response.data.data);
+      setIsLoading(false);
+      return securityBreachIndicators;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Get One Security Breach Indicators
+  async function fetchOneSecurityBreachIndicators(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setOneSecurityBreachIndicators(response.data.data);
+      setIsLoading(false);
+      return oneSecurityBreachIndicators;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Security Breach Indicators
+  async function deleteSecurityBreachIndicators(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
+        { headers: getAuthAdminHeaders() }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Security Breach Indicators Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLoading(false);
+        toast.error("Security Breach Indicators");
+      }
+    }
+
+    // Update Security Breach Indicators
+    async function updateSecurityBreachIndicators(id, values) {
+      try {
+        setIsLoading(true);
+        const response = await axios.patch(
+          `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
+          values,
+          { headers: getAuthAdminHeaders() }
+        );
+        response.status === 200
+          ? toast.success("Security Breach Indicators updated successfully")
+          : toast.error("Security Breach Indicators not found");
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        setIsLoading(false);
+      }
+    }
+  }
+  // Update One Security Breach Indicators
+  async function updateSecurityBreachIndicators(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
+        values,
+        { headers: getAuthAdminHeaders() }
+      );
+      response.status === 200
+        ? toast.success("Security Breach Indicators updated successfully")
+        : toast.error("Security Breach Indicators not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -1821,6 +2173,9 @@ export function ContextProvider(props) {
     fetchAllBrandReputations();
     fetchAllVulnerabilitiesIntelligences();
     fetchAllnoncompliancegapsoverview();
+    fetchAllThreatCompositionOverview();
+    fetchAllSecurityPostureScore();
+    fetchAllSecurityBreachIndicators();
   };
 
   useEffect(() => {
@@ -1912,6 +2267,21 @@ export function ContextProvider(props) {
         fetchOneNoncompliancegapsoverview,
         deleteNoncompliancegapsoverview,
         updateNoncompliancegapsoverview,
+        addNewThreatCompositionOverview,
+        fetchAllThreatCompositionOverview,
+        fetchOneThreatCompositionOverview,
+        deleteThreatCompositionOverview,
+        updateThreatCompositionOverview,
+        addNewSecurityPostureScore,
+        fetchAllSecurityPostureScore,
+        fetchOneSecurityPostureScore,
+        updateSecurityPostureScore,
+        deleteSecurityPostureScore,
+        addNewSecurityBreachIndicators,
+        fetchAllSecurityBreachIndicators,
+        fetchOneSecurityBreachIndicators,
+        deleteSecurityBreachIndicators,
+        updateSecurityBreachIndicators,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -1945,6 +2315,14 @@ export function ContextProvider(props) {
         vulnerabilitiesIntelligences,
         oneVulnerabilitiesIntelligence,
         noncompliancegapsoverview,
+        noncompliancegapsoverview,
+        oneNoncompliancegapsoverview,
+        threatCompositionOverview,
+        oneThreatCompositionOverview,
+        securityPostureScore,
+        oneSecurityPostureScore,
+        securityBreachIndicators,
+        oneSecurityBreachIndicators,
         isLoading,
         adminToken,
         userToken,

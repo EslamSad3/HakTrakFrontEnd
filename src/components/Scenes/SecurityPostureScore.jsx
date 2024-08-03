@@ -5,6 +5,7 @@ import {
   Typography,
   LinearProgress,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -19,7 +20,7 @@ const SecurityPostureScore = () => {
       sx={{
         backgroundColor: "#c5bdbd",
         color: "#160736",
-        height:"100%"
+        height: "100%",
       }}
     >
       <CardContent>
@@ -36,10 +37,15 @@ const SecurityPostureScore = () => {
             color={isIncrease ? "success.main" : "error.main"}
           >
             {isIncrease ? "+" : ""}
-            {currentScore - previousScore}%
           </Typography>
         </Box>
-        <LinearProgress variant="determinate" value={currentScore} />
+        <CircularProgress
+          color="primary"
+          determinate
+          size="lg"
+          value={currentScore}
+          variant="outlined"
+        />
       </CardContent>
     </Card>
   );

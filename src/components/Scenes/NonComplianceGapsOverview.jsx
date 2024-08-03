@@ -64,8 +64,8 @@ export default function NonComplianceGapsOverview() {
       "MITRE ATT&CK": "#1e88e5",
       "ISO 27001": "#d32f2f",
       "NIST CSF": "#388e3c",
-      PDPL: "#fbc02d",
-      SAMA: "#ff5722",
+      "PDPL": "#fbc02d",
+      "SAMA": "#ff5722",
     };
     return colors[compliance] || "#000000"; // default color
   };
@@ -93,7 +93,7 @@ export default function NonComplianceGapsOverview() {
         />
         <Box mt={2}>
           <Typography variant="body2" align="center">
-            The chart details the levels of non-compliance and gaps in
+            The chart details the levels of non-compliance and gaps <br /> in
             regulatory controls.
           </Typography>
         </Box>
