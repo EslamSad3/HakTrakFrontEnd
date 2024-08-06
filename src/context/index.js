@@ -84,7 +84,7 @@ export function ContextProvider(props) {
   /*****************Executive Dashboard *******************************/
 
   // noncompliancegapsoverview
-  const [noncompliancegapsoverview, setnoncompliancegapsoverview] = useState(
+  const [noncompliancegapsoverview, setNonComplianceGapsOverview] = useState(
     []
   );
   const [oneNoncompliancegapsoverview, setOneNoncompliancegapsoverview] =
@@ -126,9 +126,11 @@ export function ContextProvider(props) {
       );
       setIsLoading(false);
 
+      console.log(response, "login response");
+
       if (response.status === 200) {
-        const { token } = response.data;
-        const { role } = response.data.data;
+        const token = response?.data?.token;
+        const role = response?.data?.data?.role;
         if (role === "admin") {
           saveAdminToken(token);
         } else if (role === "user") {
@@ -155,10 +157,22 @@ export function ContextProvider(props) {
     };
   };
 
+  console.log(adminToken, "adminToken");
+
   const getAuthUserHeaders = () => {
     return {
       Authorization: `Bearer ${userToken}`,
     };
+  };
+
+  const getAuthHeaders = () => {
+    if (adminToken) {
+      return { Authorization: `Bearer ${adminToken}` };
+    } else if (userToken) {
+      return { Authorization: `Bearer ${userToken}` };
+    } else {
+      return {};
+    }
   };
 
   /*********************** Assets ******************************/
@@ -169,7 +183,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Ip Added Successfully");
@@ -189,7 +203,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setIps(response.data.data);
       setIsLoading(false);
@@ -204,7 +222,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setIsLoading(false);
       setOneIp(response.data.data);
@@ -222,7 +244,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/ips/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       response.status === 200
@@ -281,7 +303,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       if (response.status === 201) {
@@ -302,7 +324,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setDomains(response.data.data);
       setIsLoading(false);
@@ -317,7 +343,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setIsLoading(false);
       setOneDomain(response.data.data);
@@ -334,7 +364,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Domain updated successfully")
@@ -350,7 +380,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/domains/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -379,7 +409,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Portal Created Successfully");
@@ -399,7 +429,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setPortals(response.data.data);
       setIsLoading(false);
@@ -415,7 +449,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setOnePortal(response.data.data);
       setIsLoading(false);
@@ -432,7 +470,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Portal updated successfully")
@@ -448,7 +486,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/assets/portals/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -479,7 +517,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       if (response.status === 201) {
@@ -500,7 +538,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
 
       setIocs(response.data.data);
@@ -517,7 +559,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setIsLoading(false);
       setOneIoc(response.data.data);
@@ -535,7 +581,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/iocs/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       response.status === 200
@@ -595,7 +641,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       if (response.status === 201) {
@@ -616,7 +662,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setSuspiciousIps(response.data.data);
       setIsLoading(false);
@@ -632,7 +682,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       setOneSuspiciousIp(response.data.data);
@@ -650,7 +700,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/suspicious-ips/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       response.status === 200
@@ -710,7 +760,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       if (response.status === 201) {
@@ -731,7 +781,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setAptFeeds(response.data.data);
       setIsLoading(false);
@@ -746,7 +800,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       setOneAptFeed(response.data.data);
@@ -764,7 +818,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/apt-feeds/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       response.status === 200
@@ -824,7 +878,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       if (response.status === 201) {
@@ -845,7 +899,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setThreatIntelligenceFeeds(response.data.data);
       setIsLoading(false);
@@ -860,7 +918,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       setOneThreatIntelligenceFeed(response.data.data);
@@ -878,7 +936,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/threat-intelligence/threat-intelligence-feeds/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
 
       response.status === 200
@@ -939,7 +997,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Dark Web Mention Created Successfully");
@@ -959,7 +1017,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setDarkWebMentions(response.data.data);
       setIsLoading(false);
@@ -975,7 +1037,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneDarkWebMention(response.data.data);
       setIsLoading(false);
@@ -992,7 +1054,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Dark Web Mention updated successfully")
@@ -1008,7 +1070,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/dark-web-mentions/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1037,7 +1099,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Leaked Credentials Created Successfully");
@@ -1057,7 +1119,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setLeakedCredentials(response.data.data);
       setIsLoading(false);
@@ -1073,7 +1139,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneLeakedCredential(response.data.data);
       setIsLoading(false);
@@ -1090,7 +1156,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Leaked Credentials updated successfully")
@@ -1106,7 +1172,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/dark-web-monitoring/leaked-credentials/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1135,7 +1201,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("EDR XDR Created Successfully");
@@ -1155,7 +1221,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setEdrXdr(response.data.data);
       setIsLoading(false);
@@ -1171,7 +1241,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneEdrXDR(response.data.data);
       setIsLoading(false);
@@ -1188,7 +1258,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1205,7 +1275,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1234,7 +1304,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("NDR Created Successfully");
@@ -1254,7 +1324,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setNdr(response.data.data);
       setIsLoading(false);
@@ -1270,7 +1344,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneNdr(response.data.data);
       setIsLoading(false);
@@ -1287,7 +1361,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1304,7 +1378,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/detections/ndr-detections/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1333,7 +1407,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("ATO Created Successfully");
@@ -1353,7 +1427,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setATOs(response.data.data);
       setIsLoading(false);
@@ -1369,7 +1447,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneATO(response.data.data);
       setIsLoading(false);
@@ -1386,7 +1464,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1403,7 +1481,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/account-take-over/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1432,7 +1510,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Attack Surface Created Successfully");
@@ -1452,7 +1530,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setAttackSurfaces(response.data.data);
       setIsLoading(false);
@@ -1468,7 +1550,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneAttackSurface(response.data.data);
       setIsLoading(false);
@@ -1485,7 +1567,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1504,7 +1586,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/attack-surface/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1533,7 +1615,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Brand Reputation Created Successfully");
@@ -1553,7 +1635,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setBrandReputations(response.data.data);
       setIsLoading(false);
@@ -1569,7 +1655,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneBrandReputation(response.data.data);
       setIsLoading(false);
@@ -1586,7 +1672,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1605,7 +1691,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/brand-reputation/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1634,7 +1720,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Vulnerabilities Intelligence Created Successfully");
@@ -1654,7 +1740,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setVulnerabilitiesIntelligences(response.data.data);
       setIsLoading(false);
@@ -1670,7 +1760,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneVulnerabilitiesIntelligence(response.data.data);
       setIsLoading(false);
@@ -1687,7 +1777,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
       response.status === 200
@@ -1706,7 +1796,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/vulnerabilities-intelligences/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1737,9 +1827,13 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
-      setnoncompliancegapsoverview(response.data.data);
+      setNonComplianceGapsOverview(response.data.data);
       setIsLoading(false);
       return noncompliancegapsoverview;
     } catch (error) {
@@ -1754,7 +1848,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Non-Compliance Gaps Overview Created Successfully");
@@ -1773,7 +1867,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneNoncompliancegapsoverview(response.data.data);
       setIsLoading(false);
@@ -1788,7 +1882,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1814,7 +1908,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/non-compliance-gaps-overview/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Non-Compliance Gaps Overview updated successfully")
@@ -1833,7 +1927,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success(" Threat Composition Overview Created Successfully");
@@ -1852,7 +1946,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setThreatCompositionOverview(response.data.data);
       setIsLoading(false);
@@ -1868,7 +1966,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneThreatCompositionOverview(response.data.data);
       setIsLoading(false);
@@ -1883,7 +1981,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -1909,7 +2007,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/threat-composition-overview/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success(" Threat Composition Overview updated successfully")
@@ -1930,7 +2028,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Security Posture Score Created Successfully");
@@ -1948,7 +2046,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setSecurityPostureScore(response.data.data);
       setIsLoading(false);
@@ -1963,7 +2065,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneSecurityPostureScore(response.data.data);
       setIsLoading(false);
@@ -1971,30 +2073,30 @@ export function ContextProvider(props) {
     } catch (error) {
       setIsLoading(false);
     }
+  }
 
-    // Delete One Security Posture Score
-    async function deleteSecurityPostureScore(id) {
-      try {
-        setIsLoading(true);
-        const response = await axios.delete(
-          `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
-          { headers: getAuthAdminHeaders() }
-        );
+  // Delete One Security Posture Score
+  async function deleteSecurityPostureScore(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Security Posture Score Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
         setIsLoading(false);
-        if (response.status === 204) {
-          toast.success("Security Posture Score Deleted successfully");
-          refreshData();
-        } else if (response.status === "fail") {
-          toast.error(response.message);
-        } else {
-          toast.error("Server Error");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        if (error.response && error.response.status === 404) {
-          setIsLoading(false);
-          toast.error("Security Posture Score");
-        }
+        toast.error("Security Posture Score");
       }
     }
   }
@@ -2005,7 +2107,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Security Posture Score updated successfully")
@@ -2023,7 +2125,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-posture-score/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -2051,7 +2153,7 @@ export function ContextProvider(props) {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("Security Breach Indicators Created Successfully");
@@ -2069,7 +2171,11 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators`,
-        { headers: { ...getAuthAdminHeaders(), ...getAuthUserHeaders() } }
+        {
+          headers: {
+            ...getAuthHeaders(),
+          },
+        }
       );
       setSecurityBreachIndicators(response.data.data);
       setIsLoading(false);
@@ -2084,7 +2190,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setOneSecurityBreachIndicators(response.data.data);
       setIsLoading(false);
@@ -2099,7 +2205,7 @@ export function ContextProvider(props) {
       setIsLoading(true);
       const response = await axios.delete(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
@@ -2125,7 +2231,7 @@ export function ContextProvider(props) {
         const response = await axios.patch(
           `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
           values,
-          { headers: getAuthAdminHeaders() }
+          { headers: { ...getAuthAdminHeaders() } }
         );
         response.status === 200
           ? toast.success("Security Breach Indicators updated successfully")
@@ -2144,7 +2250,7 @@ export function ContextProvider(props) {
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/security-breach-indicators/${id}`,
         values,
-        { headers: getAuthAdminHeaders() }
+        { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
         ? toast.success("Security Breach Indicators updated successfully")
@@ -2176,6 +2282,8 @@ export function ContextProvider(props) {
     fetchAllThreatCompositionOverview();
     fetchAllSecurityPostureScore();
     fetchAllSecurityBreachIndicators();
+    getAuthUserHeaders();
+    getAuthAdminHeaders();
   };
 
   useEffect(() => {
