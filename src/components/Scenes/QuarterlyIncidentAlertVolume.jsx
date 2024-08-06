@@ -1,35 +1,39 @@
-import React from "react";
-import { Card, CardContent, Typography, Box } from "@mui/material";
+import React, { useContext } from "react";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import { BarChart } from "recharts";
+import { Context } from "../../context";
 
-const pieData = [
-  { label: "January", value: 21, color: "#FF6384" },
-  { label: "February", value: 39, color: "#36A2EB" },
-  { label: "March", value: 40, color: "#FFCE56" },
-];
-
-const barData = [
-  { label: "January", incidents: 0 },
-  { label: "February", incidents: 0 },
-  { label: "March", incidents: 34 },
-];
-
-const TOTAL = pieData.map((item) => item.value).reduce((a, b) => a + b, 0);
-
-const getArcLabel = (params) => {
-  const percent = params.value / TOTAL;
-  return `${(percent * 100).toFixed(0)}%`;
-};
-
-const sizing = {
-  margin: { right: 5 },
-  width: 200,
-  height: 200,
-  legend: { hidden: true },
+const colorPalette = {
+  January: "#FF6384",
+  February: "#36A2EB",
+  March: "#FFCE56",
+  // Add more months and colors if needed
 };
 
 const QuarterlyIncidentAlertVolume = () => {
+  const { quarterlyIncident } = useContext(Context);
+
+  // Convert quarterlyIncident to the structure needed for charts
+  const pieData = quarterlyIncident.map((item) => ({
+    label: item.month,
+    value: parseInt(item.score, 10), // Convert score to integer
+    color: colorPalette[item.month] || "#888888", // Use unique color or default
+  }));
+
+  const TOTAL = pieData.map((item) => item.value).reduce((a, b) => a + b, 0);
+
   return (
     <Card
       sx={{
@@ -45,35 +49,61 @@ const QuarterlyIncidentAlertVolume = () => {
         <Typography variant="h6">
           Quarterly Incident and Alert Volume
         </Typography>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Box width="50%">
-            <PieChart
-              series={[
-                {
-                  outerRadius: 80,
-                  data: pieData,
-                  arcLabel: getArcLabel,
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <PieChart
+            series={[
+              {
+                outerRadius: 80,
+                data: pieData,
+                arcLabel: (params) => {
+                  const percent = params.value / TOTAL;
+                  return `${(percent * 100).toFixed(0)}%`;
                 },
-              ]}
-              sx={{
-                [`& .${pieArcLabelClasses.root}`]: {
-                  fill: "white",
-                  fontSize: 14,
-                },
-              }}
-              {...sizing}
-            />
-            <Typography variant="body2">Total Alerts: {TOTAL}</Typography>
-          </Box>
-          <Box>
-            <BarChart
-              data={barData}
-              xKey="label"
-              yKey="incidents"
-              colorScheme={["#FF6384"]}
-            />
-            <Typography variant="body2">Incident Percentages</Typography>
-          </Box>
+              },
+            ]}
+            sx={{
+              [`& .${pieArcLabelClasses.root}`]: {
+                fill: "white",
+                fontSize: 14,
+              },
+            }}
+            {...{
+              margin: { right: 5 },
+              width: 200,
+              height: 200,
+              legend: { hidden: true },
+            }}
+          />
+          <Typography variant="body2">Total Alerts: {TOTAL}</Typography>
+          <TableContainer component={Paper} sx={{ marginTop: 2 }}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Month</TableCell>
+                  <TableCell>Score</TableCell>
+                  <TableCell>Color</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {pieData.map((item) => (
+                  <TableRow key={item.label}>
+                    <TableCell>{item.label}</TableCell>
+                    <TableCell>{item.value}</TableCell>
+                    <TableCell>
+                      <Box
+                        sx={{
+                          width: 24,
+                          height: 24,
+                          backgroundColor: item.color,
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </Box>
       </CardContent>
     </Card>

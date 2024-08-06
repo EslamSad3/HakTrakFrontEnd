@@ -106,6 +106,10 @@ export function ContextProvider(props) {
   const [oneSecurityBreachIndicators, setOneSecurityBreachIndicators] =
     useState({});
 
+  // Quarterly Incident
+  const [quarterlyIncident, setQuarterlyIncident] = useState([]);
+  const [oneQuarterlyIncident, setOneQuarterlyIncident] = useState({});
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -2146,6 +2150,7 @@ export function ContextProvider(props) {
   }
 
   // Security Breach Indicators
+
   // Add New Security Breach Indicators
   async function addNewSecurityBreachIndicators(values) {
     try {
@@ -2262,6 +2267,101 @@ export function ContextProvider(props) {
     }
   }
 
+  // Quarterly Incident
+  // Add New Quarterly Incident
+  async function addNewQuarterlyIncident(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/quarterly-incident`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      if (response.status === 201) {
+        toast.success("Quarterly Incident Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all Quarterly Incident
+  async function fetchAllQuarterlyIncident() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/quarterly-incident`,
+        { headers: { ...getAuthHeaders() } }
+      );
+      console.log(response, "quarterlyIncident");
+      setQuarterlyIncident(response.data.data);
+      setIsLoading(false);
+      return quarterlyIncident;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Get One Quarterly Incident
+  async function fetchOneQuarterlyIncident(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/quarterly-incident/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setOneQuarterlyIncident(response.data.data);
+      setIsLoading(false);
+      return oneQuarterlyIncident;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Quarterly Incident
+  async function deleteQuarterlyIncident(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/quarterly-incident/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Quarterly Incident Deleted successfully");
+        refreshData();
+      } else if (response.status === "fail") {
+        toast.error(response.message);
+      } else {
+        toast.error("Server Error");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 404) {
+        setIsLoading(false);
+        toast.error("Quarterly Incident Error");
+      }
+    }
+  }
+  // Update One Quarterly Incident
+  async function updateQuarterlyIncident(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/quarterly-incident/${id}`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      response.status === 200
+        ? toast.success("Quarterly Incident updated successfully")
+        : toast.error("Quarterly Incident not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -2284,6 +2384,7 @@ export function ContextProvider(props) {
     fetchAllSecurityBreachIndicators();
     getAuthUserHeaders();
     getAuthAdminHeaders();
+    fetchAllQuarterlyIncident();
   };
 
   useEffect(() => {
@@ -2390,6 +2491,11 @@ export function ContextProvider(props) {
         fetchOneSecurityBreachIndicators,
         deleteSecurityBreachIndicators,
         updateSecurityBreachIndicators,
+        addNewQuarterlyIncident,
+        fetchAllQuarterlyIncident,
+        fetchOneQuarterlyIncident,
+        deleteQuarterlyIncident,
+        updateQuarterlyIncident,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -2431,6 +2537,8 @@ export function ContextProvider(props) {
         oneSecurityPostureScore,
         securityBreachIndicators,
         oneSecurityBreachIndicators,
+        quarterlyIncident,
+        oneQuarterlyIncident,
         isLoading,
         adminToken,
         userToken,
