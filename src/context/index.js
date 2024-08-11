@@ -126,6 +126,10 @@ export function ContextProvider(props) {
   // mitre attacks
   const [mitreAttacks, setMitreAttacks] = useState([]);
   const [oneMitreAttack, setOneMitreAttack] = useState({});
+
+  // cyber kill chain
+  const [cyberKillChains, setCyberKillChains] = useState([]);
+  const [oneCyberKillChain, setOneCyberKillChain] = useState({});
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -2652,6 +2656,96 @@ export function ContextProvider(props) {
     }
   }
 
+  // cyber kill chain
+  // Add New Cyber Kill Chain
+  async function addNewCyberKillChain(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/cyber-kill-chain`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      if (response.status === 201) {
+        toast.success("Cyber Kill Chain Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all cyber kill chains
+  async function fetchAllCyberKillChains() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/cyber-kill-chain`,
+        { headers: { ...getAuthHeaders() } }
+      );
+      setCyberKillChains(response.data.data);
+      setIsLoading(false);
+      return cyberKillChains;
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  }
+  // Get One Cyber Kill Chain
+  async function fetchOneCyberKillChain(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/cyber-kill-chain/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setOneCyberKillChain(response.data.data);
+      setIsLoading(false);
+      return oneCyberKillChain;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Cyber Kill Chain
+  async function deleteCyberKillChain(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/cyber-kill-chain/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Cyber Kill Chain Deleted successfully");
+        refreshData();
+      } else {
+        toast.error("Cyber Kill Chain Delettion Faild");
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+  // Update One Cyber Kill Chain
+  async function updateCyberKillChain(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/cyber-kill-chain/${id}`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      response.status === 200
+        ? toast.success("Cyber Kill Chain updated successfully")
+        : toast.error("Cyber Kill Chain not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -2678,6 +2772,7 @@ export function ContextProvider(props) {
     fetchAllTtdTtr();
     fetchAllDigitalRiskIntelligence();
     fetchAllMiterAttacks();
+    fetchAllCyberKillChains();
   };
 
   useEffect(() => {
@@ -2799,6 +2894,11 @@ export function ContextProvider(props) {
         fetchOneMiterAttack,
         deleteMiterAttack,
         updateMiterAttack,
+        addNewCyberKillChain,
+        fetchAllCyberKillChains,
+        fetchOneCyberKillChain,
+        deleteCyberKillChain,
+        updateCyberKillChain,
         addNewTtdTtr,
         fetchAllTtdTtr,
         fetchOneTtdTtr,
@@ -2853,6 +2953,8 @@ export function ContextProvider(props) {
         oneDigitalRiskIntelligence,
         mitreAttacks,
         oneMitreAttack,
+        cyberKillChains,
+        oneCyberKillChain,
         isLoading,
         adminToken,
         userToken,
