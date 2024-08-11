@@ -16,6 +16,7 @@ export function ContextProvider(props) {
   /** ************************** Assets States *******************/
   // Ips
   const [ips, setIps] = useState([]);
+  console.log(ips);
   const [oneIp, setOneIp] = useState({});
 
   // Domains
@@ -110,6 +111,16 @@ export function ContextProvider(props) {
   const [quarterlyIncident, setQuarterlyIncident] = useState([]);
   const [oneQuarterlyIncident, setOneQuarterlyIncident] = useState({});
 
+  // TTDTTR
+  const [TtdTtrs, setTtdTtrs] = useState([]);
+  const [oneTtdTtr, setOneTtdTtr] = useState({});
+
+  // Digital Risk Intelligence
+  const [digitalRiskIntelligences, setDigitalRiskIntelligences] = useState([]);
+  const [oneDigitalRiskIntelligence, setOneDigitalRiskIntelligence] = useState(
+    {}
+  );
+
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -149,7 +160,8 @@ export function ContextProvider(props) {
         });
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.log(error);
+      // toast.error(error.response.data.message);
       setIsLoading(false);
     }
   }
@@ -2301,6 +2313,7 @@ export function ContextProvider(props) {
       return quarterlyIncident;
     } catch (error) {
       setIsLoading(false);
+      console.log(error);
     }
   }
   // Get One Quarterly Incident
@@ -2362,6 +2375,186 @@ export function ContextProvider(props) {
     }
   }
 
+  // ttd ttr
+  // Add New ttd ttr
+  async function addNewTtdTtr(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/ttd-ttr`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      if (response.status === 201) {
+        toast.success("ttd ttr Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all ttd ttr
+  async function fetchAllTtdTtr() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/ttd-ttr`,
+        { headers: { ...getAuthHeaders() } }
+      );
+      setTtdTtrs(response.data.data);
+      setIsLoading(false);
+      return TtdTtrs;
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  }
+  // Get One ttd ttr
+  async function fetchOneTtdTtr(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/ttd-ttr/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setOneTtdTtr(response.data.data);
+      setIsLoading(false);
+      return oneTtdTtr;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One ttd ttr
+  async function deleteTtdTtr(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/ttd-ttr/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("ttd ttr Deleted successfully");
+        refreshData();
+      } else {
+        toast.error("ttd ttr Delettion Faild");
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+  // Update One ttd ttr
+  async function updateTtdTtr(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/ttd-ttr/${id}`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      response.status === 200
+        ? toast.success("ttd ttr updated successfully")
+        : toast.error("ttd ttr not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
+  // Digital Risk Intelligence
+  // Add New Digital Risk Intelligence
+  async function addNewDigitalRiskIntelligence(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/digital-risk-intelligence`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      if (response.status === 201) {
+        toast.success("Digital Risk Intelligence Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all Digital Risk Intelligence
+  async function fetchAllDigitalRiskIntelligence() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/digital-risk-intelligence`,
+        { headers: { ...getAuthHeaders() } }
+      );
+      setDigitalRiskIntelligences(response.data.data);
+      setIsLoading(false);
+      return digitalRiskIntelligences;
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  }
+  // Get One Digital Risk Intelligence
+
+  async function fetchOneDigitalRiskIntelligence(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/digital-risk-intelligence/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setOneDigitalRiskIntelligence(response.data.data);
+      setIsLoading(false);
+      return oneDigitalRiskIntelligence;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Digital Risk Intelligence
+  async function deleteDigitalRiskIntelligence(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/digital-risk-intelligence/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Digital Risk Intelligence Deleted successfully");
+        refreshData();
+      } else {
+        toast.error("Digital Risk Intelligence Delettion Faild");
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+  // Update One Digital Risk Intelligence
+  async function updateDigitalRiskIntelligence(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/executive-dashboard/digital-risk-intelligence/${id}`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      response.status === 200
+        ? toast.success("digital risk intelligence updated successfully")
+        : toast.error("digital risk intelligence not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -2385,6 +2578,8 @@ export function ContextProvider(props) {
     getAuthUserHeaders();
     getAuthAdminHeaders();
     fetchAllQuarterlyIncident();
+    fetchAllTtdTtr();
+    fetchAllDigitalRiskIntelligence();
   };
 
   useEffect(() => {
@@ -2496,6 +2691,16 @@ export function ContextProvider(props) {
         fetchOneQuarterlyIncident,
         deleteQuarterlyIncident,
         updateQuarterlyIncident,
+        addNewDigitalRiskIntelligence,
+        fetchAllDigitalRiskIntelligence,
+        fetchOneDigitalRiskIntelligence,
+        deleteDigitalRiskIntelligence,
+        updateDigitalRiskIntelligence,
+        addNewTtdTtr,
+        fetchAllTtdTtr,
+        fetchOneTtdTtr,
+        deleteTtdTtr,
+        updateTtdTtr,
         saveAdminToken,
         saveUserToken,
         ips,
@@ -2539,6 +2744,10 @@ export function ContextProvider(props) {
         oneSecurityBreachIndicators,
         quarterlyIncident,
         oneQuarterlyIncident,
+        TtdTtrs,
+        oneTtdTtr,
+        digitalRiskIntelligences,
+        oneDigitalRiskIntelligence,
         isLoading,
         adminToken,
         userToken,
