@@ -121,6 +121,11 @@ export function ContextProvider(props) {
     {}
   );
 
+  /************************* Attack Scenarios *********************/
+
+  // mitre attacks
+  const [mitreAttacks, setMitreAttacks] = useState([]);
+  const [oneMitreAttack, setOneMitreAttack] = useState({});
   function saveAdminToken(token) {
     localStorage.setItem("AdminToken", token);
     setAdminToken(token);
@@ -2555,6 +2560,98 @@ export function ContextProvider(props) {
       setIsLoading(false);
     }
   }
+
+  /******************************** Attack Scenarios **********************************/
+  // miter attacks
+  // Add New Miter Attack
+  async function addNewMiterAttack(values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      if (response.status === 201) {
+        toast.success("Miter Attack Created Successfully");
+        refreshData();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      setIsLoading(false);
+    }
+  }
+  // fetch all miter attacks
+  async function fetchAllMiterAttacks() {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks`,
+        { headers: { ...getAuthHeaders() } }
+      );
+      setMitreAttacks(response.data.data);
+      setIsLoading(false);
+      return mitreAttacks;
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
+  }
+  // Get One Miter Attack
+  async function fetchOneMiterAttack(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setOneMitreAttack(response.data.data);
+      setIsLoading(false);
+      return oneMitreAttack;
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+  // Delete One Miter Attack
+  async function deleteMiterAttack(id) {
+    try {
+      setIsLoading(true);
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      setIsLoading(false);
+      if (response.status === 204) {
+        toast.success("Miter Attack Deleted successfully");
+        refreshData();
+      } else {
+        toast.error("Miter Attack Delettion Faild");
+      }
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+  // Update One Miter Attack
+  async function updateMiterAttack(id, values) {
+    try {
+      setIsLoading(true);
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        values,
+        { headers: { ...getAuthAdminHeaders() } }
+      );
+      response.status === 200
+        ? toast.success("Miter Attack updated successfully")
+        : toast.error("Miter Attack not found");
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  }
+
   const refreshData = () => {
     fetchAllDomains();
     fetchAllIps();
@@ -2580,6 +2677,7 @@ export function ContextProvider(props) {
     fetchAllQuarterlyIncident();
     fetchAllTtdTtr();
     fetchAllDigitalRiskIntelligence();
+    fetchAllMiterAttacks();
   };
 
   useEffect(() => {
@@ -2696,6 +2794,11 @@ export function ContextProvider(props) {
         fetchOneDigitalRiskIntelligence,
         deleteDigitalRiskIntelligence,
         updateDigitalRiskIntelligence,
+        addNewMiterAttack,
+        fetchAllMiterAttacks,
+        fetchOneMiterAttack,
+        deleteMiterAttack,
+        updateMiterAttack,
         addNewTtdTtr,
         fetchAllTtdTtr,
         fetchOneTtdTtr,
@@ -2748,6 +2851,8 @@ export function ContextProvider(props) {
         oneTtdTtr,
         digitalRiskIntelligences,
         oneDigitalRiskIntelligence,
+        mitreAttacks,
+        oneMitreAttack,
         isLoading,
         adminToken,
         userToken,
