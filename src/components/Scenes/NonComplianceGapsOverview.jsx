@@ -64,8 +64,8 @@ export default function NonComplianceGapsOverview() {
       "MITRE ATT&CK": "#1e88e5",
       "ISO 27001": "#d32f2f",
       "NIST CSF": "#388e3c",
-      "PDPL": "#fbc02d",
-      "SAMA": "#ff5722",
+      PDPL: "#fbc02d",
+      SAMA: "#ff5722",
     };
     return colors[compliance] || "#000000"; // default color
   };
@@ -85,18 +85,26 @@ export default function NonComplianceGapsOverview() {
         <Typography variant="h6" align="center">
           Non-Compliance Gaps Overview
         </Typography>
-        <BarChart
-          xAxis={chartData.xAxis}
-          series={chartData.series}
-          width={700}
-          height={300}
-        />
-        <Box mt={2}>
+        <Box my={2}>
           <Typography variant="body2" align="center">
             The chart details the levels of non-compliance and gaps <br /> in
             regulatory controls.
           </Typography>
         </Box>
+        <BarChart
+          xAxis={chartData.xAxis}
+          series={chartData.series}
+          width={500}
+          height={300}
+          margin={{ top: 100, bottom: 100, left: 100, right: 100 }}
+          slotProps={{
+            legend: {
+              direction: "row",
+              position: { vertical: "bottom", horizontal: "middle" },
+              padding: 0,
+            },
+          }}
+        />
       </CardContent>
     </Card>
   );

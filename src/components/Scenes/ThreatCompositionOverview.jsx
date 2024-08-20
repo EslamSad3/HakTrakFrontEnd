@@ -1,5 +1,3 @@
-
-
 import React, { useContext, useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Box, Card, CardContent, Typography } from "@mui/material";
@@ -85,18 +83,26 @@ export default function ThreatCompositionOverview() {
         <Typography variant="h6" align="center">
           Threat Composition Overview{" "}
         </Typography>
-        <BarChart
-          xAxis={chartData.xAxis}
-          series={chartData.series}
-          width={700}
-          height={300}
-        />
-        <Box mt={2}>
+        <Box my={2}>
           <Typography variant="body2" align="center">
             The chart visualizes the proportion of different threat types <br />
             encountered over a period (January, February, March).
           </Typography>
         </Box>
+        <BarChart
+          xAxis={chartData.xAxis}
+          series={chartData.series}
+          width={500}
+          height={300}
+          margin={{ top: 100, bottom: 100, left: 100, right: 100 }}
+          slotProps={{
+            legend: {
+              direction: "row",
+              position: { vertical: "bottom", horizontal: "middle" },
+              padding: 0,
+            },
+          }}
+        />
       </CardContent>
     </Card>
   );
