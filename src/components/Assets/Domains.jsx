@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import { useNavigate } from "react-router-dom";
 
 const Domains = () => {
   const {
@@ -22,6 +23,7 @@ const Domains = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedDomain, setDeletedDomain] = useState(null);
   const [selectedDomain, setSelectedDomain] = useState(null);
+  const navigate = useNavigate();
 
   const handleClickOpenDelete = (id) => {
     setDeletedDomain(id);
@@ -74,6 +76,20 @@ const Domains = () => {
     { field: "value", headerName: "Value", width: 150 },
     { field: "location", headerName: "Location", width: 150 },
     { field: "description", headerName: "Description", width: 300 },
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => navigate(`/assets/domain/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

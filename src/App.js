@@ -35,7 +35,7 @@ import EdrXdr from "./components/Detections/EdrXdr";
 import CreateEdrXdrDetections from "./Actions/Detections/CreateEdrXdrDetections";
 import CreateNdrDetections from "./Actions/Detections/CreateNdrDetections";
 import Ndr from "./components/Detections/NDR";
-import ATOs from "./components/Atos";
+import ATOs from "./components/Accont_Take_Over/Atos";
 import CreateATO from "./Actions/CreateATO";
 import BrandReputation from "./components/BrandReputation";
 import CreateBrandReputation from "./Actions/CreateBrandReputation";
@@ -44,6 +44,21 @@ import CreateVulnerabilitiesIntelligences from "./Actions/CreateVulnerabilitiesI
 import AttackSurface from "./components/AttackSurface";
 import CreateAttackSurface from "./Actions/CreateAttackSurface";
 import ExcutiveDashboard from "./components/ExcutiveDashbaord/ExcutiveDashboard";
+import DomainsDetails from "./components/Details/DomainsDetails";
+import IPsDetails from "./components/Details/IPsDetails";
+import PortalsDetails from "./components/Details/PortalsDetails";
+import IocDetails from "./components/Details/IocDetails";
+import SuspiciousIpDetails from "./components/Details/SuspiciousIpDetails";
+import AptFeedDetails from "./components/Details/AptFeedDetails";
+import ThreatIntelligenceFeedDetails from "./components/Details/ThreatIntelligenceFeedDetails";
+import DarkWebMentionsDetails from "./components/Details/DarkWebMentionsDetails";
+import LeakedCredentialDetails from "./components/Details/LeakedCredentialDetails";
+import EdrXdrDetails from "./components/Details/EdrXdrDetails";
+import NdrDetails from "./components/Details/NdrDetails";
+import ATODetails from "./components/Details/ATODetails";
+import BrandReputationDetails from "./components/Details/BrandReputationDetails";
+import VulnerabilitiesIntelligencesDetails from "./components/Details/VulnerabilitiesIntelligencesDetails";
+import AttackSurfaceDetails from "./components/Details/AttackSurfaceDetails";
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -64,8 +79,10 @@ function App() {
                   element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" element={<Home />} />
-                <Route path="/excutive-dashboard" element={<ExcutiveDashboard />} />
-
+                <Route
+                  path="/excutive-dashboard"
+                  element={<ExcutiveDashboard />}
+                />
                 {/* Assets Actions Routes */}
                 <Route
                   path="/admin/actions/assets/ips"
@@ -94,9 +111,7 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Threat intelligence Actions Routes */}
-
                 <Route
                   path="/admin/actions/threat-intelligence/iocs"
                   forceRefresh={true}
@@ -185,7 +200,6 @@ function App() {
                     <ProtectedRoute>{<CreateAttackSurface />}</ProtectedRoute>
                   }
                 />
-
                 <Route
                   path="/admin/actions"
                   forceRefresh={true}
@@ -195,49 +209,94 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
-
                 {/* Assets Routes */}
                 <Route path="/assets/ips" element={<IPs />} />
+                <Route path="/assets/ip/:id" element={<IPsDetails />} />
                 <Route path="/assets/domains" element={<Domains />} />
+                <Route path="/assets/domain/:id" element={<DomainsDetails />} />
                 <Route path="/assets/portals" element={<Portals />} />
-
+                <Route path="/assets/portal/:id" element={<PortalsDetails />} />
                 {/* Threat intelligence Routes */}
                 <Route path="/threat-intelligence/iocs" element={<Iocs />} />
                 <Route
+                  path="/threat-intelligence/ioc/:id"
+                  element={<IocDetails />}
+                />
+                <Route
                   path="/threat-intelligence/suspicious-ips"
                   element={<SuspiciousIps />}
+                />
+                <Route
+                  path="/threat-intelligence/suspicious-ip/:id"
+                  element={<SuspiciousIpDetails />}
                 />
                 <Route
                   path="/threat-intelligence/apt-feeds"
                   element={<AptFeeds />}
                 />
                 <Route
+                  path="/threat-intelligence/apt-feed/:id"
+                  element={<AptFeedDetails />}
+                />
+                <Route
                   path="/threat-intelligence/threat-intelligence-feeds"
                   element={<ThreatIntelligenceFeeds />}
                 />
-
+                <Route
+                  path="/threat-intelligence/threat-intelligence-feed/:id"
+                  element={<ThreatIntelligenceFeedDetails />}
+                />
                 {/* Dark Web Montring routes */}
                 <Route
                   path="/dark-web-monitoring/dark-web-mentions"
                   element={<DarkWebMentions />}
                 />
                 <Route
+                  path="/dark-web-monitoring/dark-web-mention/:id"
+                  element={<DarkWebMentionsDetails />}
+                />
+                <Route
                   path="/dark-web-monitoring/leaked-credentials"
                   element={<LeakedCredentials />}
+                />
+                <Route
+                  path="/dark-web-monitoring/leaked-credential/:id"
+                  element={<LeakedCredentialDetails />}
                 />
                 {/* Detections */}
                 <Route
                   path="/detections/edrxdr-detections"
                   element={<EdrXdr />}
                 />
+                <Route
+                  path="/detections/edrxdr-detection/:id"
+                  element={<EdrXdrDetails />}
+                />
                 <Route path="/detections/ndr-detections" element={<Ndr />} />
+                <Route
+                  path="/detections/ndr-detection/:id"
+                  element={<NdrDetails />}
+                />
                 <Route path="/account-take-over" element={<ATOs />} />
+                <Route path="/account-take-over/:id" element={<ATODetails />} />
                 <Route path="/brand-reputation" element={<BrandReputation />} />
+                <Route
+                  path="/brand-reputation/:id"
+                  element={<BrandReputationDetails />}
+                />
                 <Route
                   path="/vulnerabilities-intelligences"
                   element={<VulnerabilitiesIntelligences />}
                 />
+                <Route
+                  path="/vulnerabilities-intelligence/:id"
+                  element={<VulnerabilitiesIntelligencesDetails />}
+                />
                 <Route path="/attack-surface" element={<AttackSurface />} />
+                <Route
+                  path="/attack-surface/:id"
+                  element={<AttackSurfaceDetails />}
+                />
               </Route>
             </Routes>
           </AuthRoute>

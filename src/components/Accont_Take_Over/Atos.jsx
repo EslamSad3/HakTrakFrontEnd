@@ -1,11 +1,12 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import Header from "../components/Header";
+import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../context";
-import DeleteDialog from "../Actions/DeleteDialog";
-import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
-import AtoBarChart from "./Scenes/AtoBarChart";
+import { Context } from "../../context";
+import DeleteDialog from "../../Actions/DeleteDialog";
+import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import AtoBarChart from "../Scenes/AtoBarChart";
+import { useNavigate } from "react-router-dom";
 
 const ATOs = () => {
   const {
@@ -18,12 +19,12 @@ const ATOs = () => {
     updateATO,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deletedAto, setDeletedAto] = useState(null);
   const [selectedAto, setSelectedAto] = useState(null);
-
 
   const handleClickOpenDelete = (id) => {
     setDeletedAto(id);
@@ -62,28 +63,58 @@ const ATOs = () => {
     refreshData();
   }, []);
 
-     const transformedData = atos?.map((item, index) => ({
-       ...item,
-       id: index + 1,
-     }));
+  const transformedData = atos?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
-      width: 90,
     },
-    { field: "user", headerName: "User", width: 150 },
-    { field: "password", headerName: "Password", width: 150 },
-    { field: "url", headerName: "URL", width: 150 },
-    { field: "source", headerName: "Source", width: 150 },
-    { field: "bu", headerName: "BU", width: 150 },
-    { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
+    { field: "user", headerName: "User" },
+    { field: "password", headerName: "Password" },
+    { field: "url", headerName: "URL" },
+    { field: "source", headerName: "Source" },
+    { field: "bu", headerName: "BU" },
+    { field: "mitigationSteps", headerName: "Mitigation Steps" },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="warning"
+          onClick={() => navigate(`/account-take-over/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
+    {
+      field: "screenshot",
+      headerName: "Screenshot",
+
+      renderCell: (params) => (
+        <Button variant="contained" color="info">
+          <a
+            href={params.row.screenshot}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View
+          </a>
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",
           headerName: "Delete",
-          width: 150,
+          width: 100,
           renderCell: (params) => (
             <Button
               variant="contained"
@@ -99,7 +130,7 @@ const ATOs = () => {
       ? {
           field: "update",
           headerName: "Update",
-          width: 150,
+          width: 100,
           renderCell: (params) => (
             <Button
               variant="contained"

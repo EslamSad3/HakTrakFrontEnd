@@ -6,6 +6,7 @@ import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
 import AttackSurfaceBarChart from "./Scenes/AttackSurfaceBarChart";
+import { useNavigate } from "react-router-dom";
 
 const AttackSurface = () => {
   const {
@@ -18,6 +19,7 @@ const AttackSurface = () => {
     updateAttckSurface,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -61,17 +63,16 @@ const AttackSurface = () => {
     refreshData();
   }, []);
 
-      const transformedData = attackSurfaces?.map((item, index) => ({
-        ...item,
-        id: index + 1,
-      }));
+  const transformedData = attackSurfaces?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-
     },
     { field: "affectedSystems", headerName: "Affected Systems", width: 150 },
     {
@@ -81,6 +82,7 @@ const AttackSurface = () => {
       valueGetter: (params) => params.join(", "),
     },
     { field: "services", headerName: "Services", width: 150 },
+    { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
     {
       field: "screenshot",
       headerName: "Screenshot",
@@ -97,7 +99,21 @@ const AttackSurface = () => {
         </Button>
       ),
     },
-    { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="warning"
+          onClick={() => navigate(`/attack-surface/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

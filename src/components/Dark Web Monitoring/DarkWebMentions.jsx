@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import { useNavigate } from "react-router-dom";
 
 const DarkWebMentions = () => {
   const {
@@ -17,6 +18,7 @@ const DarkWebMentions = () => {
     updateDarkWebMention,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -71,6 +73,23 @@ const DarkWebMentions = () => {
     },
     { field: "source", headerName: "Source", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 350 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() =>
+            navigate(`/dark-web-monitoring/dark-web-mention/${params.id}`)
+          }
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

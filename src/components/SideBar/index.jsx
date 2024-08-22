@@ -457,6 +457,66 @@ const SideBar = ({
                         <ListItemText primary="Suspicious IPs" sx={{ pl: 2 }} />
                       </ListItemButton>
                     </ListItem>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/threat-intelligence/threat-news")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "threatintelligence/ThreatNews"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "threatintelligence/ThreatNewss"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "threatintelligence/threat-news"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <FmdBadIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Threat News" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/threat-intelligence/geo-watch")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "threatintelligence/geowatch"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "threatintelligence/geowatch"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "threatintelligence/geowatch"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <FmdBadIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Geo Watch" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
                   </List>
                 </AccordionDetails>
               </Accordion>
@@ -486,7 +546,7 @@ const SideBar = ({
                   >
                     <TravelExploreIcon />
                   </ListItemIcon>
-                  <Typography>Dark Web Monitoring</Typography>
+                  <Typography>Deep & Dark Web Monitoring</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <List>
@@ -757,40 +817,125 @@ const SideBar = ({
               </Accordion>
 
               {/* Account Take Over */}
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={() => handleNavigate("/account-take-over")}
-                  sx={{
-                    backgroundColor:
-                      active === "account-take-over"
-                        ? theme.palette.secondary[300]
-                        : "transparent",
-                    color:
-                      active === "account-take-over"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[100],
-                  }}
-                >
+              <Accordion
+                sx={{
+                  backgroundColor: theme.palette.background.alt,
+                  color: theme.palette.secondary[100],
+                  "&.Mui-expanded": {
+                    backgroundColor: theme.palette.background.alt,
+                  },
+                  "& .MuiAccordionSummary-root": {
+                    padding: "0 2rem",
+                  },
+                  "& .MuiAccordionDetails-root": {
+                    padding: 0,
+                  },
+                }}
+              >
+                <AccordionSummary expandIcon={<ExpandMore />}>
                   <ListItemIcon
                     sx={{
-                      ml: "2rem",
-                      color:
-                        active === "account-take-over"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[200],
+                      color: theme.palette.secondary[200],
+                      ml: "1rem",
                     }}
                   >
-                    <FolderSharedIcon />
+                    <CrisisAlertIcon />
                   </ListItemIcon>
-                  <ListItemText
-                    primary="Account Takeover"
-                    sx={{ textAlign: "start" }}
-                  />
-                  {active === "account-take-over" && (
-                    <ChevronRightOutlined sx={{ ml: "auto" }} />
-                  )}
-                </ListItemButton>
-              </ListItem>
+                  <Typography>Account Take Over</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <List>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() => handleNavigate("/account-take-over")}
+                        sx={{
+                          backgroundColor:
+                            active === "account-take-over"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "account-take-over"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "account-take-over"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <ScreenSearchDesktopIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="ATOs" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/account-take-over/impersonation")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "account-take-over/impersonation"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "account-take-over/impersonation"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "account-take-over/impersonation"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <LanIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Impersonation" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        onClick={() =>
+                          handleNavigate("/account-take-over/executive-vip-protection")
+                        }
+                        sx={{
+                          backgroundColor:
+                            active === "account-take-over/executive-vip-protection"
+                              ? theme.palette.secondary[300]
+                              : "transparent",
+                          color:
+                            active === "account-take-over/executive-vip-protection"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[100],
+                        }}
+                      >
+                        <ListItemIcon
+                          sx={{
+                            ml: "3rem",
+                            color:
+                              active === "account-take-over/executive-vip-protection"
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          <LanIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Executive & VIP Protection" sx={{ pl: 2 }} />
+                      </ListItemButton>
+                    </ListItem>
+                  </List>
+                </AccordionDetails>
+              </Accordion>
 
               {/* Attack Surface */}
               <ListItem disablePadding>

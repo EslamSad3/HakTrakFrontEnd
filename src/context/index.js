@@ -1434,6 +1434,7 @@ export function ContextProvider(props) {
         values,
         { headers: { ...getAuthAdminHeaders() } }
       );
+      console.log(response, "ato response");
       if (response.status === 201) {
         toast.success("ATO Created Successfully");
         navigate("/account-take-over");
@@ -1476,7 +1477,7 @@ export function ContextProvider(props) {
       );
       setOneATO(response.data.data);
       setIsLoading(false);
-      return oneATO;
+      return oneATO
     } catch (error) {
       setIsLoading(false);
     }

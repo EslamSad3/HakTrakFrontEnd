@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { Context } from "../context";
 import {
@@ -10,11 +10,15 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+
 import Header from "../components/Header";
 import * as Yup from "yup";
+import { MuiFileInput } from "mui-file-input";
 
 function CreateATO() {
   const { addNewATO, isLoading } = useContext(Context);
+  const [file, setFile] = useState(null);
 
   const validationSchema = Yup.object().shape({
     user: Yup.string().required("user Required"),
@@ -26,7 +30,15 @@ function CreateATO() {
   });
 
   async function hanldeaddNewATO(values) {
-    await addNewATO(values);
+    const fd = new FormData();
+    fd.append("screenshot", file);
+    fd.append("user", values.user);
+    fd.append("password", values.password);
+    fd.append("url", values.url);
+    fd.append("source", values.source);
+    fd.append("bu", values.bu);
+    fd.append("mitigationSteps", values.mitigationSteps);
+    await addNewATO(fd);
   }
 
   let formik = useFormik({
@@ -124,6 +136,22 @@ function CreateATO() {
               {formik.errors.url}
             </Alert>
           ) : null}
+
+          {/* Screenshot */}
+          <MuiFileInput
+            sx={{ my: "25px" }}
+            label="Select a screenshot"
+            value={formik.values.screenshot}
+            onChange={(e) => setFile(e)}
+            inputProps={{ accept: "image/*" }}
+            getInputText={(value) =>
+              value ? "uploading..." : "Select a screenshot"
+            }
+            clearIconButtonProps={{
+              title: "Remove",
+              children: <CloseIcon fontSize="small" />,
+            }}
+          />
 
           <TextField
             value={formik.values.source}

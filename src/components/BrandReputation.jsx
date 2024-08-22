@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
+import { useNavigate } from "react-router-dom";
 
 const BrandReputation = () => {
   const {
@@ -17,6 +18,7 @@ const BrandReputation = () => {
     updateBrandReputation,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -81,6 +83,21 @@ const BrandReputation = () => {
     },
     { field: "status", headerName: "Status", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => navigate(`/brand-reputation/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

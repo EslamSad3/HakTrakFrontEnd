@@ -12,8 +12,10 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  useMediaQuery,
 } from "@mui/material";
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
+import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
+import LanIcon from "@mui/icons-material/Lan";
 
 import {
   ExpandMore,
@@ -29,7 +31,6 @@ import {
 
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
-import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import BrandingWatermarkIcon from "@mui/icons-material/BrandingWatermark";
 import BugReportIcon from "@mui/icons-material/BugReport";
@@ -558,42 +559,136 @@ function AdminActions() {
             <br />
 
             {/* Account Take Over */}
-            <ListItem disablePadding>
-              <ListItemButton
-                onClick={() =>
-                  handleNavigate("/admin/actions/account-take-over")
-                }
-                sx={{
-                  backgroundColor:
-                    active === "account-take-over"
-                      ? theme.palette.secondary[300]
-                      : "transparent",
-                  color:
-                    active === "account-take-over"
-                      ? theme.palette.primary[600]
-                      : theme.palette.secondary[100],
-                }}
-              >
+
+            <Accordion
+              sx={{
+                backgroundColor: theme.palette.background.alt,
+                color: theme.palette.secondary[100],
+                "&.Mui-expanded": {
+                  backgroundColor: theme.palette.background.alt,
+                },
+                "& .MuiAccordionSummary-root": {
+                  padding: "0 2rem",
+                },
+                "& .MuiAccordionDetails-root": {
+                  padding: 0,
+                },
+              }}
+            >
+              <AccordionSummary expandIcon={<ExpandMore />}>
                 <ListItemIcon
                   sx={{
-                    ml: "2rem",
-                    color:
-                      active === "account-take-over"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[200],
+                    color: theme.palette.secondary[200],
+                    ml: "1rem",
                   }}
                 >
-                  <BorderColorOutlinedIcon />
+                  <CrisisAlertIcon />
                 </ListItemIcon>
-                <ListItemText
-                  primary="Account take over"
-                  sx={{ textAlign: "start" }}
-                />
-                {active === "account-take-over" && (
-                  <ChevronRightOutlined sx={{ ml: "auto" }} />
-                )}
-              </ListItemButton>
-            </ListItem>
+                <Typography>Account Take Over</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate("/admin/actions/account-take-over")
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "account-take-over"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "account-take-over"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "account-take-over"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <ScreenSearchDesktopIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="ATOs" sx={{ pl: 2 }} />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate("/account-take-over/impersonation")
+                      }
+                      sx={{
+                        backgroundColor:
+                          active === "account-take-over/impersonation"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active === "account-take-over/impersonation"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active === "account-take-over/impersonation"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <LanIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Impersonation" sx={{ pl: 2 }} />
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem disablePadding>
+                    <ListItemButton
+                      onClick={() =>
+                        handleNavigate(
+                          "/account-take-over/executive-vip-protection"
+                        )
+                      }
+                      sx={{
+                        backgroundColor:
+                          active ===
+                          "account-take-over/executive-vip-protection"
+                            ? theme.palette.secondary[300]
+                            : "transparent",
+                        color:
+                          active ===
+                          "account-take-over/executive-vip-protection"
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: "3rem",
+                          color:
+                            active ===
+                            "account-take-over/executive-vip-protection"
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        <LanIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Executive & VIP Protection"
+                        sx={{ pl: 2 }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </AccordionDetails>
+            </Accordion>
             <br />
 
             {/* Attack Surface */}

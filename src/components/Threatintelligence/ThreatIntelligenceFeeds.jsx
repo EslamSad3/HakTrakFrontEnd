@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import { useNavigate } from "react-router-dom";
 
 const ThreatIntelligenceFeeds = () => {
   const {
@@ -17,6 +18,7 @@ const ThreatIntelligenceFeeds = () => {
     updatethreatintelligenceFeed,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -79,6 +81,25 @@ const ThreatIntelligenceFeeds = () => {
     { field: "severity", headerName: "Severity", width: 150 },
     { field: "source", headerName: "Source", width: 150 },
     { field: "description", headerName: "Description", width: 300 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() =>
+            navigate(
+              `/threat-intelligence/threat-intelligence-feed/${params.id}`
+            )
+          }
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",
