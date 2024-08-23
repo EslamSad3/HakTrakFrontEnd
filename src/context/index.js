@@ -1224,13 +1224,13 @@ export function ContextProvider(props) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
+        `${process.env.REACT_APP_BASE_URL}/api/detections/edrxdr-detections`,
         values,
         { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
         toast.success("EDR XDR Created Successfully");
-        navigate("/detections/drxdr-detections");
+        navigate("/detections/edrxdr-detections");
         setIsLoading(false);
       }
       setIsLoading(false);
@@ -1245,7 +1245,7 @@ export function ContextProvider(props) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections`,
+        `${process.env.REACT_APP_BASE_URL}/api/detections/edrxdr-detections`,
         {
           headers: {
             ...getAuthHeaders(),
@@ -1265,7 +1265,7 @@ export function ContextProvider(props) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/detections/edrxdr-detections/${id}`,
         { headers: { ...getAuthAdminHeaders() } }
       );
       setOneEdrXDR(response.data.data);
@@ -1281,7 +1281,7 @@ export function ContextProvider(props) {
     try {
       setIsLoading(true);
       const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/detections/edrxdr-detections/${id}`,
         values,
         { headers: { ...getAuthAdminHeaders() } }
       );
@@ -1299,7 +1299,7 @@ export function ContextProvider(props) {
     try {
       setIsLoading(true);
       const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/api/detections/drxdr-detections/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/detections/edrxdr-detections/${id}`,
         { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
@@ -1477,7 +1477,7 @@ export function ContextProvider(props) {
       );
       setOneATO(response.data.data);
       setIsLoading(false);
-      return oneATO
+      return oneATO;
     } catch (error) {
       setIsLoading(false);
     }

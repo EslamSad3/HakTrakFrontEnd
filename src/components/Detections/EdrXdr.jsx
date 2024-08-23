@@ -6,6 +6,7 @@ import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
 import ExdrPieChart from "../Scenes/ExdrPieChart";
+import { useNavigate } from "react-router-dom";
 
 const EdrXdr = () => {
   const {
@@ -18,6 +19,7 @@ const EdrXdr = () => {
     updateEdrXdr,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -61,10 +63,10 @@ const EdrXdr = () => {
     refreshData();
   }, []);
 
-     const transformedData = edrXdrs?.map((item, index) => ({
-       ...item,
-       id: index + 1,
-     }));
+  const transformedData = edrXdrs?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
 
   const columns = [
     {
@@ -82,6 +84,21 @@ const EdrXdr = () => {
     { field: "filePath", headerName: "File Path", width: 150 },
     { field: "actionTaken", headerName: "Action Taken", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 250 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => navigate(`/detections/edrxdr-detection/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import { useNavigate } from "react-router-dom";
 
 const Portals = () => {
   const {
@@ -17,6 +18,7 @@ const Portals = () => {
     updatePortal,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -59,21 +61,35 @@ const Portals = () => {
   useEffect(() => {
     refreshData();
   }, []);
-     const transformedData = portals?.map((item, index) => ({
-       ...item,
-       id: index + 1,
-     }));
+  const transformedData = portals?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-  
     },
     { field: "value", headerName: "Value", width: 150 },
     { field: "location", headerName: "Location", width: 150 },
     { field: "description", headerName: "Description", width: 300 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => navigate(`/assets/portal/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

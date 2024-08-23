@@ -6,6 +6,7 @@ import { Context } from "../context";
 import DeleteDialog from "../Actions/DeleteDialog";
 import UpdateDialog from "../Actions/UpdateDialog"; // Adjust the path as needed
 import VulnsPieChart from "./Scenes/VulnsPieChart";
+import { useNavigate } from "react-router-dom";
 
 const VulnerabilitiesIntelligences = () => {
   const {
@@ -18,6 +19,7 @@ const VulnerabilitiesIntelligences = () => {
     updateVulnerabilitiesIntelligence,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -71,19 +73,16 @@ const VulnerabilitiesIntelligences = () => {
     refreshData();
   }, []);
 
-    const transformedData = vulnerabilitiesIntelligences?.map(
-      (item, index) => ({
-        ...item,
-        id: index + 1,
-      })
-    );
+  const transformedData = vulnerabilitiesIntelligences?.map((item, index) => ({
+    ...item,
+    id: index + 1,
+  }));
 
   const columns = [
     {
       field: "id",
       headerName: "ID",
       width: 90,
-      
     },
     { field: "vulnerabilityID", headerName: "Vulnerability ID", width: 150 },
     { field: "description", headerName: "Description", width: 150 },
@@ -113,6 +112,21 @@ const VulnerabilitiesIntelligences = () => {
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 300 },
     { field: "status", headerName: "Status", width: 300 },
     { field: "references", headerName: "References", width: 300 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() => navigate(`/vulnerabilities-intelligence/${params.id}`)}
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",
@@ -196,14 +210,14 @@ const VulnerabilitiesIntelligences = () => {
             height: " 80vh",
             width: " 70vw",
           }}
-          rows={transformedData  || []}
-          loading={isLoading || !transformedData }
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
           getRowId={(row) => row?._id}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
         />
       </Box>
-      
+
       <DeleteDialog
         open={openDelete}
         onClose={handleCloseDelete}

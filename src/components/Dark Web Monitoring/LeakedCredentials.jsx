@@ -6,6 +6,7 @@ import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
 import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
 import LeakedCreBarChart from "../Scenes/LeakedCreBarChart";
+import { useNavigate } from "react-router-dom";
 
 const LeakedCredentials = () => {
   const {
@@ -18,6 +19,7 @@ const LeakedCredentials = () => {
     updateLeakedCredentials,
   } = useContext(Context);
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -77,6 +79,23 @@ const LeakedCredentials = () => {
     { field: "leakDate", headerName: "Leak Date", width: 200 },
     { field: "source", headerName: "Source", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 150 },
+    ,
+    {
+      field: "details",
+      headerName: "Details",
+      width: 150,
+      renderCell: (params) => (
+        <Button
+          variant="contained"
+          color="info"
+          onClick={() =>
+            navigate(`/dark-web-monitoring/leaked-credential/${params.id}`)
+          }
+        >
+          Details
+        </Button>
+      ),
+    },
     adminToken
       ? {
           field: "delete",

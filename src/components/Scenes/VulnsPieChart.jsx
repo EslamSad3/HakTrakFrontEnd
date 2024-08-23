@@ -31,7 +31,9 @@ export default function VulnsPieChart() {
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
     value: vulnerabilitiesIntelligences.filter(
-      (vuln) => vuln.severity === severity.toLocaleLowerCase()
+      (vuln) =>
+        vuln.severity === severity.toLocaleLowerCase() &&
+        vuln.status !== "resolved"
     ).length,
     color: colors[index], // Assign corresponding color
   }));

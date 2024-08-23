@@ -37,7 +37,7 @@ export default function NdrBuBarChart() {
   return (
     <>
       <Typography variant="h6" align="center" mb={3}>
-        Leaked Credential by Business Unit
+        NDR Detections by Business Unit
       </Typography>
 
       <BarChart

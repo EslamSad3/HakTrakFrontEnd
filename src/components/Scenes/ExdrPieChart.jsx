@@ -32,7 +32,9 @@ export default function ExdrPieChart() {
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
     value: edrXdrs.filter(
-      (ndr) => ndr.severity === severity.toLocaleLowerCase()
+      (edrXdr) =>
+        edrXdr.severity === severity.toLocaleLowerCase() &&
+        edrXdr.status !== "resolved"
     ).length,
     color: colors[index], // Assign corresponding color
   }));

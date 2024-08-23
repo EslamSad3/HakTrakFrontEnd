@@ -31,7 +31,11 @@ export default function NdrPieChart() {
   // Count the occurrences of each severity level
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
-    value: ndrs.filter((ndr) => ndr.severity === severity.toLocaleLowerCase()).length,
+    value: ndrs.filter(
+      (ndr) =>
+        ndr.severity === severity.toLocaleLowerCase() &&
+        ndr.status !== "resolved"
+    ).length,
     color: colors[index], // Assign corresponding color
   }));
 
