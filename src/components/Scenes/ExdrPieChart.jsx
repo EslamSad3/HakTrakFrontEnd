@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
-import { Box, Typography, useTheme, styled } from "@mui/material";
+import React from "react";
+import { useTheme, styled } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
-import { Context } from "../../context";
 
 // Styled text for center label
 const StyledText = styled("text")(({ theme }) => ({
@@ -21,8 +20,7 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function ExdrPieChart() {
-  const { edrXdrs } = useContext(Context);
+export default function ExdrPieChart({ edrXdrs }) {
   const theme = useTheme();
 
   const severityOptions = ["Low", "Medium", "High", "Critical"];
@@ -33,7 +31,7 @@ export default function ExdrPieChart() {
     label: severity,
     value: edrXdrs.filter(
       (edrXdr) =>
-        edrXdr.severity === severity.toLocaleLowerCase() &&
+        edrXdr.severity === severity.toLowerCase() &&
         edrXdr.status !== "resolved"
     ).length,
     color: colors[index], // Assign corresponding color

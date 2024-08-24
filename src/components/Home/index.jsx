@@ -1,5 +1,16 @@
-import React, { useContext } from "react";
-import { Box, CircularProgress, useMediaQuery, useTheme } from "@mui/material";
+import React, { useContext, useState } from "react";
+import moment from "moment";
+import {
+  Box,
+  CircularProgress,
+  useMediaQuery,
+  useTheme,
+  TextField,
+  Button,
+} from "@mui/material";
+
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+
 import { Context } from "../../context";
 import CardComponent from "./CardComponent";
 import Charts from "./Charts";
@@ -11,6 +22,8 @@ import {
   ReportProblem,
   Info,
 } from "@mui/icons-material";
+
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -24,6 +37,7 @@ import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import LanIcon from "@mui/icons-material/Lan";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
+import useDateFilter from "../../hooks/useDateFilter";
 
 function Home() {
   const {
@@ -47,6 +61,36 @@ function Home() {
 
   const isNonMobile = useMediaQuery("(min-width: 1000px)");
   const theme = useTheme();
+  const clearFilters = () => {
+    setStartDate(null);
+    setEndDate(null);
+  };
+  const {
+    startDate,
+    endDate,
+    setStartDate,
+    setEndDate,
+    filterMultipleDataSets,
+  } = useDateFilter();
+
+  // Pass multiple datasets to the hook for filtering
+  const [
+    filteredEdrXdrs,
+    filteredNdrs,
+    filteredAtos,
+    filteredAttackSurfaces,
+    filteredVulnerabilities,
+    filteredLeakedCredentials,
+  ] = filterMultipleDataSets([
+    { data: edrXdrs, dateKey: "detectionTime" },
+    { data: ndrs, dateKey: "detectionTime" },
+    { data: atos, dateKey: "detectionTime" },
+    { data: attackSurfaces, dateKey: "detectionTime" },
+    { data: vulnerabilitiesIntelligences, dateKey: "detectionTime" },
+    { data: leakedCredentials, dateKey: "detectionTime" },
+  ]);
+
+  console.log(filteredNdrs, "filteredNdrs");
 
   const severityOptions = ["low", "medium", "high", "critical"];
 
@@ -213,7 +257,51 @@ function Home() {
               <CardComponent key={cardData.label} {...cardData} theme={theme} />
             ))}
           </Box>
-          <Charts theme={theme} isNonMobile={isNonMobile} />
+          <Box
+            sx={{
+              marginTop: "5rem",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              width: "100%",
+              height: "auto",
+              marginBottom: "3rem",
+            }}
+          >
+            {/* Date Picker for filtering */}
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+              <Box display="flex" justifyContent="space-between" mb="1.5rem">
+                <DatePicker
+                  label="Start Date"
+                  value={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <DatePicker
+                  label="End Date"
+                  value={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  renderInput={(params) => <TextField {...params} />}
+                  sx={{ marginInline: "1rem" }}
+                />
+                {/* Clear Filter Button */}
+                <Button onClick={clearFilters} variant="outlined">
+                  Clear Filter
+                </Button>
+              </Box>
+            </LocalizationProvider>
+            <Charts
+              theme={theme}
+              isNonMobile={isNonMobile}
+              edrXdrs={filteredEdrXdrs}
+              ndrs={filteredNdrs}
+              vulnerabilities={filteredVulnerabilities}
+              atos={filteredAtos}
+              attackSurfaces={filteredAttackSurfaces}
+              leakedCredentials={filteredLeakedCredentials}
+            />
+          </Box>
         </>
       ) : (
         <Box

@@ -9,9 +9,17 @@ import EdrXdrBuBarChart from "../Scenes/ExdrBuBarChart.jsx";
 import NdrBuBarChart from "../Scenes/NdrBuBarChart.jsx";
 import AttackSurfaceBarChart from "../Scenes/AttackSurfaceBarChart.jsx";
 
-const Charts = ({ theme, isNonMobile }) => (
-  <Box mt="5rem">
-    <Divider mt="2rem" />
+const Charts = ({
+  theme,
+  isNonMobile,
+  edrXdrs,
+  ndrs,
+  atos,
+  vulnerabilities,
+  attackSurfaces,
+  leakedCredentials,
+}) => (
+  <Box>
     <Box
       mt="3rem"
       display="grid"
@@ -26,19 +34,19 @@ const Charts = ({ theme, isNonMobile }) => (
       }}
     >
       <ChartCard theme={theme}>
-        <NdrPieChart />
+        <NdrPieChart ndrs={ndrs} />
       </ChartCard>
       <ChartCard theme={theme}>
-        <ExdrPieChart />
+        <ExdrPieChart edrXdrs={edrXdrs} />
       </ChartCard>
       <ChartCard theme={theme}>
-        <VulnsPieChart />
+        <VulnsPieChart vulnerabilities={vulnerabilities} />
       </ChartCard>
       <ChartCard theme={theme}>
-        <AtoBarChart />
+        <AtoBarChart atos={atos} />
       </ChartCard>
       <ChartCard theme={theme}>
-        <LeakedCreBarChart />
+        <LeakedCreBarChart leakedCredentials={leakedCredentials} />
       </ChartCard>
       <ChartCard theme={theme}>
         <EdrXdrBuBarChart />
@@ -47,7 +55,7 @@ const Charts = ({ theme, isNonMobile }) => (
         <NdrBuBarChart />
       </ChartCard>
       <ChartCard theme={theme}>
-        <AttackSurfaceBarChart />
+        <AttackSurfaceBarChart attackSurfaces={attackSurfaces} />
       </ChartCard>
     </Box>
   </Box>

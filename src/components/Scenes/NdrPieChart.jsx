@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
-import { Box, Typography, useTheme, styled } from "@mui/material";
+import React from "react";
+import { useTheme, styled } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
-import { Context } from "../../context";
 
 // Styled text for center label
 const StyledText = styled("text")(({ theme }) => ({
@@ -21,8 +20,8 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function NdrPieChart() {
-  const { ndrs } = useContext(Context);
+export default function NdrPieChart({ ndrs }) {
+  console.log(ndrs,"ndrs")
   const theme = useTheme();
 
   const severityOptions = ["Low", "Medium", "High", "Critical"];
@@ -31,10 +30,9 @@ export default function NdrPieChart() {
   // Count the occurrences of each severity level
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
-    value: ndrs.filter(
+    value: ndrs?.filter(
       (ndr) =>
-        ndr.severity === severity.toLocaleLowerCase() &&
-        ndr.status !== "resolved"
+        ndr.severity === severity.toLowerCase() && ndr.status !== "resolved"
     ).length,
     color: colors[index], // Assign corresponding color
   }));
@@ -60,7 +58,7 @@ export default function NdrPieChart() {
         ]}
         {...size}
       >
-        <PieCenterLabel>NDR</PieCenterLabel>
+        <PieCenterLabel>Ndrs</PieCenterLabel>
       </PieChart>
     </>
   );

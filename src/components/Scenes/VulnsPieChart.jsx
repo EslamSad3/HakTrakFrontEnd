@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
-import { Box, Typography, useTheme, styled } from "@mui/material";
+import React from "react";
+import { useTheme, styled } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import { useDrawingArea } from "@mui/x-charts/hooks";
-import { Context } from "../../context";
 
 // Styled text for center label
 const StyledText = styled("text")(({ theme }) => ({
@@ -21,8 +20,8 @@ function PieCenterLabel({ children }) {
   );
 }
 
-export default function VulnsPieChart() {
-  const { vulnerabilitiesIntelligences } = useContext(Context);
+export default function VulnsPieChart({ vulnerabilities }) {
+  const theme = useTheme();
 
   const severityOptions = ["Low", "Medium", "High", "Critical"];
   const colors = ["#4caf50", "#ffeb3b", "#ff9800", "#f44336"]; // Custom colors for each severity level
@@ -30,10 +29,9 @@ export default function VulnsPieChart() {
   // Count the occurrences of each severity level
   const severityCounts = severityOptions.map((severity, index) => ({
     label: severity,
-    value: vulnerabilitiesIntelligences.filter(
-      (vuln) =>
-        vuln.severity === severity.toLocaleLowerCase() &&
-        vuln.status !== "resolved"
+    value: vulnerabilities?.filter(
+      (Vuln) =>
+        Vuln.severity === severity.toLowerCase() && Vuln.status !== "resolved"
     ).length,
     color: colors[index], // Assign corresponding color
   }));
@@ -59,7 +57,7 @@ export default function VulnsPieChart() {
         ]}
         {...size}
       >
-        <PieCenterLabel>Vulnerabilities</PieCenterLabel>
+        <PieCenterLabel>Vulns</PieCenterLabel>
       </PieChart>
     </>
   );
