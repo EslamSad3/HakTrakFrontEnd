@@ -159,7 +159,7 @@ const AttackSurface = () => {
           mb: "20px",
         }}
       >
-        <AttackSurfaceBarChart />
+        <AttackSurfaceBarChart attackSurfaces={attackSurfaces} />
       </Box>
       <Box
         mt="40px"

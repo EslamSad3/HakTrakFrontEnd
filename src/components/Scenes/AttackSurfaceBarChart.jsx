@@ -15,8 +15,7 @@ export const colors = [
   "#0ff",
   "#f00",
 ];
-export default function AttackSurfaceBarChart() {
-  const { attackSurfaces } = useContext(Context);
+export default function AttackSurfaceBarChart({ attackSurfaces }) {
 
   // Group data by 'openPorts'
   const groupByOpenPorts = attackSurfaces.reduce((acc, surface) => {
@@ -45,7 +44,7 @@ export default function AttackSurfaceBarChart() {
       </Typography>
 
       <BarChart
-      h={300}
+        h={300}
         data={chartData}
         dataKey="openPort"
         series={chartData.map((item) => ({

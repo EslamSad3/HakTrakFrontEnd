@@ -16,8 +16,7 @@ const colors = [
   "#35d0ba",
 ];
 
-export default function ExdrBuBarChart() {
-  const { edrXdrs } = useContext(Context);
+export default function ExdrBuBarChart({ edrXdrs }) {
 
   // Group data by 'bu'
   const groupByBu = edrXdrs.reduce((acc, edrXdr) => {

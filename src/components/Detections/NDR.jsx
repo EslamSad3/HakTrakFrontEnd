@@ -153,7 +153,7 @@ const Ndr = () => {
           mb: "20px",
         }}
       >
-        <NdrPieChart />
+        <NdrPieChart ndrs={ndrs}/>
       </Box>
       <Box
         mt="40px"

@@ -144,7 +144,7 @@ const EdrXdr = () => {
           mb: "20px",
         }}
       >
-        <ExdrPieChart />
+        <ExdrPieChart edrXdrs={edrXdrs} />
       </Box>
       <Box
         mt="40px"

@@ -1,14 +1,13 @@
 import { BarChart } from "@mantine/charts";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Context } from "../../context";
 import { Box, Typography } from "@mui/material";
 
 // Function to generate a unique color
 const colors = ["#f3a", "#f93", "#3af", "#0f0", "#f0f", "#ff0", "#0ff", "#f00"];
 
-export default function AtoBarChart() {
-  const { atos } = useContext(Context);
-
+export default function AtoBarChart({ atos }) {
+  console.log(atos, "AtoBarChart");
   // Group data by 'bu'
   const groupByBu = atos.reduce((acc, ato) => {
     (acc[ato.bu] = acc[ato.bu] || []).push(ato);
@@ -22,7 +21,8 @@ export default function AtoBarChart() {
     color: colors[index % colors.length], // Assign a unique color
   }));
 
-  console.log(chartData, "chartData ATO");
+
+
   return (
     <>
       <Typography variant="h6" align="center" mb={3}>

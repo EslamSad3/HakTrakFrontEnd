@@ -140,7 +140,7 @@ const LeakedCredentials = () => {
           alignItems: "center",
         }}
       >
-        <LeakedCreBarChart />
+        <LeakedCreBarChart leakedCredentials={leakedCredentials} />
       </Box>
       <Box
         mt="40px"

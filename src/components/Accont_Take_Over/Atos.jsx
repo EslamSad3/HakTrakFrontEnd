@@ -148,7 +148,7 @@ const ATOs = () => {
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
       <Header title={"ATOs"} mb="2rem" />
       <br />
-      <AtoBarChart />
+      <AtoBarChart atos={atos} />
       <Box
         mt="40px"
         sx={{

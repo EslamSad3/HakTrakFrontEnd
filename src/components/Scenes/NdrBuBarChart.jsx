@@ -16,14 +16,11 @@ const colors = [
   "#96d1c7",
 ];
 
-export default function NdrBuBarChart() {
-  const { ndrs } = useContext(Context);
+export default function NdrBuBarChart({ ndrs }) {
 
   // Group data by 'bu'
   const groupByBu = ndrs.reduce((acc, ndr) => {
-    (acc[ndr.bu] = acc[ndr.bu] || []).push(
-      ndr
-    );
+    (acc[ndr.bu] = acc[ndr.bu] || []).push(ndr);
     return acc;
   }, {});
 

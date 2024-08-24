@@ -172,7 +172,7 @@ const VulnerabilitiesIntelligences = () => {
           mb: "20px",
         }}
       >
-        <VulnsPieChart />
+        <VulnsPieChart vulnerabilities={vulnerabilitiesIntelligences} />
       </Box>
       <Box
         mt="40px"
