@@ -60,7 +60,7 @@ import BrandReputationDetails from "./components/Details/BrandReputationDetails"
 import VulnerabilitiesIntelligencesDetails from "./components/Details/VulnerabilitiesIntelligencesDetails";
 import AttackSurfaceDetails from "./components/Details/AttackSurfaceDetails";
 import Reports from "./components/Reports/Reports";
-import MitreAttacks from "./components/AttackScenarios/MiterAttacks";
+import MitreAttacks from "./components/AttackScenarios/MitreAttacks";
 import CreateMitreAttack from "./Actions/AttackScenarios/CreateMitreAttack";
 import CyberKillChain from "./components/AttackScenarios/CyberKillChain";
 import CreateKillChain from "./Actions/AttackScenarios/CreateKillChain";
@@ -319,7 +319,7 @@ function App() {
                 />
                 {/* Attack Scenarios */}
                 <Route
-                  path="/attack-scenarios/miter-attacks"
+                  path="/attack-scenarios/mitre-attacks"
                   element={<MitreAttacks />}
                 />
                 <Route

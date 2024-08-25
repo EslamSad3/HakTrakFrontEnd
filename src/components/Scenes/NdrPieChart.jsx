@@ -58,7 +58,7 @@ export default function NdrPieChart({ ndrs }) {
         ]}
         {...size}
       >
-        <PieCenterLabel>Ndrs</PieCenterLabel>
+        <PieCenterLabel>NDR</PieCenterLabel>
       </PieChart>
     </>
   );

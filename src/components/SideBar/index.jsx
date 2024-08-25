@@ -752,19 +752,19 @@ const SideBar = ({
                 </AccordionSummary>
                 <AccordionDetails>
                   <List>
-                    {/* miterAttacks */}
+                    {/* mitreAttacks */}
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() =>
-                          handleNavigate("/attack-scenarios/miter-attacks")
+                          handleNavigate("/attack-scenarios/mitre-attacks")
                         }
                         sx={{
                           backgroundColor:
-                            active === "miterAttacks"
+                            active === "mitreAttacks"
                               ? theme.palette.secondary[300]
                               : "transparent",
                           color:
-                            active === "miterAttacks"
+                            active === "mitreAttacks"
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100],
                         }}
@@ -773,7 +773,7 @@ const SideBar = ({
                           sx={{
                             ml: "2rem",
                             color:
-                              active === "miterAttacks"
+                              active === "mitreAttacks"
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200],
                           }}
@@ -781,10 +781,10 @@ const SideBar = ({
                           <LocalFireDepartmentIcon />
                         </ListItemIcon>
                         <ListItemText
-                          primary="Miter Attacks"
+                          primary="Mitre Attacks"
                           sx={{ textAlign: "start" }}
                         />
-                        {active === "miterAttacks" && (
+                        {active === "mitreAttacks" && (
                           <ChevronRightOutlined sx={{ ml: "auto" }} />
                         )}
                       </ListItemButton>
