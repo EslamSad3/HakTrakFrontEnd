@@ -124,7 +124,7 @@ export function ContextProvider(props) {
   /************************* Attack Scenarios *********************/
 
   // mitre attacks
-  const [mitreAttacks, setMitreAttacks] = useState([]);
+  const [allMitreAttacks, setMitreAttacks] = useState([]);
   const [oneMitreAttack, setOneMitreAttack] = useState({});
 
   // cyber kill chain
@@ -2567,18 +2567,18 @@ export function ContextProvider(props) {
   }
 
   /******************************** Attack Scenarios **********************************/
-  // miter attacks
-  // Add New Miter Attack
-  async function addNewMiterAttack(values) {
+  // mitre attacks
+  // Add New Mitre Attack
+  async function addNewMitreAttack(values) {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks`,
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/mitre-attacks`,
         values,
         { headers: { ...getAuthAdminHeaders() } }
       );
       if (response.status === 201) {
-        toast.success("Miter Attack Created Successfully");
+        toast.success("Mitre Attack Created Successfully");
         refreshData();
         setIsLoading(false);
       }
@@ -2587,28 +2587,28 @@ export function ContextProvider(props) {
       setIsLoading(false);
     }
   }
-  // fetch all miter attacks
-  async function fetchAllMiterAttacks() {
+  // fetch all mitre attacks
+  async function fetchAllMitreAttacks() {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks`,
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/mitre-attacks`,
         { headers: { ...getAuthHeaders() } }
       );
       setMitreAttacks(response.data.data);
       setIsLoading(false);
-      return mitreAttacks;
+      return allMitreAttacks;
     } catch (error) {
       setIsLoading(false);
       console.log(error);
     }
   }
-  // Get One Miter Attack
-  async function fetchOneMiterAttack(id) {
+  // Get One Mitre Attack
+  async function fetchOneMitreAttack(id) {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/mitre-attacks/${id}`,
         { headers: { ...getAuthAdminHeaders() } }
       );
       setOneMitreAttack(response.data.data);
@@ -2618,38 +2618,38 @@ export function ContextProvider(props) {
       setIsLoading(false);
     }
   }
-  // Delete One Miter Attack
-  async function deleteMiterAttack(id) {
+  // Delete One Mitre Attack
+  async function deleteMitreAttack(id) {
     try {
       setIsLoading(true);
       const response = await axios.delete(
-        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/mitre-attacks/${id}`,
         { headers: { ...getAuthAdminHeaders() } }
       );
       setIsLoading(false);
       if (response.status === 204) {
-        toast.success("Miter Attack Deleted successfully");
+        toast.success("Mitre Attack Deleted successfully");
         refreshData();
       } else {
-        toast.error("Miter Attack Delettion Faild");
+        toast.error("Mitre Attack Delettion Faild");
       }
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   }
-  // Update One Miter Attack
-  async function updateMiterAttack(id, values) {
+  // Update One Mitre Attack
+  async function updateMitreAttack(id, values) {
     try {
       setIsLoading(true);
       const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/miter-attacks/${id}`,
+        `${process.env.REACT_APP_BASE_URL}/api/attack-scenarios/mitre-attacks/${id}`,
         values,
         { headers: { ...getAuthAdminHeaders() } }
       );
       response.status === 200
-        ? toast.success("Miter Attack updated successfully")
-        : toast.error("Miter Attack not found");
+        ? toast.success("Mitre Attack updated successfully")
+        : toast.error("Mitre Attack not found");
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -2772,7 +2772,7 @@ export function ContextProvider(props) {
     fetchAllQuarterlyIncident();
     fetchAllTtdTtr();
     fetchAllDigitalRiskIntelligence();
-    fetchAllMiterAttacks();
+    fetchAllMitreAttacks();
     fetchAllCyberKillChains();
   };
 
@@ -2890,11 +2890,11 @@ export function ContextProvider(props) {
         fetchOneDigitalRiskIntelligence,
         deleteDigitalRiskIntelligence,
         updateDigitalRiskIntelligence,
-        addNewMiterAttack,
-        fetchAllMiterAttacks,
-        fetchOneMiterAttack,
-        deleteMiterAttack,
-        updateMiterAttack,
+        addNewMitreAttack,
+        fetchAllMitreAttacks,
+        fetchOneMitreAttack,
+        deleteMitreAttack,
+        updateMitreAttack,
         addNewCyberKillChain,
         fetchAllCyberKillChains,
         fetchOneCyberKillChain,
@@ -2952,7 +2952,7 @@ export function ContextProvider(props) {
         oneTtdTtr,
         digitalRiskIntelligences,
         oneDigitalRiskIntelligence,
-        mitreAttacks,
+        allMitreAttacks,
         oneMitreAttack,
         cyberKillChains,
         oneCyberKillChain,

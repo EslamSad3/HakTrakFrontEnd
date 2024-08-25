@@ -59,6 +59,11 @@ import ATODetails from "./components/Details/ATODetails";
 import BrandReputationDetails from "./components/Details/BrandReputationDetails";
 import VulnerabilitiesIntelligencesDetails from "./components/Details/VulnerabilitiesIntelligencesDetails";
 import AttackSurfaceDetails from "./components/Details/AttackSurfaceDetails";
+import Reports from "./components/Reports/Reports";
+import MitreAttacks from "./components/AttackScenarios/MiterAttacks";
+import CreateMitreAttack from "./Actions/AttackScenarios/CreateMitreAttack";
+import CyberKillChain from "./components/AttackScenarios/CyberKillChain";
+import CreateKillChain from "./Actions/AttackScenarios/CreateKillChain";
 function App() {
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -79,6 +84,7 @@ function App() {
                   element={<Navigate to="/dashboard" replace />}
                 />
                 <Route path="/dashboard" element={<Home />} />
+                <Route path="/reports" element={<Reports />} />
                 <Route
                   path="/excutive-dashboard"
                   element={<ExcutiveDashboard />}
@@ -201,6 +207,20 @@ function App() {
                   }
                 />
                 <Route
+                  path="/admin/actions/attack-secnarios/mitre-attacks"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateMitreAttack />}</ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/admin/actions/attack-secnarios/kill-chain"
+                  forceRefresh={true}
+                  element={
+                    <ProtectedRoute>{<CreateKillChain />}</ProtectedRoute>
+                  }
+                />
+                <Route
                   path="/admin/actions"
                   forceRefresh={true}
                   element={
@@ -296,6 +316,15 @@ function App() {
                 <Route
                   path="/attack-surface/:id"
                   element={<AttackSurfaceDetails />}
+                />
+                {/* Attack Scenarios */}
+                <Route
+                  path="/attack-scenarios/miter-attacks"
+                  element={<MitreAttacks />}
+                />
+                <Route
+                  path="/attack-scenarios/kill-chain"
+                  element={<CyberKillChain />}
                 />
               </Route>
             </Routes>

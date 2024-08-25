@@ -10,7 +10,7 @@ import { Context } from "../../context";
 const iconMapping = {
   "executive protection": <StarBorderIcon />,
   "situational awareness": <PublicIcon />,
-  impersonations: <FingerprintIcon />,
+  "impersonations": <FingerprintIcon />,
   "social media": <ShareIcon />,
 };
 
@@ -35,45 +35,56 @@ export default function DigitalRiskIntelligence() {
 
   return (
     <Card
-      style={{
+      sx={{
         backgroundColor: "#004445",
         height: "100%",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
       }}
     >
       <CardContent>
-        <Typography variant="h6" align="center">
+        <Typography variant="h6" align="center" color="#fefefe">
           Digital Risk Intelligence
         </Typography>
-        {digitalRiskIntelligences.map((item) => (
-          <Box key={item._id} display="flex" alignItems="center" mt={2}>
-            {iconMapping[item.indicator.toLowerCase()] || <ShareIcon />}
-            <Box
-              ml={2}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "100%",
-                color: "#fefefe",
-              }}
-            >
-              <Typography variant="body1">
-                {item.indicator.charAt(0).toUpperCase() +
-                  item.indicator.slice(1)}
-              </Typography>
-              <Chip
-                label={item.level.toUpperCase()}
-                style={{
-                  backgroundColor: getColorByLevel(item.level),
-                  color: "#fff",
+        {digitalRiskIntelligences.map((item) => {
+          // Log the indicator to debug
+          console.log(`Indicator: ${item.indicator}`);
+
+          // Determine the icon
+          const IconComponent = iconMapping[item.indicator.toLowerCase()] || (
+            <ShareIcon />
+          );
+
+          return (
+            <Box key={item._id} display="flex" alignItems="center" mt={2}>
+              {IconComponent}
+              <Box
+                ml={2}
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                  color: "#fefefe",
                 }}
-              />
+              >
+                <Typography variant="body1">
+                  {item.indicator.charAt(0).toUpperCase() +
+                    item.indicator.slice(1)}
+                </Typography>
+                <Chip
+                  label={item.level.toUpperCase()}
+                  sx={{
+                    backgroundColor: getColorByLevel(item.level),
+                    color: "#fff",
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
-        ))}
+          );
+        })}
       </CardContent>
     </Card>
   );

@@ -13,6 +13,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import LanIcon from "@mui/icons-material/Lan";
@@ -722,6 +724,88 @@ function AdminActions() {
                   sx={{ textAlign: "start" }}
                 />
                 {active === "Attack Surface" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
+
+            {/* Mitre Attack */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() =>
+                  handleNavigate(
+                    "/admin/actions/attack-secnarios/mitre-attacks"
+                  )
+                }
+                sx={{
+                  backgroundColor:
+                    active === "Mitre Attack"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "Mitre Attack"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "Mitre Attack"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <LocalFireDepartmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Mitre Attack"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "Mitre Attack" && (
+                  <ChevronRightOutlined sx={{ ml: "auto" }} />
+                )}
+              </ListItemButton>
+            </ListItem>
+            <br />
+
+            {/* Kill Chain */}
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() =>
+                  handleNavigate(
+                    "/admin/actions/attack-secnarios/kill-chain"
+                  )
+                }
+                sx={{
+                  backgroundColor:
+                    active === "Kill Chain"
+                      ? theme.palette.secondary[300]
+                      : "transparent",
+                  color:
+                    active === "Kill Chain"
+                      ? theme.palette.primary[600]
+                      : theme.palette.secondary[100],
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    ml: "2rem",
+                    color:
+                      active === "Kill Chain"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[200],
+                  }}
+                >
+                  <LocalFireDepartmentIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Kill Chain"
+                  sx={{ textAlign: "start" }}
+                />
+                {active === "Kill Chain" && (
                   <ChevronRightOutlined sx={{ ml: "auto" }} />
                 )}
               </ListItemButton>

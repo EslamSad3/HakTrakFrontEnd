@@ -94,7 +94,7 @@ export default function SecurityBreachIndicators() {
         <BarChart
           xAxis={chartData.xAxis}
           series={chartData.series}
-          width={700}
+          width={600}
           height={300}
           margin={{ top: 100, bottom: 100, left: 100, right: 100 }}
           slotProps={{

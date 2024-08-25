@@ -29,7 +29,7 @@ import {
   Warning,
 } from "@mui/icons-material";
 import profileImage from "../../assets/images/logo.png";
-
+import AssessmentIcon from "@mui/icons-material/Assessment";
 import EngineeringOutlinedIcon from "@mui/icons-material/EngineeringOutlined";
 import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
@@ -45,6 +45,9 @@ import ScreenSearchDesktopIcon from "@mui/icons-material/ScreenSearchDesktop";
 import LanIcon from "@mui/icons-material/Lan";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import PsychologyIcon from "@mui/icons-material/Psychology";
+
+import LinkIcon from "@mui/icons-material/Link";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import AssuredWorkloadIcon from "@mui/icons-material/AssuredWorkload";
 
 import { useNavigate } from "react-router-dom";
@@ -906,15 +909,19 @@ const SideBar = ({
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() =>
-                          handleNavigate("/account-take-over/executive-vip-protection")
+                          handleNavigate(
+                            "/account-take-over/executive-vip-protection"
+                          )
                         }
                         sx={{
                           backgroundColor:
-                            active === "account-take-over/executive-vip-protection"
+                            active ===
+                            "account-take-over/executive-vip-protection"
                               ? theme.palette.secondary[300]
                               : "transparent",
                           color:
-                            active === "account-take-over/executive-vip-protection"
+                            active ===
+                            "account-take-over/executive-vip-protection"
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100],
                         }}
@@ -923,14 +930,18 @@ const SideBar = ({
                           sx={{
                             ml: "3rem",
                             color:
-                              active === "account-take-over/executive-vip-protection"
+                              active ===
+                              "account-take-over/executive-vip-protection"
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200],
                           }}
                         >
                           <LanIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Executive & VIP Protection" sx={{ pl: 2 }} />
+                        <ListItemText
+                          primary="Executive & VIP Protection"
+                          sx={{ pl: 2 }}
+                        />
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -1106,7 +1117,7 @@ const SideBar = ({
                           : theme.palette.secondary[200],
                     }}
                   >
-                    <AssuredWorkloadIcon />
+                    <AssessmentIcon />
                   </ListItemIcon>
                   <ListItemText primary="Reports" sx={{ textAlign: "start" }} />
                   {active === "reports" && (
@@ -1114,8 +1125,78 @@ const SideBar = ({
                   )}
                 </ListItemButton>
               </ListItem>
-              {/* cyber map */}
               <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() =>
+                    handleNavigate("/attack-scenarios/miter-attacks")
+                  }
+                  sx={{
+                    backgroundColor:
+                      active === "miterAttacks"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "miterAttacks"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "miterAttacks"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <LocalFireDepartmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Miter Attacks"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "miterAttacks" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton
+                  onClick={() => handleNavigate("/attack-scenarios/kill-chain")}
+                  sx={{
+                    backgroundColor:
+                      active === "killChain"
+                        ? theme.palette.secondary[300]
+                        : "transparent",
+                    color:
+                      active === "killChain"
+                        ? theme.palette.primary[600]
+                        : theme.palette.secondary[100],
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      ml: "2rem",
+                      color:
+                        active === "killChain"
+                          ? theme.palette.primary[600]
+                          : theme.palette.secondary[200],
+                    }}
+                  >
+                    <LinkIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Cyber Kill Chain"
+                    sx={{ textAlign: "start" }}
+                  />
+                  {active === "killChain" && (
+                    <ChevronRightOutlined sx={{ ml: "auto" }} />
+                  )}
+                </ListItemButton>
+              </ListItem>
+              {/* cyber map */}
+              {/* <ListItem disablePadding>
                 <ListItemButton
                   onClick={() => handleNavigate("/cyber-map")}
                   sx={{
@@ -1148,7 +1229,7 @@ const SideBar = ({
                     <ChevronRightOutlined sx={{ ml: "auto" }} />
                   )}
                 </ListItemButton>
-              </ListItem>
+              </ListItem> */}
 
               {adminToken && (
                 <ListItem disablePadding>
