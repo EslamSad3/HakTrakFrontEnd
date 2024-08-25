@@ -1,4 +1,11 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
@@ -59,6 +66,24 @@ const ATOs = () => {
     handleCloseUpdate();
   };
 
+  const handleStatusChange = async (event, id) => {
+    const newStatus = event.target.value;
+
+    // Find the ATO that needs to be updated
+    const updatedAtos = atos.map((ato) => {
+      if (ato._id === id) {
+        return { ...ato, status: newStatus };
+      }
+      return ato;
+    });
+
+    setSelectedAto(updatedAtos);
+
+    // Update the ATO status in the backend
+    await updateATO(id, { status: newStatus });
+    refreshData();
+  };
+
   useEffect(() => {
     refreshData();
   }, []);
@@ -79,11 +104,29 @@ const ATOs = () => {
     { field: "source", headerName: "Source" },
     { field: "bu", headerName: "BU" },
     { field: "mitigationSteps", headerName: "Mitigation Steps" },
-    ,
+    {
+      field: "status",
+      headerName: "Status",
+      renderCell: (params) => (
+        <Select
+          value={params.row.status || ""}
+          onChange={(event) => handleStatusChange(event, params.row._id)}
+          displayEmpty
+          inputProps={{ "aria-label": "Status" }}
+        >
+          <MenuItem value="" disabled>
+            Select Status
+          </MenuItem>
+          <MenuItem value="unresolved">Unresolved</MenuItem>
+          <MenuItem value="resolved">Resolved</MenuItem>
+          <MenuItem value="investigating">Investigating</MenuItem>
+          {/* Add more status options as needed */}
+        </Select>
+      ),
+    },
     {
       field: "details",
       headerName: "Details",
-
       renderCell: (params) => (
         <Button
           variant="contained"
@@ -97,7 +140,6 @@ const ATOs = () => {
     {
       field: "screenshot",
       headerName: "Screenshot",
-
       renderCell: (params) => (
         <Button variant="contained" color="info">
           <a

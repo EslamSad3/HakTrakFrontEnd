@@ -1,4 +1,11 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
@@ -43,8 +50,8 @@ const CyberKillChain = () => {
   };
 
   const handleClickOpenUpdate = async (id) => {
-    const oneMiterAttack = await fetchOneCyberKillChain(id);
-    setSelectedCyberKillChain(oneMiterAttack);
+    const oneCyberKillChain = await fetchOneCyberKillChain(id);
+    setSelectedCyberKillChain(oneCyberKillChain);
     setOpenUpdate(true);
   };
 
@@ -58,6 +65,13 @@ const CyberKillChain = () => {
     refreshData();
     handleCloseUpdate();
   };
+
+  const handleStatusChange = async (event, id) => {
+    const newStatus = event.target.value;
+    await updateCyberKillChain(id, { status: newStatus });
+    refreshData();
+  };
+
   const transformedData = cyberKillChains?.map((item, index) => ({
     ...item,
     id: index + 1,
@@ -77,7 +91,7 @@ const CyberKillChain = () => {
       },
     },
     { field: "incidentId", headerName: "Incident Id" },
-    { field: "killChainStage", headerName: "kill Chain Stage" },
+    { field: "killChainStage", headerName: "Kill Chain Stage" },
     { field: "description", headerName: "Description" },
     { field: "ipAddress", headerName: "Ip Address" },
     { field: "user", headerName: "User" },
@@ -85,8 +99,27 @@ const CyberKillChain = () => {
     { field: "businessUnit", headerName: "Business Unit" },
     { field: "timestamp", headerName: "Time Stamp" },
     { field: "severity", headerName: "Severity" },
-    { field: "status", headerName: "Status" },
-    ,
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Select
+          value={params.row.status || ""}
+          onChange={(event) => handleStatusChange(event, params.row._id)}
+          displayEmpty
+          inputProps={{ "aria-label": "Status" }}
+        >
+          <MenuItem value="" disabled>
+            Select Status
+          </MenuItem>
+          <MenuItem value="unresolved">Unresolved</MenuItem>
+          <MenuItem value="resolved">Resolved</MenuItem>
+          <MenuItem value="investigating">Investigating</MenuItem>
+          {/* Add more status options as needed */}
+        </Select>
+      ),
+    },
     {
       field: "details",
       headerName: "Details",
@@ -95,9 +128,7 @@ const CyberKillChain = () => {
         <Button
           variant="contained"
           color="info"
-          onClick={() =>
-            navigate(`/attack-secnarios/kill-chain/${params.id}`)
-          }
+          onClick={() => navigate(`/attack-secnarios/kill-chain/${params.id}`)}
         >
           Details
         </Button>
@@ -182,8 +213,8 @@ const CyberKillChain = () => {
       >
         <DataGrid
           sx={{
-            height: " 80vh",
-            width: " 70vw",
+            height: "80vh",
+            width: "70vw",
           }}
           rows={transformedData || []}
           loading={isLoading || !transformedData}

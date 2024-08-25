@@ -1,10 +1,17 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context";
 import DeleteDialog from "../../Actions/DeleteDialog";
-import UpdateDialog from "../../Actions/UpdateDialog"; // Adjust the path as needed
+import UpdateDialog from "../../Actions/UpdateDialog";
 import LeakedCreBarChart from "../Scenes/LeakedCreBarChart";
 import { useNavigate } from "react-router-dom";
 
@@ -24,8 +31,9 @@ const LeakedCredentials = () => {
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedleakedCredentials, setSelectedleakedCredentials] =
+  const [selectedLeakedCredentials, setSelectedLeakedCredentials] =
     useState(null);
+  const [isFetching, setIsFetching] = useState(false);
 
   const handleClickOpenDelete = (id) => {
     setDeleteId(id);
@@ -44,42 +52,77 @@ const LeakedCredentials = () => {
   };
 
   const handleClickOpenUpdate = async (id) => {
+    setIsFetching(true);
     const leakedCredentials = await fetchOneLeakedCredentials(id);
-    setSelectedleakedCredentials(leakedCredentials);
+    setSelectedLeakedCredentials(leakedCredentials);
+    setIsFetching(false);
     setOpenUpdate(true);
   };
 
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
-    setSelectedleakedCredentials(null);
+    setSelectedLeakedCredentials(null);
   };
 
-  const handleupdateLeakedCredentials = async (values) => {
-    await updateLeakedCredentials(selectedleakedCredentials._id, values);
+  const handleStatusChange = async (event, id) => {
+    const newStatus = event.target.value;
+
+    // Find the leaked credentials that need to be updated
+    const updatedLeakedCredentials = selectedLeakedCredentials
+      ? { ...selectedLeakedCredentials, status: newStatus }
+      : null;
+
+    setSelectedLeakedCredentials(updatedLeakedCredentials);
+
+    // Update the leaked credentials status in the backend
+    await updateLeakedCredentials(id, { status: newStatus });
+    refreshData();
+  };
+
+  const handleUpdateLeakedCredentials = async (values) => {
+    await updateLeakedCredentials(selectedLeakedCredentials._id, values);
     refreshData();
     handleCloseUpdate();
   };
+
+    const transformedData = leakedCredentials?.map((item, index) => ({
+      ...item,
+      id: index + 1,
+    }));
 
   useEffect(() => {
     refreshData();
   }, []);
 
   const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      width: 90,
-      valueGetter: (params) => {
-        return params;
-      },
-    },
+    { field: "id", headerName: "ID", width: 90 },
     { field: "user", headerName: "User", width: 150 },
     { field: "password", headerName: "Password", width: 150 },
     { field: "bu", headerName: "BU", width: 150 },
     { field: "leakDate", headerName: "Leak Date", width: 200 },
     { field: "source", headerName: "Source", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 150 },
-    ,
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Select
+          value={params.row.status || ""}
+          onChange={(event) => handleStatusChange(event, params.row._id)}
+          displayEmpty
+          inputProps={{ "aria-label": "Status" }}
+        >
+          <MenuItem value="" disabled>
+            Select Status
+          </MenuItem>
+          <MenuItem value="unresolved">Unresolved</MenuItem>
+          <MenuItem value="resolved">Resolved</MenuItem>
+          <MenuItem value="investigating">investigating</MenuItem>
+          {/* Add more status options as needed */}
+        </Select>
+      ),
+    },
     {
       field: "details",
       headerName: "Details",
@@ -105,7 +148,7 @@ const LeakedCredentials = () => {
             <Button
               variant="contained"
               color="secondary"
-              onClick={() => handleClickOpenDelete(params.id)}
+              onClick={() => handleClickOpenDelete(params.row._id)}
             >
               Delete
             </Button>
@@ -121,7 +164,7 @@ const LeakedCredentials = () => {
             <Button
               variant="contained"
               color="primary"
-              onClick={() => handleClickOpenUpdate(params?.id)}
+              onClick={() => handleClickOpenUpdate(params.row._id)}
             >
               Update
             </Button>
@@ -132,12 +175,14 @@ const LeakedCredentials = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"Leaked Credential"} />
+      <Header title={"Leaked Credentials"} />
+      <br />
       <Box
         sx={{
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "space-between",
           alignItems: "center",
+          mb: "20px",
         }}
       >
         <LeakedCreBarChart leakedCredentials={leakedCredentials} />
@@ -175,27 +220,29 @@ const LeakedCredentials = () => {
       >
         <DataGrid
           sx={{
-            height: " 80vh",
-            width: " 70vw",
+            height: "80vh",
+            width: "70vw",
           }}
-          rows={leakedCredentials || []}
-          loading={isLoading || !leakedCredentials}
-          getRowId={(row) => row?._id}
+          rows={transformedData || []}
+          loading={isLoading || !transformedData}
+          getRowId={(row) => row._id}
           columns={columns}
           slots={{ toolbar: GridToolbar }}
         />
       </Box>
+
       <DeleteDialog
         open={openDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         item={deleteId}
       />
+
       <UpdateDialog
         open={openUpdate}
         onClose={handleCloseUpdate}
-        item={selectedleakedCredentials}
-        onConfirm={handleupdateLeakedCredentials}
+        item={selectedLeakedCredentials}
+        onConfirm={handleUpdateLeakedCredentials}
       />
     </Box>
   );

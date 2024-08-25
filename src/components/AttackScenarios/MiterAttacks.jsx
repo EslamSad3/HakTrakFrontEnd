@@ -1,4 +1,11 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
@@ -16,7 +23,7 @@ const MitreAttacks = () => {
     adminToken,
     refreshData,
     fetchOneMitreAttacks,
-    updateMitreAttacks,
+    updateMitreAttack,
   } = useContext(Context);
   const theme = useTheme();
   const navigate = useNavigate();
@@ -53,11 +60,18 @@ const MitreAttacks = () => {
     setSelectedMitreAttacks(null);
   };
 
-  const handleupdateMitreAttacks = async (values) => {
-    await updateMitreAttacks(selectedMitreAttacks._id, values);
+  const handleupdateMitreAttack = async (values) => {
+    await updateMitreAttack(selectedMitreAttacks._id, values);
     refreshData();
     handleCloseUpdate();
   };
+
+  const handleStatusChange = async (event, id) => {
+    const newStatus = event.target.value;
+    await updateMitreAttack(id, { status: newStatus });
+    refreshData();
+  };
+
   const transformedData = allMitreAttacks?.map((item, index) => ({
     ...item,
     id: index + 1,
@@ -86,8 +100,27 @@ const MitreAttacks = () => {
     { field: "businessUnit", headerName: "Business Unit" },
     { field: "timestamp", headerName: "Time Stamp" },
     { field: "severity", headerName: "Severity" },
-    { field: "status", headerName: "Status" },
-    ,
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Select
+          value={params.row.status || ""}
+          onChange={(event) => handleStatusChange(event, params.row._id)}
+          displayEmpty
+          inputProps={{ "aria-label": "Status" }}
+        >
+          <MenuItem value="" disabled>
+            Select Status
+          </MenuItem>
+          <MenuItem value="unresolved">Unresolved</MenuItem>
+          <MenuItem value="resolved">Resolved</MenuItem>
+          <MenuItem value="investigating">Investigating</MenuItem>
+          {/* Add more status options as needed */}
+        </Select>
+      ),
+    },
     {
       field: "details",
       headerName: "Details",
@@ -140,7 +173,7 @@ const MitreAttacks = () => {
 
   return (
     <Box m="1.5rem 2.5rem" textAlign={"center"}>
-      <Header title={"Miter Attacks"} />
+      <Header title={"Mitre Attacks"} />
       <Box
         sx={{
           display: "flex",
@@ -203,7 +236,7 @@ const MitreAttacks = () => {
         open={openUpdate}
         onClose={handleCloseUpdate}
         item={selectedMitreAttacks}
-        onConfirm={handleupdateMitreAttacks}
+        onConfirm={handleupdateMitreAttack}
       />
     </Box>
   );

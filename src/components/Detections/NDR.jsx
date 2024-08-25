@@ -1,4 +1,11 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Select,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import Header from "../Header";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
@@ -59,7 +66,27 @@ const Ndr = () => {
     setSelectedUpdateId(null); // Clear selected ID after update dialog closes
   };
 
-  const handleupdateNdr = async (values) => {
+  const handleStatusChange = async (event, id) => {
+    const newStatus = event.target.value;
+
+    // Find the NDR that needs to be updated
+    const updatedNdrs = selectedndrs
+      ? selectedndrs.map((ndr) => {
+          if (ndr._id === id) {
+            return { ...ndr, status: newStatus };
+          }
+          return ndr;
+        })
+      : null;
+
+    setSelectedndrs(updatedNdrs);
+
+    // Update the NDR status in the backend
+    await updateNdr(id, { status: newStatus });
+    refreshData();
+  };
+
+  const handleUpdateNdr = async (values) => {
     await updateNdr(selectedndrs._id, values);
     refreshData();
     handleCloseUpdate();
@@ -92,7 +119,27 @@ const Ndr = () => {
     { field: "actionTaken", headerName: "Action Taken", width: 150 },
     { field: "description", headerName: "Description", width: 150 },
     { field: "mitigationSteps", headerName: "Mitigation Steps", width: 250 },
-    ,
+    {
+      field: "status",
+      headerName: "Status",
+      width: 150,
+      renderCell: (params) => (
+        <Select
+          value={params.row.status || ""}
+          onChange={(event) => handleStatusChange(event, params.row._id)}
+          displayEmpty
+          inputProps={{ "aria-label": "Status" }}
+        >
+          <MenuItem value="" disabled>
+            Select Status
+          </MenuItem>
+          <MenuItem value="unresolved">Unresolved</MenuItem>
+          <MenuItem value="resolved">Resolved</MenuItem>
+          <MenuItem value="investigating">investigating</MenuItem>
+          {/* Add more status options as needed */}
+        </Select>
+      ),
+    },
     {
       field: "details",
       headerName: "Details",
@@ -153,7 +200,7 @@ const Ndr = () => {
           mb: "20px",
         }}
       >
-        <NdrPieChart ndrs={ndrs}/>
+        <NdrPieChart ndrs={ndrs} />
       </Box>
       <Box
         mt="40px"
@@ -210,7 +257,7 @@ const Ndr = () => {
         open={openUpdate}
         onClose={handleCloseUpdate}
         item={selectedndrs}
-        onConfirm={handleupdateNdr}
+        onConfirm={handleUpdateNdr} // Correct reference here
       />
     </Box>
   );

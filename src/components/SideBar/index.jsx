@@ -752,67 +752,78 @@ const SideBar = ({
                 </AccordionSummary>
                 <AccordionDetails>
                   <List>
+                    {/* miterAttacks */}
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() =>
-                          handleNavigate("/attack-scenarios/mitre-attack")
+                          handleNavigate("/attack-scenarios/miter-attacks")
                         }
                         sx={{
                           backgroundColor:
-                            active === "attack-scenarios/mitre-attack"
+                            active === "miterAttacks"
                               ? theme.palette.secondary[300]
                               : "transparent",
                           color:
-                            active === "attack-scenarios/mitre-attack"
+                            active === "miterAttacks"
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100],
                         }}
                       >
                         <ListItemIcon
                           sx={{
-                            ml: "3rem",
+                            ml: "2rem",
                             color:
-                              active === "attack-scenarios/mitre-attack"
+                              active === "miterAttacks"
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <ScreenSearchDesktopIcon />
+                          <LocalFireDepartmentIcon />
                         </ListItemIcon>
-                        <ListItemText primary="MITRE ATT&CK®" sx={{ pl: 2 }} />
+                        <ListItemText
+                          primary="Miter Attacks"
+                          sx={{ textAlign: "start" }}
+                        />
+                        {active === "miterAttacks" && (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        )}
                       </ListItemButton>
                     </ListItem>
+                    {/* killChain */}
                     <ListItem disablePadding>
                       <ListItemButton
                         onClick={() =>
-                          handleNavigate("/detections/cyber-kill-chain")
+                          handleNavigate("/attack-scenarios/kill-chain")
                         }
                         sx={{
                           backgroundColor:
-                            active === "detections/cyber-kill-chain"
+                            active === "killChain"
                               ? theme.palette.secondary[300]
                               : "transparent",
                           color:
-                            active === "detections/cyber-kill-chain"
+                            active === "killChain"
                               ? theme.palette.primary[600]
                               : theme.palette.secondary[100],
                         }}
                       >
                         <ListItemIcon
                           sx={{
-                            ml: "3rem",
+                            ml: "2rem",
                             color:
-                              active === "detections/cyber-kill-chain"
+                              active === "killChain"
                                 ? theme.palette.primary[600]
                                 : theme.palette.secondary[200],
                           }}
                         >
-                          <LanIcon />
+                          <LinkIcon />
                         </ListItemIcon>
                         <ListItemText
                           primary="Cyber Kill Chain"
-                          sx={{ pl: 2 }}
+                          sx={{ textAlign: "start" }}
                         />
+                        {active === "killChain" && (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        )}
                       </ListItemButton>
                     </ListItem>
                   </List>
@@ -1121,76 +1132,6 @@ const SideBar = ({
                   </ListItemIcon>
                   <ListItemText primary="Reports" sx={{ textAlign: "start" }} />
                   {active === "reports" && (
-                    <ChevronRightOutlined sx={{ ml: "auto" }} />
-                  )}
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={() =>
-                    handleNavigate("/attack-scenarios/miter-attacks")
-                  }
-                  sx={{
-                    backgroundColor:
-                      active === "miterAttacks"
-                        ? theme.palette.secondary[300]
-                        : "transparent",
-                    color:
-                      active === "miterAttacks"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[100],
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                      color:
-                        active === "miterAttacks"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[200],
-                    }}
-                  >
-                    <LocalFireDepartmentIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Miter Attacks"
-                    sx={{ textAlign: "start" }}
-                  />
-                  {active === "miterAttacks" && (
-                    <ChevronRightOutlined sx={{ ml: "auto" }} />
-                  )}
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton
-                  onClick={() => handleNavigate("/attack-scenarios/kill-chain")}
-                  sx={{
-                    backgroundColor:
-                      active === "killChain"
-                        ? theme.palette.secondary[300]
-                        : "transparent",
-                    color:
-                      active === "killChain"
-                        ? theme.palette.primary[600]
-                        : theme.palette.secondary[100],
-                  }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      ml: "2rem",
-                      color:
-                        active === "killChain"
-                          ? theme.palette.primary[600]
-                          : theme.palette.secondary[200],
-                    }}
-                  >
-                    <LinkIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Cyber Kill Chain"
-                    sx={{ textAlign: "start" }}
-                  />
-                  {active === "killChain" && (
                     <ChevronRightOutlined sx={{ ml: "auto" }} />
                   )}
                 </ListItemButton>

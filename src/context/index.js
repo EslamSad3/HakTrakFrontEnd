@@ -1389,9 +1389,10 @@ export function ContextProvider(props) {
         { headers: { ...getAuthAdminHeaders() } }
       );
       console.log(response);
-      response.status === 200
-        ? toast.success("NDR updated successfully")
-        : toast.error("NDR not found");
+      if (response.status === 200) {
+        toast.success("NDR updated successfully");
+        refreshData();
+      } else toast.error("NDR not found");
     } catch (error) {
       console.log(error);
     }
